@@ -19,7 +19,7 @@ jobs:
       - name: Initialize Flutter SDK
         uses: chika3742/setup-fvm@v3
         with:
-          project-dir: . # default
+          project-dir: widgetbook # default
           cache: true # default
 
       - run: fvm flutter --version
