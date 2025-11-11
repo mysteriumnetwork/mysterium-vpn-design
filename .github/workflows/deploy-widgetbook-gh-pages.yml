@@ -1,0 +1,51 @@
+# yaml
+name: Build \& Deploy Widgetbook (FVM + build_runner)
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install FVM
+        uses: leoafarias/fvm-action@v1
+
+      - name: Add pub-cache to PATH
+        run: echo "$HOME/.pub-cache/bin" >> $GITHUB_PATH
+
+      - name: Install Flutter version from .fvmrc
+        run: |
+          fvm install
+          fvm use --force
+
+      - name: Enable web
+        run: fvm flutter config --enable-web
+
+      - name: Install dependencies (widgetbook/)
+        working-directory: widgetbook
+        run: fvm flutter pub get
+
+      - name: Run build_runner (widgetbook/)
+        working-directory: widgetbook
+        run: fvm flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Flutter web (widgetbook/)
+        working-directory: widgetbook
+        run: fvm flutter build web --release
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: widgetbook/build/web
+          publish_branch: gh-pages
+          keep_files: false
