@@ -11,7 +11,10 @@ Widget buildLogoHeader(BuildContext context) => _View(
 
 @UseCase(name: 'Labeled', type: Header)
 Widget buildLabeledHeader(BuildContext context) => _View(
-  header: Header.labeled(label: 'Some title', actions: _mockActions(context)),
+  header: Header.labeled(
+    label: context.knobs.string(label: 'Title', initialValue: 'Theme'),
+    actions: _mockActions(context),
+  ),
   canGoBack: context.knobs.boolean(label: 'Has back button'),
 );
 
