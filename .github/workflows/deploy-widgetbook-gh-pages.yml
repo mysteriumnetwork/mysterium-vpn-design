@@ -37,7 +37,7 @@ jobs:
 
       - name: Build Flutter web (widgetbook/)
         working-directory: widgetbook
-        run: fvm flutter build web --release
+        run: fvm flutter build web --release --base-href ./
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
