@@ -41,13 +41,11 @@ sealed class DesignSystem {
           disabledBackgroundColor: Palette.grayLight.shade100,
           disabledForegroundColor: Palette.grayLight.shade400,
           disabledIconColor: Palette.grayLight.shade400,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(radius.s),
           ),
           iconSize: 16,
           textStyle: textStyles.textMd.semibold,
-          visualDensity: VisualDensity.compact,
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -57,13 +55,11 @@ sealed class DesignSystem {
           side: BorderSide(color: palette.borderBrand),
           disabledForegroundColor: Palette.grayLight.shade400,
           disabledIconColor: Palette.grayLight.shade400,
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(radius.s),
           ),
           iconSize: 16,
           textStyle: textStyles.textMd.semibold,
-          visualDensity: VisualDensity.compact,
         ),
       ),
       extensions: <ThemeExtension<dynamic>>[

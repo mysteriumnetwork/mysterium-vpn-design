@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' hide Theme;
+import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
@@ -35,6 +35,15 @@ class WidgetbookApp extends StatelessWidget {
             Brightness.light => lightTheme,
           },
           themes: [darkTheme, lightTheme],
+        ),
+        InspectorAddon(enabled: true),
+        AlignmentAddon(),
+        BuilderAddon(
+          name: 'Background',
+          builder: (context, child) {
+            final theme = Theme.of(context);
+            return ColoredBox(color: theme.palette.bgSecondary, child: child);
+          },
         ),
       ],
     );

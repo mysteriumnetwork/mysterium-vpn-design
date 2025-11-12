@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
-import 'package:widgetbook_workspace/use_case_scaffold.dart';
 
 @UseCase(name: 'Primary', type: Button)
 Widget buildPrimaryButton(BuildContext context) => _buildButton(
@@ -51,17 +50,15 @@ Widget _buildButton(
     labelBuilder: (size) => size.name,
   );
 
-  return UseCaseScaffold(
-    child: buttonBuilder((
-      isDisabled: isDisabled,
-      isLoading: isLoading,
-      loadingText: loadingText,
-      showLeading: showLeading,
-      showTrailing: showTrailing,
-      buttonText: buttonText,
-      size: size,
-    )),
-  );
+  return buttonBuilder((
+    isDisabled: isDisabled,
+    isLoading: isLoading,
+    loadingText: loadingText,
+    showLeading: showLeading,
+    showTrailing: showTrailing,
+    buttonText: buttonText,
+    size: size,
+  ));
 }
 
 typedef _ButtonArgs = ({

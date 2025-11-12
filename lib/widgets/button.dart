@@ -70,40 +70,29 @@ class ButtonPrimary extends Button {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loadingColor =
+        theme.filledButtonTheme.style?.foregroundColor?.resolve({}) ??
+            theme.palette.textWhite;
     return IgnorePointer(
       ignoring: loading != null,
       child: FilledButton(
         onPressed: onPressed,
         style: FilledButton.styleFrom(
+          padding: EdgeInsets.zero,
+          visualDensity: VisualDensity.compact,
           minimumSize: switch (size) {
-            ButtonSize.small => const Size(120, 36),
-            ButtonSize.medium => const Size(140, 40),
-            ButtonSize.large => const Size(150, 44),
+            ButtonSize.small => const Size(60, 36),
+            ButtonSize.medium => const Size(60, 40),
+            ButtonSize.large => const Size(60, 44),
           },
           textStyle: switch (size) {
             ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
             _ => null,
           },
-          padding: switch (size) {
-            ButtonSize.small => const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-            ButtonSize.medium => const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
-            ButtonSize.large => const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-          },
         ),
         child: _Child(
           loading: loading,
-          loadingColor:
-              theme.filledButtonTheme.style?.foregroundColor?.resolve({}) ??
-                  theme.palette.textWhite,
+          loadingColor: loadingColor,
           leading: leading,
           trailing: trailing,
           size: size,
@@ -128,40 +117,30 @@ class ButtonSecondary extends Button {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final loadingColor =
+        theme.outlinedButtonTheme.style?.foregroundColor?.resolve({}) ??
+            theme.palette.textSecondary;
+
     return IgnorePointer(
       ignoring: loading != null,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
+          padding: EdgeInsets.zero,
+          visualDensity: VisualDensity.compact,
           minimumSize: switch (size) {
-            ButtonSize.small => const Size(120, 36),
-            ButtonSize.medium => const Size(140, 40),
-            ButtonSize.large => const Size(150, 44),
+            ButtonSize.small => const Size(60, 36),
+            ButtonSize.medium => const Size(60, 40),
+            ButtonSize.large => const Size(60, 44),
           },
           textStyle: switch (size) {
             ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
             _ => null,
           },
-          padding: switch (size) {
-            ButtonSize.small => const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 8,
-              ),
-            ButtonSize.medium => const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 10,
-              ),
-            ButtonSize.large => const EdgeInsets.symmetric(
-                horizontal: 16,
-                vertical: 12,
-              ),
-          },
         ),
         child: _Child(
           loading: loading,
-          loadingColor:
-              theme.outlinedButtonTheme.style?.foregroundColor?.resolve({}) ??
-                  theme.palette.textSecondary,
+          loadingColor: loadingColor,
           leading: leading,
           trailing: trailing,
           size: size,
@@ -191,31 +170,59 @@ class _Child extends StatelessWidget {
   final Color loadingColor;
 
   @override
-  Widget build(BuildContext context) => Row(
-        mainAxisSize: MainAxisSize.min,
-        spacing: switch (size) {
-          ButtonSize.small => 6,
-          ButtonSize.medium => 8,
-          ButtonSize.large => 10,
-        },
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          if (leading != null && loading == null) leading!,
-          if (loading != null)
-            _LoadingIndicator(
-              size: switch (size) { ButtonSize.small => 14, _ => 16 },
-              color: loadingColor,
-            ),
-          Flexible(
-            child: loading?.text != null ? Text(loading!.text!) : child,
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: switch (size) {
+        ButtonSize.small => const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
           ),
-          if (trailing != null) trailing!,
-        ],
-      );
+        ButtonSize.medium => const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 10,
+          ),
+        ButtonSize.large => const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
+      },
+      child: DefaultTextStyle(
+        style: theme.textStyles.textMd.semibold,
+        textAlign: TextAlign.center,
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          spacing: switch (size) {
+            ButtonSize.small => 4,
+            ButtonSize.medium => 4,
+            ButtonSize.large => 8,
+          },
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (leading != null && loading == null) leading!,
+            if (loading != null)
+              _LoadingIndicator(
+                color: loadingColor,
+              ),
+            Flexible(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: loading?.text != null ? Text(loading!.text!) : child,
+              ),
+            ),
+            if (trailing != null) trailing!,
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _LoadingIndicator extends StatelessWidget {
-  const _LoadingIndicator({required this.size, required this.color});
+  const _LoadingIndicator({
+    required this.color,
+    this.size = 16,
+  });
 
   final double size;
   final Color? color;
