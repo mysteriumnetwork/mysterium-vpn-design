@@ -219,18 +219,14 @@ class _Child extends StatelessWidget {
 }
 
 class _LoadingIndicator extends StatelessWidget {
-  const _LoadingIndicator({
-    required this.color,
-    this.size = 16,
-  });
+  const _LoadingIndicator({required this.color});
 
-  final double size;
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final color = this.color ?? Palette.of(context).textBrandPrimary;
-    final radius = size / 2;
+    final radius = 16 / 2;
     return Stack(
       children: [
         CupertinoActivityIndicator(

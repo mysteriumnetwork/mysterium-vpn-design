@@ -16,6 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Ensure openssl
+        run: sudo apt-get update && sudo apt-get install -y openssl
+
       - name: Initialize Flutter SDK
         uses: chika3742/setup-fvm@v3
         with:
@@ -33,7 +36,11 @@ jobs:
 
       - name: Run build_runner (widgetbook/)
         working-directory: widgetbook
-        run: fvm flutter pub run build_runner build --delete-conflicting-outputs
+        run: make generate
+
+      - name: Modify index.html query for flutter_bootstrap.js to ensure it invalidates cache
+        working-directory: widgetbook
+        run: make invalidate-web-cache
 
       - name: Build Flutter web (widgetbook/)
         working-directory: widgetbook
