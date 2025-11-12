@@ -37,7 +37,10 @@ jobs:
 
       - name: Build Flutter web (widgetbook/)
         working-directory: widgetbook
-        run: fvm flutter build web --release --base-href /
+        run: |
+          repo=${GITHUB_REPOSITORY##*/}
+          echo "Building web with base-href: /$repo/"
+          fvm flutter build web --release --base-href "/$repo/"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
