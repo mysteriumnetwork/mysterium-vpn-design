@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' hide Radius, Typography;
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -75,6 +76,11 @@ sealed class DesignSystem {
         labelStyle: textStyles.textMd.semibold,
         labelPadding: EdgeInsets.zero,
         unselectedLabelColor: palette.textTertiary,
+      ),
+      cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
+        primaryColor: Palette.brand,
+        brightness: brightness,
+        applyThemeToAll: true,
       ),
       extensions: <ThemeExtension<dynamic>>[
         palette,

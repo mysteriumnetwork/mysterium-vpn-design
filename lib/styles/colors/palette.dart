@@ -237,6 +237,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color iconSecondary;
   abstract final Color iconTertiary;
   abstract final Color iconWhite;
+  abstract final Color iconDisabled;
 
   ///
   /// Background Colors
@@ -250,6 +251,8 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgBrandPrimaryInactive;
   abstract final Color bgBrandSecondary;
   abstract final Color bgBrandSecondaryInactive;
+  abstract final Color bgInactive;
+
   abstract final ColorScheme materialColors;
 
   @override
@@ -338,6 +341,9 @@ class PaletteDark extends Palette {
   @override
   Color get iconWhite => Palette.white;
 
+  @override
+  Color get iconDisabled => Palette.grayLight.shade400;
+
   ///
   /// Background Colors
   ///
@@ -367,6 +373,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgBrandSecondaryInactive => Palette.brand.shade600;
+
+  @override
+  Color get bgInactive => Palette.brandPurple.shade900;
 
   @override
   ColorScheme get materialColors => ColorScheme.dark(
@@ -460,6 +469,9 @@ class PaletteLight extends Palette {
   @override
   Color get iconWhite => Palette.white;
 
+  @override
+  Color get iconDisabled => Palette.grayLight.shade400;
+
   ///
   /// Background Colors
   ///
@@ -489,6 +501,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgBrandSecondaryInactive => Palette.brand.shade100;
+
+  @override
+  Color get bgInactive => gray.shade100;
 
   @override
   ColorScheme get materialColors => ColorScheme.light(
