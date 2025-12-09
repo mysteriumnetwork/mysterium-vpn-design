@@ -17,6 +17,7 @@ Widget buildFeaturesTable(BuildContext context) =>
         ),
         ComparisonFeature<String>(
           label: 'Feature B',
+          description: 'This is an optional feature description.',
           values: {
             'basic': ComparisonAvailable(false),
             'pro': ComparisonAvailable(true),

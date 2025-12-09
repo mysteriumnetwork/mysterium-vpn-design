@@ -19,6 +19,7 @@ sealed class DesignSystem {
     };
     final textStyles = TextStyles(color: palette.textPrimary);
     const radius = Radius();
+    const spacing = Spacing();
     return ThemeData(
       brightness: brightness,
       colorScheme: palette.materialColors,
@@ -82,11 +83,44 @@ sealed class DesignSystem {
         brightness: brightness,
         applyThemeToAll: true,
       ),
+      tooltipTheme: TooltipThemeData(
+        preferBelow: false,
+        verticalOffset: 12,
+        triggerMode: TooltipTriggerMode.tap,
+        enableFeedback: true,
+        padding: EdgeInsets.symmetric(
+          horizontal: spacing.xl,
+          vertical: spacing.md,
+        ),
+        textStyle: textStyles.textXs.semibold.copyWith(
+          color: palette.textWhite,
+        ),
+        textAlign: TextAlign.center,
+        showDuration: const Duration(seconds: 3),
+        decoration: BoxDecoration(
+          color: Palette.brandPurple.shade900,
+          borderRadius: BorderRadius.all(radius.s),
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 2,
+              spreadRadius: -1,
+              color: palette.gray.shade950.withValues(alpha: .04),
+              offset: const Offset(0, 2),
+            ),
+            BoxShadow(
+              blurRadius: 6,
+              spreadRadius: -2,
+              color: palette.gray.shade950.withValues(alpha: .04),
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+      ),
       extensions: <ThemeExtension<dynamic>>[
         palette,
         textStyles,
-        const Spacing(),
-        const Radius(),
+        spacing,
+        radius,
       ],
     );
   }

@@ -203,7 +203,7 @@ abstract class Palette extends ThemeExtension<Palette> {
     },
   );
 
-  abstract final Color gray;
+  abstract final PaletteColor gray;
 
   ///
   /// Text Colors
@@ -394,6 +394,7 @@ class PaletteDark extends Palette {
         onError: textPrimary,
         onErrorContainer: textPrimary,
         outline: borderPrimary,
+        secondary: bgBrandPrimary,
       );
 }
 
@@ -525,5 +526,6 @@ class PaletteLight extends Palette {
         onError: textPrimary,
         onErrorContainer: textPrimary,
         outline: borderPrimary,
+        secondary: bgBrandPrimary,
       );
 }
