@@ -36,7 +36,7 @@ class WidgetbookApp extends StatelessWidget {
           },
           themes: [darkTheme, lightTheme],
         ),
-        InspectorAddon(enabled: true),
+        InspectorAddon(),
         AlignmentAddon(),
         BuilderAddon(
           name: 'Background',
