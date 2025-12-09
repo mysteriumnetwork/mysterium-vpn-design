@@ -62,6 +62,20 @@ sealed class DesignSystem {
           textStyle: textStyles.textMd.semibold,
         ),
       ),
+      tabBarTheme: TabBarThemeData(
+        indicatorSize: TabBarIndicatorSize.tab,
+        indicatorAnimation: TabIndicatorAnimation.elastic,
+        indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(color: palette.borderTabs, width: 2),
+        ),
+        dividerHeight: 1,
+        dividerColor: palette.borderSecondary,
+        indicatorColor: palette.borderTabs,
+        labelColor: palette.textPrimarySelected,
+        labelStyle: textStyles.textMd.semibold,
+        labelPadding: EdgeInsets.zero,
+        unselectedLabelColor: palette.textTertiary,
+      ),
       extensions: <ThemeExtension<dynamic>>[
         palette,
         textStyles,

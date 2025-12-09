@@ -56,16 +56,16 @@ abstract class Palette extends ThemeExtension<Palette> {
     _brand,
     {
       25: Color(0xFFFEFAFF),
-      50: Color(0xFFFDF4FF),
-      100: Color(0xFFFBE8FF),
-      200: Color(0xFFF6D0FE),
+      50: Color(0xFFFCF4FF),
+      100: Color(0xFFF9E8FF),
+      200: Color(0xFFF2D0FE),
       300: Color(0xFFE8AAFD),
-      400: Color(0xFFE478FA),
+      400: Color(0xFFDA78FA),
       500: Color(_brand),
-      600: Color(0xFFBA24D5),
-      700: Color(0xFF9F1AB1),
-      800: Color(0xFF821890),
-      900: Color(0xFF6F1877),
+      600: Color(0xFFA924D5),
+      700: Color(0xFF8B1AB1),
+      800: Color(0xFF721890),
+      900: Color(0xFF5F1877),
       950: Color(0xFF47104C),
     },
   );
@@ -146,22 +146,42 @@ abstract class Palette extends ThemeExtension<Palette> {
     },
   );
 
-  static const _grayPurple = 0xFF5D6B98;
+  static const _grayPurple = 0xFF6A5D98;
   static const grayPurple = PaletteColor(
     _grayPurple,
     {
       25: Color(0xFFFCFCFD),
-      50: Color(0xFFF9F9FB),
-      100: Color(0xFFEFF1F5),
-      200: Color(0xFFDCDDEA),
-      300: Color(0xFFB9C0D4),
-      400: Color(0xFF7D89B0),
+      50: Color(0xFFF6F6F9),
+      100: Color(0xFFF1EFF5),
+      200: Color(0xFFDFDCEA),
+      300: Color(0xFFBFB9D4),
+      400: Color(0xFF887DB0),
       500: Color(_grayPurple),
-      600: Color(0xFF4A5578),
-      700: Color(0xFF404968),
-      800: Color(0xFF30374F),
-      900: Color(0xFF111322),
-      950: Color(0xFF0E101B),
+      600: Color(0xFF544A78),
+      700: Color(0xFF494068),
+      800: Color(0xFF37304F),
+      900: Color(0xFF151122),
+      950: Color(0xFF110E1B),
+    },
+  );
+
+// dart
+  static const _grayDarkAlpha = 0xFFFFFFFF;
+  static const grayDarkAlpha = PaletteColor(
+    _grayDarkAlpha,
+    {
+      25: Color(0xFAFFFFFF), // 98%
+      50: Color(0xF5FFFFFF), // 96%
+      100: Color(0xF0FFFFFF), // 94%
+      200: Color(0xEBFFFFFF), // 92%
+      300: Color(0xCCFFFFFF), // 80%
+      400: Color(0x8FFFFFFF), // 56%
+      500: Color(0x80FFFFFF), // 50%
+      600: Color(0x59FFFFFF), // 35%
+      700: Color(0x29FFFFFF), // 16%
+      800: Color(0x14FFFFFF), // 8%
+      900: Color(0x0AFFFFFF), // 4%
+      950: Color(0x00FFFFFF), // 0%
     },
   );
 
@@ -190,7 +210,9 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Text Colors
   ///
   abstract final Color textPrimary;
+  abstract final Color textPrimarySelected;
   abstract final Color textSecondary;
+  abstract final Color textTertiary;
   abstract final Color textWhite;
   abstract final Color textDisabled;
   abstract final Color textPlaceholder;
@@ -206,6 +228,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color borderSecondary;
   abstract final Color borderBrand;
   abstract final Color borderError;
+  abstract final Color borderTabs;
 
   ///
   /// Icon Colors
@@ -253,7 +276,13 @@ class PaletteDark extends Palette {
   Color get textPrimary => gray.shade50;
 
   @override
+  Color get textPrimarySelected => Palette.brand.shade300;
+
+  @override
   Color get textSecondary => gray.shade300;
+
+  @override
+  Color get textTertiary => Palette.grayDarkAlpha.shade400;
 
   @override
   Color get textWhite => Palette.white;
@@ -280,16 +309,19 @@ class PaletteDark extends Palette {
   /// Border Colors
   ///
   @override
-  Color get borderPrimary => gray.shade600;
+  Color get borderPrimary => Palette.grayPurple.shade600;
 
   @override
-  Color get borderSecondary => gray.shade800;
+  Color get borderSecondary => Palette.grayPurple.shade600;
 
   @override
   Color get borderBrand => Palette.grayPurple.shade400;
 
   @override
   Color get borderError => Palette.error.shade400;
+
+  @override
+  Color get borderTabs => Palette.brand.shade300;
 
   ///
   /// Icon Colors
@@ -366,7 +398,13 @@ class PaletteLight extends Palette {
   Color get textPrimary => gray.shade800;
 
   @override
+  Color get textPrimarySelected => Palette.brand.shade700;
+
+  @override
   Color get textSecondary => gray.shade700;
+
+  @override
+  Color get textTertiary => gray.shade500;
 
   @override
   Color get textWhite => Palette.white;
@@ -393,16 +431,19 @@ class PaletteLight extends Palette {
   /// Border Colors
   ///
   @override
-  Color get borderPrimary => gray.shade400;
+  Color get borderPrimary => gray.shade300;
 
   @override
-  Color get borderSecondary => gray.shade200;
+  Color get borderSecondary => Palette.grayPurple.shade200;
 
   @override
   Color get borderBrand => Palette.grayPurple.shade400;
 
   @override
   Color get borderError => Palette.error.shade500;
+
+  @override
+  Color get borderTabs => Palette.brand.shade700;
 
   ///
   /// Icon Colors
