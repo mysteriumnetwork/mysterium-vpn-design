@@ -435,7 +435,7 @@ class PaletteLight extends Palette {
   Color get bgQuaternary => gray.shade200;
 
   @override
-  Color get bgBrandPrimary => Palette.brand.shade400;
+  Color get bgBrandPrimary => Palette.brand;
 
   @override
   m.Color get bgBrandPrimaryHover => Palette.brand.shade700;

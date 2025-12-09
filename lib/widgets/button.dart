@@ -70,7 +70,7 @@ class ButtonPrimary extends Button {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final loadingColor =
+    final foregroundColor =
         theme.filledButtonTheme.style?.foregroundColor?.resolve({}) ??
             theme.palette.textWhite;
     return IgnorePointer(
@@ -92,7 +92,7 @@ class ButtonPrimary extends Button {
         ),
         child: _Child(
           loading: loading,
-          loadingColor: loadingColor,
+          foregroundColor: foregroundColor,
           leading: leading,
           trailing: trailing,
           size: size,
@@ -117,7 +117,7 @@ class ButtonSecondary extends Button {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final loadingColor =
+    final foregroundColor =
         theme.outlinedButtonTheme.style?.foregroundColor?.resolve({}) ??
             theme.palette.textSecondary;
 
@@ -140,7 +140,7 @@ class ButtonSecondary extends Button {
         ),
         child: _Child(
           loading: loading,
-          loadingColor: loadingColor,
+          foregroundColor: foregroundColor,
           leading: leading,
           trailing: trailing,
           size: size,
@@ -158,7 +158,7 @@ class _Child extends StatelessWidget {
     required this.trailing,
     required this.loading,
     required this.size,
-    required this.loadingColor,
+    required this.foregroundColor,
   });
 
   final Widget child;
@@ -167,7 +167,7 @@ class _Child extends StatelessWidget {
   final Widget? trailing;
   final ButtonLoading? loading;
   final ButtonSize size;
-  final Color loadingColor;
+  final Color foregroundColor;
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +188,9 @@ class _Child extends StatelessWidget {
           ),
       },
       child: DefaultTextStyle(
-        style: theme.textStyles.textMd.semibold,
+        style: theme.textStyles.textMd.semibold.copyWith(
+          color: foregroundColor,
+        ),
         textAlign: TextAlign.center,
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -200,10 +202,7 @@ class _Child extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             if (leading != null && loading == null) leading!,
-            if (loading != null)
-              _LoadingIndicator(
-                color: loadingColor,
-              ),
+            if (loading != null) _LoadingIndicator(color: foregroundColor),
             Flexible(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2),
