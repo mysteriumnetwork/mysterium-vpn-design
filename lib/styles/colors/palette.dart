@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart' as m;
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -7,7 +6,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   const Palette();
 
   factory Palette.of(BuildContext context) =>
-      m.Theme.of(context).extension<Palette>()!;
+      Theme.of(context).extension<Palette>()!;
 
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
@@ -234,6 +233,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Icon Colors
   ///
   abstract final Color iconPrimary;
+  abstract final Color iconSuccessPrimary;
   abstract final Color iconSecondary;
   abstract final Color iconTertiary;
   abstract final Color iconWhite;
@@ -333,6 +333,9 @@ class PaletteDark extends Palette {
   Color get iconPrimary => Palette.white;
 
   @override
+  Color get iconSuccessPrimary => Palette.success.shade200;
+
+  @override
   Color get iconSecondary => gray.shade300;
 
   @override
@@ -363,7 +366,7 @@ class PaletteDark extends Palette {
   Color get bgBrandPrimary => Palette.brand.shade400;
 
   @override
-  m.Color get bgBrandPrimaryHover => Palette.brand.shade700;
+  Color get bgBrandPrimaryHover => Palette.brand.shade700;
 
   @override
   Color get bgBrandPrimaryInactive => Palette.brand.shade500;
@@ -461,6 +464,9 @@ class PaletteLight extends Palette {
   Color get iconPrimary => gray.shade800;
 
   @override
+  Color get iconSuccessPrimary => Palette.success.shade700;
+
+  @override
   Color get iconSecondary => gray.shade700;
 
   @override
@@ -491,7 +497,7 @@ class PaletteLight extends Palette {
   Color get bgBrandPrimary => Palette.brand;
 
   @override
-  m.Color get bgBrandPrimaryHover => Palette.brand.shade700;
+  Color get bgBrandPrimaryHover => Palette.brand.shade700;
 
   @override
   Color get bgBrandPrimaryInactive => gray.shade100;
