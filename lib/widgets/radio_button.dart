@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -15,7 +17,7 @@ class RadioButton<T> extends StatelessWidget {
   final bool enabled;
   final double radius;
 
-  static RadioGroupRegistry<T>? _findGroupState<T>(BuildContext context) {
+  static RadioGroupRegistry<T>? findGroupState<T>(BuildContext context) {
     final state = context.findAncestorStateOfType<State<RadioGroup<T>>>();
     if (state is RadioGroupRegistry<T>) {
       return state! as RadioGroupRegistry<T>;
@@ -26,7 +28,7 @@ class RadioButton<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = Palette.of(context);
-    final groupState = _findGroupState<T>(context);
+    final groupState = findGroupState<T>(context);
     final selected = groupState != null && groupState.groupValue == value;
 
     void onPressed() {
