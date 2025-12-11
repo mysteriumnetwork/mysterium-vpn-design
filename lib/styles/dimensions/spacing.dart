@@ -8,6 +8,7 @@ class Spacing extends ThemeExtension<Spacing> {
   static const double kXxs = 2;
   static const double kXs = 4;
   static const double kMd = 8;
+  static const double kL = 12;
   static const double kXl = 16;
   static const double k2xl = 20;
   static const double k3xl = 24;
@@ -27,6 +28,8 @@ class Spacing extends ThemeExtension<Spacing> {
   double get xs => kXs;
 
   double get md => kMd;
+
+  double get l => kL;
 
   double get xl => kXl;
 
