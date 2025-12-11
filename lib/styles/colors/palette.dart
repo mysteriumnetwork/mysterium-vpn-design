@@ -219,6 +219,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color textErrorPrimary;
   abstract final Color textWarningPrimary;
   abstract final Color textSuccessPrimary;
+  abstract final Color textSuccessTertiary;
 
   ///
   /// Border Colors
@@ -228,6 +229,8 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color borderBrand;
   abstract final Color borderError;
   abstract final Color borderTabs;
+  abstract final Color borderBrandPrimary;
+  abstract final Color borderSuccessTertiary;
 
   ///
   /// Icon Colors
@@ -252,6 +255,8 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgBrandSecondary;
   abstract final Color bgBrandSecondaryInactive;
   abstract final Color bgInactive;
+  abstract final Color bgPopover;
+  abstract final Color bgSuccessTertiary;
 
   abstract final ColorScheme materialColors;
 
@@ -308,6 +313,9 @@ class PaletteDark extends Palette {
   @override
   Color get textSuccessPrimary => Palette.success.shade400;
 
+  @override
+  Color get textSuccessTertiary => Palette.success.shade300;
+
   ///
   /// Border Colors
   ///
@@ -325,6 +333,12 @@ class PaletteDark extends Palette {
 
   @override
   Color get borderTabs => Palette.brand.shade300;
+
+  @override
+  Color get borderBrandPrimary => Palette.brand.shade400;
+
+  @override
+  Color get borderSuccessTertiary => Palette.success.shade300;
 
   ///
   /// Icon Colors
@@ -379,6 +393,12 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgInactive => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgPopover => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgSuccessTertiary => Palette.success.shade800;
 
   @override
   ColorScheme get materialColors => ColorScheme.dark(
@@ -440,6 +460,9 @@ class PaletteLight extends Palette {
   @override
   Color get textSuccessPrimary => Palette.success.shade600;
 
+  @override
+  Color get textSuccessTertiary => Palette.success.shade700;
+
   ///
   /// Border Colors
   ///
@@ -457,6 +480,12 @@ class PaletteLight extends Palette {
 
   @override
   Color get borderTabs => Palette.brand.shade700;
+
+  @override
+  Color get borderBrandPrimary => Palette.brand.shade400;
+
+  @override
+  Color get borderSuccessTertiary => Palette.success.shade700;
 
   ///
   /// Icon Colors
@@ -511,6 +540,12 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgInactive => gray.shade100;
+
+  @override
+  Color get bgPopover => Palette.white;
+
+  @override
+  Color get bgSuccessTertiary => Palette.success.shade25;
 
   @override
   ColorScheme get materialColors => ColorScheme.light(
