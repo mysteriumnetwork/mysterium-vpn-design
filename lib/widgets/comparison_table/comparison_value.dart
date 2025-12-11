@@ -1,4 +1,4 @@
-part of 'comparison_table.dart';
+part of '../comparison_table.dart';
 
 sealed class ComparisonValue<T> {
   const ComparisonValue(this.value);

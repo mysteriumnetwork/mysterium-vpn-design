@@ -1,4 +1,4 @@
-part of 'comparison_table.dart';
+part of '../comparison_table.dart';
 
 @immutable
 class ComparisonFeature<K> {
