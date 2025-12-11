@@ -19,6 +19,8 @@ class Radius extends material.ThemeExtension<Radius> {
 
   material.Radius get xl => kXl;
 
+  material.Radius get full => const material.Radius.circular(9999);
+
   @override
   material.ThemeExtension<Radius> copyWith() => this;
 
