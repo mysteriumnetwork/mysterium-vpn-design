@@ -37,14 +37,14 @@ class WidgetbookApp extends StatelessWidget {
           themes: [darkTheme, lightTheme],
         ),
         InspectorAddon(),
-        AlignmentAddon(),
         BuilderAddon(
           name: 'Background',
           builder: (context, child) {
             final theme = Theme.of(context);
-            return ColoredBox(color: theme.palette.bgSecondary, child: child);
+            return ColoredBox(color: theme.palette.bgTertiary, child: child);
           },
         ),
+        AlignmentAddon(),
       ],
     );
   }
