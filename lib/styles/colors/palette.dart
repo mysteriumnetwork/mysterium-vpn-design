@@ -226,6 +226,8 @@ abstract class Palette extends ThemeExtension<Palette> {
   ///
   abstract final Color borderPrimary;
   abstract final Color borderSecondary;
+  abstract final Color borderTertiary;
+  abstract final Color borderQuaternary;
   abstract final Color borderBrand;
   abstract final Color borderError;
   abstract final Color borderTabs;
@@ -241,12 +243,14 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color iconTertiary;
   abstract final Color iconWhite;
   abstract final Color iconDisabled;
+  abstract final Color iconBrandSecondary;
 
   ///
   /// Background Colors
   ///
   abstract final Color bgPrimary;
   abstract final Color bgSecondary;
+  abstract final Color bgSecondarySelected;
   abstract final Color bgTertiary;
   abstract final Color bgQuaternary;
   abstract final Color bgBrandPrimary;
@@ -326,6 +330,12 @@ class PaletteDark extends Palette {
   Color get borderSecondary => Palette.grayPurple.shade600;
 
   @override
+  Color get borderTertiary => Palette.grayPurple.shade400;
+
+  @override
+  Color get borderQuaternary => Palette.grayPurple.shade700;
+
+  @override
   Color get borderBrand => Palette.grayPurple.shade400;
 
   @override
@@ -361,6 +371,9 @@ class PaletteDark extends Palette {
   @override
   Color get iconDisabled => Palette.grayLight.shade400;
 
+  @override
+  Color get iconBrandSecondary => Palette.brand.shade400;
+
   ///
   /// Background Colors
   ///
@@ -369,6 +382,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgSecondary => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgSecondarySelected => Palette.brand.shade900;
 
   @override
   Color get bgTertiary => Palette.grayPurple.shade800;
@@ -473,6 +489,12 @@ class PaletteLight extends Palette {
   Color get borderSecondary => Palette.grayPurple.shade200;
 
   @override
+  Color get borderTertiary => Palette.grayPurple.shade400;
+
+  @override
+  Color get borderQuaternary => Palette.grayPurple.shade200;
+
+  @override
   Color get borderBrand => Palette.grayPurple.shade400;
 
   @override
@@ -508,6 +530,9 @@ class PaletteLight extends Palette {
   @override
   Color get iconDisabled => Palette.grayLight.shade400;
 
+  @override
+  Color get iconBrandSecondary => Palette.brand.shade500;
+
   ///
   /// Background Colors
   ///
@@ -516,6 +541,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSecondary => gray.shade100;
+
+  @override
+  Color get bgSecondarySelected => Palette.brand.shade100;
 
   @override
   Color get bgTertiary => Palette.grayPurple.shade25;
