@@ -30,7 +30,7 @@ class Colors extends StatelessWidget {
           ),
           SliverPadding(
             padding: EdgeInsets.only(
-              top: theme.spacing.x3l,
+              top: theme.spacing.xl3,
               bottom: theme.spacing.xl,
             ),
             sliver: const SliverToBoxAdapter(child: Text('Variable colors')),

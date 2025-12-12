@@ -3,55 +3,24 @@ import 'package:flutter/material.dart';
 class Spacing extends ThemeExtension<Spacing> {
   const Spacing();
 
-  //  tokens (pixels)
-  static const double kNone = 0;
-  static const double kXxs = 2;
-  static const double kXs = 4;
-  static const double kMd = 8;
-  static const double kL = 12;
-  static const double kXl = 16;
-  static const double k2xl = 20;
-  static const double k3xl = 24;
-  static const double k4xl = 32;
-  static const double k5xl = 40;
-  static const double k6xl = 48;
-  static const double k7xl = 64;
-  static const double k8xl = 80;
-  static const double k9xl = 96;
-  static const double k10xl = 128;
-  static const double k11xl = 160;
-
-  double get none => kNone;
-
-  double get xxs => kXxs;
-
-  double get xs => kXs;
-
-  double get md => kMd;
-
-  double get l => kL;
-
-  double get xl => kXl;
-
-  double get x2l => k2xl;
-
-  double get x3l => k3xl;
-
-  double get x4l => k4xl;
-
-  double get x5l => k5xl;
-
-  double get x6l => k6xl;
-
-  double get x7l => k7xl;
-
-  double get x8l => k8xl;
-
-  double get x9l => k9xl;
-
-  double get x10l => k10xl;
-
-  double get x11l => k11xl;
+  double get none => 0; // spacing-none
+  double get xxs => 2; // spacing-xxs
+  double get xs => 4; // spacing-xs
+  double get sm => 6; // spacing-xs
+  double get s => 8; // spacing-sm
+  double get lg => 12; // spacing-lg
+  double get ms => 12; // spacing-ms
+  double get md => 16; // spacing-md
+  double get xl => 20; // spacing-xl
+  double get xl2 => 24; // spacing-2xl
+  double get xl3 => 32; // spacing-3xl
+  double get xl4 => 40; // spacing-4xl
+  double get xl5 => 48; // spacing-5xl
+  double get xl6 => 64; // spacing-6xl
+  double get xl7 => 80; // spacing-7xl
+  double get xl8 => 96; // spacing-8xl
+  double get xl9 => 128; // spacing-9xl
+  double get xl10 => 128; // spacing-10xl
 
   @override
   ThemeExtension<Spacing> copyWith() => this;
