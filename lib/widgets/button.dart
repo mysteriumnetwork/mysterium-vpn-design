@@ -136,6 +136,47 @@ class ButtonSecondary extends Button {
       );
 }
 
+class ButtonLink extends Button {
+  const ButtonLink({
+    required super.onPressed,
+    required super.child,
+    super.size,
+    super.leading,
+    super.trailing,
+    super.loading,
+    this.tapTargetSize = MaterialTapTargetSize.padded,
+    super.key,
+  }) : super(variant: ButtonVariant.link);
+
+  final MaterialTapTargetSize tapTargetSize;
+
+  @override
+  Widget build(BuildContext context) => IgnorePointer(
+        ignoring: loading != null,
+        child: TextButton(
+          onPressed: onPressed,
+          style: TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: tapTargetSize,
+            minimumSize: Size.zero,
+            textStyle: switch (size) {
+              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+              _ => null,
+            },
+          ),
+          child: _Child(
+            loading: loading,
+            leading: leading,
+            trailing: trailing,
+            size: size,
+            padding: EdgeInsets.zero,
+            child: child,
+          ),
+        ),
+      );
+}
+
 class _Child extends StatelessWidget {
   const _Child({
     required this.child,
@@ -143,6 +184,7 @@ class _Child extends StatelessWidget {
     required this.trailing,
     required this.loading,
     required this.size,
+    this.padding,
   });
 
   final Widget child;
@@ -151,23 +193,25 @@ class _Child extends StatelessWidget {
   final Widget? trailing;
   final ButtonLoading? loading;
   final ButtonSize size;
+  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: switch (size) {
-          ButtonSize.small => const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-          ButtonSize.medium => const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-          ButtonSize.large => const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-        },
+        padding: padding ??
+            switch (size) {
+              ButtonSize.small => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+              ButtonSize.medium => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+              ButtonSize.large => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+            },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           spacing: switch (size) {
