@@ -1,5 +1,9 @@
+export 'badge.dart';
 export 'button.dart';
-export 'comparison_table/comparison_table.dart';
+export 'comparison_table.dart';
 export 'header.dart';
 export 'logo.dart';
+export 'material_wrapper.dart';
+export 'plan_card.dart';
+export 'plan_card/plan_data.dart';
 export 'radio_button.dart';
