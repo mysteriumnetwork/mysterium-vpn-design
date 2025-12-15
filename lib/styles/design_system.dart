@@ -64,6 +64,18 @@ sealed class DesignSystem {
           textStyle: textStyles.textMd.semibold,
         ),
       ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: palette.textBrandPrimary,
+          disabledForegroundColor: Palette.grayLight.shade400,
+          textStyle: textStyles.textMd.semibold,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(radius.s),
+          ),
+          iconSize: 16,
+          iconColor: palette.textBrandPrimary,
+        ),
+      ),
       tabBarTheme: TabBarThemeData(
         indicatorSize: TabBarIndicatorSize.tab,
         indicatorAnimation: TabIndicatorAnimation.elastic,

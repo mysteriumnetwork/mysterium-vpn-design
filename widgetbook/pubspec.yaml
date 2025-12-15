@@ -23,7 +23,7 @@ dev_dependencies:
   widgetbook_generator: ^3.20.1
 
 dependency_overrides:
-  accessibility_tools: 2.6.0
+  accessibility_tools: 2.8.0
 
 flutter:
   uses-material-design: true

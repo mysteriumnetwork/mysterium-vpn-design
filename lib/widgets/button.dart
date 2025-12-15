@@ -5,7 +5,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 enum ButtonVariant {
   primary,
   secondary,
-  link;
+  tertiary;
 }
 
 enum ButtonSize {
@@ -136,30 +136,30 @@ class ButtonSecondary extends Button {
       );
 }
 
-class ButtonLink extends Button {
-  const ButtonLink({
+class ButtonTertiary extends Button {
+  const ButtonTertiary({
     required super.onPressed,
     required super.child,
     super.size,
     super.leading,
     super.trailing,
     super.loading,
-    this.tapTargetSize = MaterialTapTargetSize.padded,
     super.key,
-  }) : super(variant: ButtonVariant.link);
-
-  final MaterialTapTargetSize tapTargetSize;
+  }) : super(variant: ButtonVariant.tertiary);
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
         ignoring: loading != null,
         child: TextButton(
           onPressed: onPressed,
-          style: TextButton.styleFrom(
+          style: OutlinedButton.styleFrom(
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            tapTargetSize: tapTargetSize,
-            minimumSize: Size.zero,
+            minimumSize: switch (size) {
+              ButtonSize.small => const Size(60, 36),
+              ButtonSize.medium => const Size(60, 40),
+              ButtonSize.large => const Size(60, 44),
+            },
             textStyle: switch (size) {
               ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
               _ => null,
@@ -170,7 +170,6 @@ class ButtonLink extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
-            padding: EdgeInsets.zero,
             child: child,
           ),
         ),
@@ -184,7 +183,6 @@ class _Child extends StatelessWidget {
     required this.trailing,
     required this.loading,
     required this.size,
-    this.padding,
   });
 
   final Widget child;
@@ -193,25 +191,23 @@ class _Child extends StatelessWidget {
   final Widget? trailing;
   final ButtonLoading? loading;
   final ButtonSize size;
-  final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: padding ??
-            switch (size) {
-              ButtonSize.small => const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-              ButtonSize.medium => const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-              ButtonSize.large => const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-            },
+        padding: switch (size) {
+          ButtonSize.small => const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 8,
+            ),
+          ButtonSize.medium => const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 10,
+            ),
+          ButtonSize.large => const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
+        },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           spacing: switch (size) {

@@ -29,6 +29,19 @@ Widget buildSecondaryButton(BuildContext context) => _buildButton(
   ),
 );
 
+@UseCase(name: 'Tertiary', type: Button)
+Widget buildTertiaryButton(BuildContext context) => _buildButton(
+  context,
+  (args) => ButtonTertiary(
+    onPressed: args.isDisabled ? null : () {},
+    size: args.size,
+    loading: args.isLoading ? ButtonLoading(text: args.loadingText) : null,
+    leading: args.showLeading ? const Icon(UntitledUI.plus_circle) : null,
+    trailing: args.showTrailing ? const Icon(UntitledUI.arrow_right) : null,
+    child: Text(args.buttonText),
+  ),
+);
+
 Widget _buildButton(
   BuildContext context,
   Button Function(_ButtonArgs) buttonBuilder,
