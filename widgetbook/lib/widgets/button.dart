@@ -42,20 +42,14 @@ Widget buildTertiaryButton(BuildContext context) => _buildButton(
   ),
 );
 
-Widget _buildButton(
-  BuildContext context,
-  Button Function(_ButtonArgs) buttonBuilder,
-) {
+Widget _buildButton(BuildContext context, Button Function(_ButtonArgs) buttonBuilder) {
   final isDisabled = context.knobs.boolean(label: 'Disabled');
   final isLoading = context.knobs.boolean(label: 'Loading');
   final loadingText = context.knobs.stringOrNull(label: 'Loading text');
 
   final showLeading = context.knobs.boolean(label: 'Show leading');
   final showTrailing = context.knobs.boolean(label: 'Show trailing');
-  final buttonText = context.knobs.string(
-    label: 'Text',
-    initialValue: 'Click me',
-  );
+  final buttonText = context.knobs.string(label: 'Text', initialValue: 'Click me');
   final size = context.knobs.object.dropdown(
     label: 'Size',
     initialOption: ButtonSize.medium,

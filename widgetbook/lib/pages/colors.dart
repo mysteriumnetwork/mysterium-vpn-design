@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart'
-    hide DesignSystem;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide DesignSystem;
 
 class Colors extends StatelessWidget {
   const Colors({super.key});
@@ -29,10 +28,7 @@ class Colors extends StatelessWidget {
             ],
           ),
           SliverPadding(
-            padding: EdgeInsets.only(
-              top: theme.spacing.xl3,
-              bottom: theme.spacing.xl,
-            ),
+            padding: EdgeInsets.only(top: theme.spacing.xl3, bottom: theme.spacing.xl),
             sliver: const SliverToBoxAdapter(child: Text('Variable colors')),
           ),
           const _VariableColors(),
@@ -152,6 +148,5 @@ class _Entry extends StatelessWidget {
 }
 
 extension _ColorExtensions on Color {
-  String get hexValue =>
-      '#${toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
+  String get hexValue => '#${toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
 }

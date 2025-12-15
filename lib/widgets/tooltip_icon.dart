@@ -48,8 +48,7 @@ class TooltipIcon extends StatelessWidget {
     return Tooltip(
       mouseCursor: SystemMouseCursors.click,
       message: message,
-      richMessage:
-          richMessage != null ? TextSpan(children: [richMessage!]) : null,
+      richMessage: richMessage != null ? TextSpan(children: [richMessage!]) : null,
       verticalOffset: (size / 2) + 4,
       child: Icon(
         icon,

@@ -50,10 +50,7 @@ Widget buildPlanCardActions(BuildContext context) {
       label: 'Billing Info',
       initialValue: r'Billed $119.88 annually',
     ),
-    bestValueBadge: context.knobs.stringOrNull(
-      label: 'Best value',
-      initialValue: 'Best Value',
-    ),
+    bestValueBadge: context.knobs.stringOrNull(label: 'Best value', initialValue: 'Best Value'),
     icon: context.knobs.object
         .dropdown(
           label: 'Icon',
@@ -66,14 +63,8 @@ Widget buildPlanCardActions(BuildContext context) {
           labelBuilder: (item) => item.$1,
         )
         .$2,
-    oldPrice: context.knobs.stringOrNull(
-      label: 'Old Price',
-      initialValue: r'$144.99',
-    ),
-    promoBadge: context.knobs.stringOrNull(
-      label: 'Promo Badge',
-      initialValue: '20% OFF',
-    ),
+    oldPrice: context.knobs.stringOrNull(label: 'Old Price', initialValue: r'$144.99'),
+    promoBadge: context.knobs.stringOrNull(label: 'Promo Badge', initialValue: '20% OFF'),
   );
 
   final isSelected = context.knobs.boolean(label: 'Is Selected');

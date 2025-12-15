@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart' hide Typography;
-import 'package:mysterium_vpn_design/mysterium_vpn_design.dart'
-    hide DesignSystem;
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide DesignSystem;
 
 class Typography extends StatelessWidget {
   const Typography({super.key});
@@ -56,9 +55,7 @@ class Typography extends StatelessWidget {
             child: GridView.builder(
               padding: EdgeInsets.all(theme.spacing.xl),
               itemCount: styles.length * 4,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-              ),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
               itemBuilder: (_, index) {
                 final styleCategory = styles.keys.elementAt(index ~/ 4);
                 final styleList = styles[styleCategory]!;
@@ -70,11 +67,7 @@ class Typography extends StatelessWidget {
                   3 => 'Bold',
                   _ => 'Unknown',
                 };
-                return _Entry(
-                  name: styleCategory,
-                  modifier: modifier,
-                  style: style,
-                );
+                return _Entry(name: styleCategory, modifier: modifier, style: style);
               },
             ),
           ),
@@ -85,11 +78,7 @@ class Typography extends StatelessWidget {
 }
 
 class _Entry extends StatelessWidget {
-  const _Entry({
-    required this.name,
-    required this.modifier,
-    required this.style,
-  });
+  const _Entry({required this.name, required this.modifier, required this.style});
 
   final String name;
   final String modifier;

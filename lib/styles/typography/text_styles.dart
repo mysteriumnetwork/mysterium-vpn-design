@@ -5,8 +5,7 @@ import 'package:mysterium_vpn_design/styles/typography/type_scale.dart';
 class TextStyles extends ThemeExtension<TextStyles> {
   const TextStyles({this.color});
 
-  factory TextStyles.of(BuildContext context) =>
-      Theme.of(context).extension<TextStyles>()!;
+  factory TextStyles.of(BuildContext context) => Theme.of(context).extension<TextStyles>()!;
 
   final Color? color;
 

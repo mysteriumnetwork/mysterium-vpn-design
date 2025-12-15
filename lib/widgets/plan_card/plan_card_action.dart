@@ -27,8 +27,7 @@ class _PlanCardAction extends StatelessWidget {
               Flexible(
                 child: Text(
                   text,
-                  style: theme.textStyles.textSm.medium
-                      .copyWith(color: theme.palette.textTertiary),
+                  style: theme.textStyles.textSm.medium.copyWith(color: theme.palette.textTertiary),
                 ),
               ),
               if (icon != null)

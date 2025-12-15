@@ -14,14 +14,8 @@ class WidgetbookApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lightTheme = WidgetbookTheme(
-      name: 'Light',
-      data: DesignSystem.lightTheme,
-    );
-    final darkTheme = WidgetbookTheme(
-      name: 'Dark',
-      data: DesignSystem.darkTheme,
-    );
+    final lightTheme = WidgetbookTheme(name: 'Light', data: DesignSystem.lightTheme);
+    final darkTheme = WidgetbookTheme(name: 'Dark', data: DesignSystem.darkTheme);
     final brightness = View.of(context).platformDispatcher.platformBrightness;
 
     return ScreenTypeObserver(

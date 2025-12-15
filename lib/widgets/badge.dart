@@ -32,8 +32,7 @@ class Badge extends StatelessWidget {
         textHeightBehavior: const TextHeightBehavior(
           applyHeightToFirstAscent: false,
         ),
-        style: _getTextStyle(theme.textStyles)
-            .copyWith(color: _getTextColor(palette)),
+        style: _getTextStyle(theme.textStyles).copyWith(color: _getTextColor(palette)),
       ),
     );
   }

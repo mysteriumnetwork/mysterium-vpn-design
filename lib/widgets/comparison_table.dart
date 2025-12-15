@@ -105,8 +105,7 @@ class _FeatureRow<K> extends TableRow {
                 spacing: 6,
                 children: [
                   Expanded(child: Text(feature.label, style: textStyle)),
-                  if (feature.description != null)
-                    TooltipIcon(message: feature.description!),
+                  if (feature.description != null) TooltipIcon(message: feature.description!),
                 ],
               ),
             ),
@@ -119,9 +118,7 @@ class _FeatureRow<K> extends TableRow {
                         textAlign: TextAlign.center,
                       ),
                     final ComparisonAvailable available => Icon(
-                        available.value
-                            ? UntitledUI.check_circle
-                            : UntitledUI.x_close,
+                        available.value ? UntitledUI.check_circle : UntitledUI.x_close,
                         size: 16,
                         color: available.value ? iconTrueColor : iconFalseColor,
                       ),

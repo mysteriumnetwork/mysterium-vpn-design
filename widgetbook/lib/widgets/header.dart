@@ -21,16 +21,12 @@ Widget buildLabeledHeader(BuildContext context) => _View(
 @UseCase(name: 'Empty', type: Header)
 Widget buildEmptyHeader(BuildContext context) => _View(
   header: Header(actions: _mockActions(context)),
-  canGoBack: context.knobs.boolean(
-    label: 'Has back button',
-    initialValue: true,
-  ),
+  canGoBack: context.knobs.boolean(label: 'Has back button', initialValue: true),
 );
 
 List<Widget>? _mockActions(BuildContext context) {
   final iconKnobs = [
-    if (context.knobs.boolean(label: 'Show support'))
-      UntitledUI.message_question_square,
+    if (context.knobs.boolean(label: 'Show support')) UntitledUI.message_question_square,
     if (context.knobs.boolean(label: 'Show settings')) UntitledUI.settings_01,
   ];
 
@@ -38,9 +34,7 @@ List<Widget>? _mockActions(BuildContext context) {
     return null;
   }
 
-  return iconKnobs
-      .map((icon) => IconButton(onPressed: () {}, icon: Icon(icon)))
-      .toList();
+  return iconKnobs.map((icon) => IconButton(onPressed: () {}, icon: Icon(icon))).toList();
 }
 
 class _View extends StatelessWidget {

@@ -28,8 +28,7 @@ class Logo extends StatelessWidget {
       package: kPackageName,
       width: width,
       height: height,
-      colorFilter:
-          color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
+      colorFilter: color != null ? ColorFilter.mode(color!, BlendMode.srcIn) : null,
     );
   }
 }

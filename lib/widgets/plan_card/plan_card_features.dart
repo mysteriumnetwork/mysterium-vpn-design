@@ -42,8 +42,7 @@ class _Row extends StatelessWidget {
         Expanded(
           child: Text(
             feature,
-            style: theme.textStyles.textSm.regular
-                .copyWith(color: theme.palette.textTertiary),
+            style: theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
           ),
         ),
       ],

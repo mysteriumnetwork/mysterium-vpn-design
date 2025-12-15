@@ -54,8 +54,7 @@ class PlanCard<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final radioGroup =
-        this.radioGroup ?? RadioButton.findGroupState<T>(context);
+    final radioGroup = this.radioGroup ?? RadioButton.findGroupState<T>(context);
     final isSelected = _isSelected(radioGroup);
 
     void handleSelect() {
@@ -96,9 +95,7 @@ class PlanCard<T> extends StatelessWidget {
                 ),
               ),
             ),
-          if (data.icon == null &&
-              mode == PlanCardMode.selectable &&
-              data.promoBadge != null)
+          if (data.icon == null && mode == PlanCardMode.selectable && data.promoBadge != null)
             const SizedBox(height: 12),
           ClipRRect(
             child: Row(

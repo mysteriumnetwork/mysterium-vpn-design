@@ -5,8 +5,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 abstract class Palette extends ThemeExtension<Palette> {
   const Palette();
 
-  factory Palette.of(BuildContext context) =>
-      Theme.of(context).extension<Palette>()!;
+  factory Palette.of(BuildContext context) => Theme.of(context).extension<Palette>()!;
 
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
@@ -486,8 +485,7 @@ class PaletteDark extends Palette {
   Color get shadow3xl02 => Palette.transparent;
 
   @override
-  Color get shadowSkeuomorphicInner =>
-      Palette.grayDark.shade950.withValues(alpha: .05);
+  Color get shadowSkeuomorphicInner => Palette.grayDark.shade950.withValues(alpha: .05);
 
   @override
   Color get shadowSkeuomorphicOuter => Palette.grayDark.withValues(alpha: .18);

@@ -36,9 +36,8 @@ class _PlanContainer extends StatelessWidget {
               color: theme.palette.bgPopover,
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: isHighlighted
-                    ? theme.palette.borderBrandPrimary
-                    : theme.palette.borderPrimary,
+                color:
+                    isHighlighted ? theme.palette.borderBrandPrimary : theme.palette.borderPrimary,
                 strokeAlign: BorderSide.strokeAlignOutside,
                 width: isHighlighted ? 3 : 1,
               ),

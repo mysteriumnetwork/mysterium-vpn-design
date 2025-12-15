@@ -28,6 +28,5 @@ class TypeScale {
   }
 
   @override
-  int get hashCode =>
-      regular.hashCode ^ medium.hashCode ^ semibold.hashCode ^ bold.hashCode;
+  int get hashCode => regular.hashCode ^ medium.hashCode ^ semibold.hashCode ^ bold.hashCode;
 }

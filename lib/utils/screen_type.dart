@@ -64,8 +64,7 @@ class _ScreenTypeScope extends InheritedNotifier<ValueNotifier<ScreenType>> {
   });
 
   static ValueNotifier<ScreenType>? maybeOf(BuildContext context) {
-    final scope =
-        context.dependOnInheritedWidgetOfExactType<_ScreenTypeScope>();
+    final scope = context.dependOnInheritedWidgetOfExactType<_ScreenTypeScope>();
     return scope?.notifier;
   }
 }
@@ -79,8 +78,7 @@ class ScreenTypeObserver extends StatefulWidget {
   State<ScreenTypeObserver> createState() => _ScreenTypeProviderState();
 }
 
-class _ScreenTypeProviderState extends State<ScreenTypeObserver>
-    with WidgetsBindingObserver {
+class _ScreenTypeProviderState extends State<ScreenTypeObserver> with WidgetsBindingObserver {
   late final ValueNotifier<ScreenType> notifier;
 
   @override
@@ -107,6 +105,5 @@ class _ScreenTypeProviderState extends State<ScreenTypeObserver>
   }
 
   @override
-  Widget build(BuildContext context) =>
-      _ScreenTypeScope(notifier: notifier, child: widget.child);
+  Widget build(BuildContext context) => _ScreenTypeScope(notifier: notifier, child: widget.child);
 }
