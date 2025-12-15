@@ -11,8 +11,8 @@ dependencies:
     sdk: flutter
   mysterium_vpn_design:
     path: ../
-  widgetbook: ^3.19.0
-  widgetbook_annotation: ^3.8.0
+  widgetbook: ^3.20.2
+  widgetbook_annotation: ^3.9.0
 
 
 dev_dependencies:
@@ -20,7 +20,10 @@ dev_dependencies:
   flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  widgetbook_generator: ^3.19.0
+  widgetbook_generator: ^3.20.1
+
+dependency_overrides:
+  accessibility_tools: 2.6.0
 
 flutter:
   uses-material-design: true

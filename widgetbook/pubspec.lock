@@ -10,13 +10,13 @@ packages:
     source: hosted
     version: "91.0.0"
   accessibility_tools:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: accessibility_tools
-      sha256: "088cfe6d3520dbe86bb5259059c0d5f478fe113e09311023b0485e68879b34b2"
+      sha256: aaa782bf794d823f371f45d232efe8605cffe081c34a1d83fe4db491ddbba0c7
       url: "https://pub.dev"
     source: hosted
-    version: "2.7.1"
+    version: "2.6.0"
   analyzer:
     dependency: transitive
     description:
@@ -380,10 +380,10 @@ packages:
     dependency: transitive
     description:
       name: meta
-      sha256: e3641ec5d63ebf0d9b41bd43201a66e3fc79a65db5f61fc181f04cd27aab950c
+      sha256: "23f08335362185a5ea2ad3a4e597f1375e78bce8a040df5c600c8d3552ef2394"
       url: "https://pub.dev"
     source: hosted
-    version: "1.16.0"
+    version: "1.17.0"
   mime:
     dependency: transitive
     description:
@@ -624,10 +624,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: "522f00f556e73044315fa4585ec3270f1808a4b186c936e612cab0b565ff1e00"
+      sha256: ab2726c1a94d3176a45960b6234466ec367179b87dd74f1611adb1f3b5fb9d55
       url: "https://pub.dev"
     source: hosted
-    version: "0.7.6"
+    version: "0.7.7"
   typed_data:
     dependency: transitive
     description:
@@ -776,26 +776,26 @@ packages:
     dependency: "direct main"
     description:
       name: widgetbook
-      sha256: "877a843650117d214d8874b662b3a04bd6988aad33208d26dbe31edbc7d68e78"
+      sha256: "0ffadb039b1811870b2f643e1730d419d38435b0e1931cc83f32ecd7e50200e4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.19.0"
+    version: "3.20.2"
   widgetbook_annotation:
     dependency: "direct main"
     description:
       name: widgetbook_annotation
-      sha256: "67b922ebc5d7d9578d4a2d9b7ec6f955fc2ac06aac9d335995e6da255a3825b5"
+      sha256: "55504431b15eedef3c1fc4af2d108ac98b32610b59d4a4e2eea87a8515d17eef"
       url: "https://pub.dev"
     source: hosted
-    version: "3.8.0"
+    version: "3.9.0"
   widgetbook_generator:
     dependency: "direct dev"
     description:
       name: widgetbook_generator
-      sha256: e8966eaa07a2f8860b64b5a2039f719da2678ebffdae067a758c59d1e8bf3969
+      sha256: d4fd5989abeac63825746e52e4497b3bac7c59dff3565c261040b07581d22f8e
       url: "https://pub.dev"
     source: hosted
-    version: "3.19.0"
+    version: "3.20.1"
   xdg_directories:
     dependency: transitive
     description:
