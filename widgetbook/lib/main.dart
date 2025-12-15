@@ -24,28 +24,30 @@ class WidgetbookApp extends StatelessWidget {
     );
     final brightness = View.of(context).platformDispatcher.platformBrightness;
 
-    return Widgetbook.material(
-      directories: directories,
-      lightTheme: lightTheme.data,
-      darkTheme: darkTheme.data,
-      addons: [
-        MaterialThemeAddon(
-          initialTheme: switch (brightness) {
-            Brightness.dark => darkTheme,
-            Brightness.light => lightTheme,
-          },
-          themes: [darkTheme, lightTheme],
-        ),
-        InspectorAddon(),
-        BuilderAddon(
-          name: 'Background',
-          builder: (context, child) {
-            final theme = Theme.of(context);
-            return ColoredBox(color: theme.palette.bgTertiary, child: child);
-          },
-        ),
-        AlignmentAddon(),
-      ],
+    return ScreenTypeObserver(
+      child: Widgetbook.material(
+        directories: directories,
+        lightTheme: lightTheme.data,
+        darkTheme: darkTheme.data,
+        addons: [
+          MaterialThemeAddon(
+            initialTheme: switch (brightness) {
+              Brightness.dark => darkTheme,
+              Brightness.light => lightTheme,
+            },
+            themes: [darkTheme, lightTheme],
+          ),
+          InspectorAddon(),
+          BuilderAddon(
+            name: 'Background',
+            builder: (context, child) {
+              final theme = Theme.of(context);
+              return ColoredBox(color: theme.palette.bgTertiary, child: child);
+            },
+          ),
+          AlignmentAddon(),
+        ],
+      ),
     );
   }
 }
