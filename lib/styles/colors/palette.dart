@@ -262,6 +262,27 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgPopover;
   abstract final Color bgSuccessTertiary;
 
+  ///
+  /// Shadow Colors
+  ///
+  abstract final Color shadowXs;
+  abstract final Color shadowSm01;
+  abstract final Color shadowSm02;
+  abstract final Color shadowMd01;
+  abstract final Color shadowMd02;
+  abstract final Color shadowLg01;
+  abstract final Color shadowLg02;
+  abstract final Color shadowLg03;
+  abstract final Color shadowXl01;
+  abstract final Color shadowXl02;
+  abstract final Color shadowXl03;
+  abstract final Color shadow2xl01;
+  abstract final Color shadow2xl02;
+  abstract final Color shadow3xl01;
+  abstract final Color shadow3xl02;
+  abstract final Color shadowSkeuomorphicInner;
+  abstract final Color shadowSkeuomorphicOuter;
+
   abstract final ColorScheme materialColors;
 
   @override
@@ -415,6 +436,61 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgSuccessTertiary => Palette.success.shade800;
+
+  ///
+  ///  Shadow Colors
+  ///
+  @override
+  Color get shadowXs => Palette.transparent;
+
+  @override
+  Color get shadowSm01 => Palette.transparent;
+
+  @override
+  Color get shadowSm02 => Palette.transparent;
+
+  @override
+  Color get shadowMd01 => Palette.transparent;
+
+  @override
+  Color get shadowMd02 => Palette.transparent;
+
+  @override
+  Color get shadowLg01 => Palette.transparent;
+
+  @override
+  Color get shadowLg02 => Palette.transparent;
+
+  @override
+  Color get shadowLg03 => Palette.transparent;
+
+  @override
+  Color get shadowXl01 => Palette.transparent;
+
+  @override
+  Color get shadowXl02 => Palette.transparent;
+
+  @override
+  Color get shadowXl03 => Palette.transparent;
+
+  @override
+  Color get shadow2xl01 => Palette.transparent;
+
+  @override
+  Color get shadow2xl02 => Palette.transparent;
+
+  @override
+  Color get shadow3xl01 => Palette.transparent;
+
+  @override
+  Color get shadow3xl02 => Palette.transparent;
+
+  @override
+  Color get shadowSkeuomorphicInner =>
+      Palette.grayDark.shade950.withValues(alpha: .05);
+
+  @override
+  Color get shadowSkeuomorphicOuter => Palette.grayDark.withValues(alpha: .18);
 
   @override
   ColorScheme get materialColors => ColorScheme.dark(
@@ -574,6 +650,64 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSuccessTertiary => Palette.success.shade25;
+
+  ///
+  /// Shadow Colors
+  ///
+  @override
+  Color get shadowXs => Palette.grayLight.shade950.withValues(alpha: 0.05);
+
+  @override
+  Color get shadowSm01 => Palette.grayLight.shade950.withValues(alpha: 0.10);
+
+  @override
+  Color get shadowSm02 => Palette.grayLight.shade950.withValues(alpha: 0.10);
+
+  @override
+  Color get shadowMd01 => Palette.grayLight.shade950.withValues(alpha: 0.10);
+
+  @override
+  Color get shadowMd02 => Palette.grayLight.shade950.withValues(alpha: 0.06);
+
+  @override
+  Color get shadowLg01 => Palette.grayLight.shade950.withValues(alpha: 0.08);
+
+  @override
+  Color get shadowLg02 => Palette.grayLight.shade950.withValues(alpha: 0.03);
+
+  @override
+  Color get shadowLg03 => Palette.grayLight.shade950.withValues(alpha: 0.04);
+
+  @override
+  Color get shadowXl01 => Palette.grayLight.shade950.withValues(alpha: 0.08);
+
+  @override
+  Color get shadowXl02 => Palette.grayLight.shade950.withValues(alpha: 0.03);
+
+  @override
+  Color get shadowXl03 => Palette.grayLight.shade950.withValues(alpha: 0.04);
+
+  @override
+  Color get shadow2xl01 => Palette.grayLight.shade950.withValues(alpha: 0.18);
+
+  @override
+  Color get shadow2xl02 => Palette.grayLight.shade950.withValues(alpha: 0.04);
+
+  @override
+  Color get shadow3xl01 => Palette.grayLight.shade950.withValues(alpha: 0.14);
+
+  @override
+  Color get shadow3xl02 => Palette.grayLight.shade950.withValues(alpha: 0.04);
+
+  @override
+  Color get shadowSkeuomorphicInner => Palette.grayLight.shade950.withValues(
+        alpha: 0.05,
+      );
+
+  @override
+  Color get shadowSkeuomorphicOuter => Palette.grayLight.shade950.withValues(
+        alpha: 0.18,
+      );
 
   @override
   ColorScheme get materialColors => ColorScheme.light(
