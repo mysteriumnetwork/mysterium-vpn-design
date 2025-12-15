@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart' hide Badge;
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
-import 'package:mysterium_vpn_design/widgets/spans/character_span.dart';
 
 part 'plan_card/plan_best_value_banner.dart';
+
 part 'plan_card/plan_card_action.dart';
+
 part 'plan_card/plan_card_features.dart';
+
 part 'plan_card/plan_container.dart';
 
 enum PlanCardMode {

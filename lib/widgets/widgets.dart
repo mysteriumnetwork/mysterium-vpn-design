@@ -8,3 +8,4 @@ export 'modals/modals.dart';
 export 'plan_card.dart';
 export 'plan_card/plan_data.dart';
 export 'radio_button.dart';
+export 'spans/spans.dart';
