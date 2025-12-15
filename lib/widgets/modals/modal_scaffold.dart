@@ -11,28 +11,38 @@ class ModalScaffold extends StatelessWidget {
     required this.body,
     this.appbar = const ModalHeader(),
     this.autoApplyPadding = true,
+    this.footer,
     super.key,
   });
 
   final PreferredSizeWidget? appbar;
   final Widget body;
+  final Widget? footer;
   final bool autoApplyPadding;
 
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: appbar,
         body: _Gradient(
-          child: ModalPadding(
-            add: appbar is ModalHeader
-                ? EdgeInsets.only(top: appbar!.preferredSize.height)
-                : EdgeInsets.zero,
-            child: body,
+          child: Builder(
+            builder: (context) {
+              if (autoApplyPadding) {
+                return ModalPadding(
+                  add: appbar is ModalHeader
+                      ? EdgeInsets.only(top: appbar!.preferredSize.height)
+                      : EdgeInsets.zero,
+                  child: body,
+                );
+              }
+              return body;
+            },
           ),
         ),
         backgroundColor: Theme.of(context).palette.bgPopover,
         extendBodyBehindAppBar: true,
         primary: false,
         resizeToAvoidBottomInset: false,
+        bottomNavigationBar: footer,
       );
 }
 
