@@ -20,8 +20,13 @@ class _PlanContainer extends StatelessWidget {
     final promoBadge = data.promoBadge;
 
     return MaterialWrapper(
-      child: InkWell(
-        onTap: onTap,
+      child: RawMaterialButton(
+        fillColor: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        onPressed: onTap,
         child: Stack(
           fit: StackFit.passthrough,
           children: [
