@@ -6,7 +6,7 @@ import 'package:widgetbook_workspace/widgetbook_utils.dart';
 
 @UseCase(name: 'Features', type: PlanCard)
 Widget buildPlanCardFeatures(BuildContext context) {
-  final (data, isSelected, mode, icon) = _getArgs(context);
+  final (data, isSelected, mode) = _getArgs(context);
 
   return RadioGroup(
     onChanged: (_) {},
@@ -27,7 +27,7 @@ Widget buildPlanCardFeatures(BuildContext context) {
 
 @UseCase(name: 'Actions', type: PlanCard)
 Widget buildPlanCardActions(BuildContext context) {
-  final (data, isSelected, mode, icon) = _getArgs(context);
+  final (data, isSelected, mode) = _getArgs(context);
   return RadioGroup(
     onChanged: (_) {},
     groupValue: true,
@@ -42,7 +42,7 @@ Widget buildPlanCardActions(BuildContext context) {
   );
 }
 
-(PlanData, bool, PlanCardMode, IconData?) _getArgs(BuildContext context) {
+(PlanData, bool, PlanCardMode) _getArgs(BuildContext context) {
   final data = PlanData(
     name: context.knobs.string(label: 'Plan Name', initialValue: 'Plus'),
     price: context.knobs.string(label: 'Price', initialValue: r'$9.99'),
@@ -63,11 +63,5 @@ Widget buildPlanCardActions(BuildContext context) {
     labelBuilder: (mode) => mode.name,
   );
 
-  final icon = context.knobs.object.dropdown(
-    label: 'Icon',
-    options: [null, ...WidgetbookUtils.namedIcons.values],
-    labelBuilder: (item) => item == null ? 'None' : WidgetbookUtils.iconName(item),
-  );
-
-  return (data, isSelected, mode, icon);
+  return (data, isSelected, mode);
 }
