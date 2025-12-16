@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
+import 'package:widgetbook_workspace/widgetbook_utils.dart';
 
 @UseCase(name: 'Features', type: PlanCard)
 Widget buildPlanCardFeatures(BuildContext context) {
@@ -51,18 +52,11 @@ Widget buildPlanCardActions(BuildContext context) {
       initialValue: r'Billed $119.88 annually',
     ),
     bestValueBadge: context.knobs.stringOrNull(label: 'Best value', initialValue: 'Best Value'),
-    icon: context.knobs.object
-        .dropdown(
-          label: 'Icon',
-          options: [
-            ('None', null),
-            ('stars_02', UntitledUI.stars_02),
-            ('star_01', UntitledUI.star_01),
-            ('stars_03', UntitledUI.stars_03),
-          ],
-          labelBuilder: (item) => item.$1,
-        )
-        .$2,
+    icon: context.knobs.object.dropdown(
+      label: 'Icon',
+      options: [null, ...WidgetbookUtils.namedIcons.values],
+      labelBuilder: (item) => item == null ? 'None' : WidgetbookUtils.iconName(item),
+    ),
     oldPrice: context.knobs.stringOrNull(label: 'Old Price', initialValue: r'$144.99'),
     promoBadge: context.knobs.stringOrNull(label: 'Promo Badge', initialValue: '20% OFF'),
   );
