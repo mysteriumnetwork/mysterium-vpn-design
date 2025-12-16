@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
-import 'package:widgetbook_workspace/widgetbook_utils.dart';
 
 @UseCase(name: 'Features', type: PlanCard)
 Widget buildPlanCardFeatures(BuildContext context) {

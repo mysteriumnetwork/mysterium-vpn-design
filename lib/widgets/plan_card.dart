@@ -99,8 +99,7 @@ class PlanCard<T> extends StatelessWidget {
                 ),
               ),
             ),
-          if (icon == null && mode == PlanCardMode.selectable && data.promoBadge != null)
-            const SizedBox(height: 12),
+          if (icon == null && mode == PlanCardMode.selectable) const SizedBox(height: 12),
           ClipRRect(
             child: Row(
               children: [
