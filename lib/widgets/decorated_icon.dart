@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 class DecoratedIcon extends StatelessWidget {
   const DecoratedIcon({
@@ -29,8 +30,8 @@ class DecoratedIcon extends StatelessWidget {
 class IconDecoration {
   const IconDecoration({
     this.iconSize = 16,
-    this.iconColor,
-    this.backgroundColor,
+    this.iconColor = Palette.brand,
+    this.backgroundColor = Palette.white,
     this.padding,
     this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   });
