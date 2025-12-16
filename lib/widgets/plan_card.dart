@@ -18,6 +18,7 @@ enum PlanCardMode {
 class PlanCard<T> extends StatelessWidget {
   const PlanCard({
     required this.data,
+    this.icon,
     this.footer,
     this.radioGroup,
     this.value,
@@ -28,6 +29,7 @@ class PlanCard<T> extends StatelessWidget {
   PlanCard.features({
     required this.data,
     required List<String> features,
+    this.icon,
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
@@ -38,14 +40,16 @@ class PlanCard<T> extends StatelessWidget {
     required this.data,
     required VoidCallback onPressed,
     required String text,
-    IconData? icon,
+    IconData? actionIcon,
+    this.icon,
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
     super.key,
-  }) : footer = _PlanCardAction(onPressed: onPressed, text: text, icon: icon);
+  }) : footer = _PlanCardAction(onPressed: onPressed, text: text, icon: actionIcon);
 
   final PlanData data;
+  final IconData? icon;
   final PlanCardMode mode;
   final Widget? footer;
   final RadioGroupRegistry<T>? radioGroup;
@@ -77,7 +81,7 @@ class PlanCard<T> extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         spacing: theme.spacing.s,
         children: [
-          if (data.icon != null)
+          if (icon != null)
             Align(
               alignment: Alignment.centerLeft,
               child: DecoratedBox(
@@ -88,14 +92,14 @@ class PlanCard<T> extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: Icon(
-                    data.icon,
+                    icon,
                     size: 16,
                     color: theme.palette.iconBrandSecondary,
                   ),
                 ),
               ),
             ),
-          if (data.icon == null && mode == PlanCardMode.selectable && data.promoBadge != null)
+          if (icon == null && mode == PlanCardMode.selectable && data.promoBadge != null)
             const SizedBox(height: 12),
           ClipRRect(
             child: Row(

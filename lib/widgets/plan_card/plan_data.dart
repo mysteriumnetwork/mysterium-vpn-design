@@ -10,7 +10,6 @@ class PlanData {
     this.oldPrice,
     this.promoBadge,
     this.bestValueBadge,
-    this.icon,
   });
 
   final String name;
@@ -21,7 +20,6 @@ class PlanData {
   final String? oldPrice;
   final String? promoBadge;
   final String? bestValueBadge;
-  final IconData? icon;
 
   @override
   bool operator ==(Object other) {
@@ -36,8 +34,7 @@ class PlanData {
         other.billingInfo == billingInfo &&
         other.oldPrice == oldPrice &&
         other.promoBadge == promoBadge &&
-        other.bestValueBadge == bestValueBadge &&
-        other.icon == icon;
+        other.bestValueBadge == bestValueBadge;
   }
 
   @override
@@ -49,10 +46,9 @@ class PlanData {
         oldPrice,
         promoBadge,
         bestValueBadge,
-        icon,
       );
 
   @override
   String toString() =>
-      'PlanData(name: $name, price: $price, period: $period, billingInfo: $billingInfo, oldPrice: $oldPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge, icon: $icon)';
+      'PlanData(name: $name, price: $price, period: $period, billingInfo: $billingInfo, oldPrice: $oldPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge)';
 }
