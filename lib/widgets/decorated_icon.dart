@@ -32,7 +32,7 @@ class IconDecoration {
     this.iconSize = 16,
     this.iconColor = Palette.brand,
     this.backgroundColor = Palette.white,
-    this.padding,
+    this.padding = const EdgeInsets.all(12),
     this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   });
 
