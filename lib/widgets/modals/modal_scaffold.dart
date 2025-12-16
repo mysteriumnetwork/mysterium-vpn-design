@@ -3,13 +3,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/modals/modal_header.dart';
+import 'package:mysterium_vpn_design/widgets/modals/modal_appbar.dart';
 import 'package:mysterium_vpn_design/widgets/modals/modal_padding.dart';
 
 class ModalScaffold extends StatelessWidget {
   const ModalScaffold({
     required this.body,
-    this.appbar = const ModalHeader(),
+    this.appbar = const ModalAppbar(),
     this.autoApplyPadding = true,
     this.footer,
     super.key,
@@ -28,7 +28,7 @@ class ModalScaffold extends StatelessWidget {
             builder: (context) {
               if (autoApplyPadding) {
                 return ModalPadding(
-                  add: appbar is ModalHeader
+                  add: appbar is ModalAppbar
                       ? EdgeInsets.only(top: appbar!.preferredSize.height)
                       : EdgeInsets.zero,
                   child: body,
