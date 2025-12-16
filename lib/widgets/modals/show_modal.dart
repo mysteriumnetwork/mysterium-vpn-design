@@ -12,9 +12,22 @@ FutureOr<T?> showModal<T>(
     await showDialog<T>(
       context: context,
       barrierDismissible: allowDismiss,
-      builder: (ctx) => _AdaptiveModal(
-        screenType: screenType,
-        child: builder(ctx),
+      builder: (ctx) => Builder(
+        builder: (context) {
+          final theme = Theme.of(context);
+          return Theme(
+            data: theme.isDesignSystem
+                ? theme
+                : switch (theme.brightness) {
+                    Brightness.dark => DesignSystem.darkTheme,
+                    Brightness.light => DesignSystem.lightTheme,
+                  },
+            child: _AdaptiveModal(
+              screenType: screenType,
+              child: builder(ctx),
+            ),
+          );
+        },
       ),
     );
 
