@@ -35,7 +35,7 @@ class ButtonLoading {
   int get hashCode => text.hashCode;
 }
 
-abstract class Button extends StatelessWidget {
+sealed class Button extends StatelessWidget {
   const Button({
     required this.onPressed,
     required this.variant,
