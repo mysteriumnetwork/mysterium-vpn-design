@@ -44,6 +44,7 @@ sealed class Button extends StatelessWidget {
     this.trailing,
     this.loading,
     this.size = ButtonSize.medium,
+    this.decoration = const ButtonDecoration(),
     super.key,
   });
 
@@ -54,6 +55,59 @@ sealed class Button extends StatelessWidget {
   final Widget? leading;
   final Widget? trailing;
   final ButtonLoading? loading;
+  final ButtonDecoration decoration;
+}
+
+@immutable
+class ButtonDecoration {
+  const ButtonDecoration({
+    this.decorationColor,
+    this.foregroundColor,
+    this.textStyle,
+    this.minimumSize,
+  });
+
+  final Color? decorationColor;
+  final Color? foregroundColor;
+  final TextStyle? textStyle;
+  final Size? minimumSize;
+
+  @override
+  String toString() =>
+      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, textStyle: $textStyle, minimumSize: $minimumSize)';
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+    return other is ButtonDecoration &&
+        other.decorationColor == decorationColor &&
+        other.foregroundColor == foregroundColor &&
+        other.textStyle == textStyle &&
+        other.minimumSize == minimumSize;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        decorationColor,
+        foregroundColor,
+        textStyle,
+        minimumSize,
+      );
+
+  ButtonDecoration copyWith({
+    Color? decorationColor,
+    Color? foregroundColor,
+    TextStyle? textStyle,
+    Size? minimumSize,
+  }) =>
+      ButtonDecoration(
+        decorationColor: decorationColor ?? this.decorationColor,
+        foregroundColor: foregroundColor ?? this.foregroundColor,
+        textStyle: textStyle ?? this.textStyle,
+        minimumSize: minimumSize ?? this.minimumSize,
+      );
 }
 
 class ButtonPrimary extends Button {
@@ -64,6 +118,7 @@ class ButtonPrimary extends Button {
     super.leading,
     super.trailing,
     super.loading,
+    super.decoration,
     super.key,
   }) : super(variant: ButtonVariant.primary);
 
@@ -75,15 +130,20 @@ class ButtonPrimary extends Button {
           style: FilledButton.styleFrom(
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            minimumSize: switch (size) {
-              ButtonSize.small => const Size(60, 36),
-              ButtonSize.medium => const Size(60, 40),
-              ButtonSize.large => const Size(60, 44),
-            },
-            textStyle: switch (size) {
-              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-              _ => null,
-            },
+            backgroundColor: decoration.decorationColor,
+            foregroundColor: decoration.foregroundColor,
+            iconColor: decoration.foregroundColor,
+            minimumSize: decoration.minimumSize ??
+                switch (size) {
+                  ButtonSize.small => const Size(60, 36),
+                  ButtonSize.medium => const Size(60, 40),
+                  ButtonSize.large => const Size(60, 44),
+                },
+            textStyle: decoration.textStyle ??
+                switch (size) {
+                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+                  _ => null,
+                },
           ),
           child: _Child(
             loading: loading,
@@ -104,6 +164,7 @@ class ButtonSecondary extends Button {
     super.leading,
     super.trailing,
     super.loading,
+    super.decoration,
     super.key,
   }) : super(variant: ButtonVariant.secondary);
 
@@ -115,15 +176,20 @@ class ButtonSecondary extends Button {
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            minimumSize: switch (size) {
-              ButtonSize.small => const Size(60, 36),
-              ButtonSize.medium => const Size(60, 40),
-              ButtonSize.large => const Size(60, 44),
-            },
-            textStyle: switch (size) {
-              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-              _ => null,
-            },
+            backgroundColor: decoration.decorationColor,
+            foregroundColor: decoration.foregroundColor,
+            iconColor: decoration.foregroundColor,
+            minimumSize: decoration.minimumSize ??
+                switch (size) {
+                  ButtonSize.small => const Size(60, 36),
+                  ButtonSize.medium => const Size(60, 40),
+                  ButtonSize.large => const Size(60, 44),
+                },
+            textStyle: decoration.textStyle ??
+                switch (size) {
+                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+                  _ => null,
+                },
           ),
           child: _Child(
             loading: loading,
@@ -144,6 +210,7 @@ class ButtonTertiary extends Button {
     super.leading,
     super.trailing,
     super.loading,
+    super.decoration,
     super.key,
   }) : super(variant: ButtonVariant.tertiary);
 
@@ -155,15 +222,20 @@ class ButtonTertiary extends Button {
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
-            minimumSize: switch (size) {
-              ButtonSize.small => const Size(60, 36),
-              ButtonSize.medium => const Size(60, 40),
-              ButtonSize.large => const Size(60, 44),
-            },
-            textStyle: switch (size) {
-              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-              _ => null,
-            },
+            backgroundColor: decoration.decorationColor,
+            foregroundColor: decoration.foregroundColor,
+            iconColor: decoration.foregroundColor,
+            minimumSize: decoration.minimumSize ??
+                switch (size) {
+                  ButtonSize.small => const Size(60, 36),
+                  ButtonSize.medium => const Size(60, 40),
+                  ButtonSize.large => const Size(60, 44),
+                },
+            textStyle: decoration.textStyle ??
+                switch (size) {
+                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+                  _ => null,
+                },
           ),
           child: _Child(
             loading: loading,
