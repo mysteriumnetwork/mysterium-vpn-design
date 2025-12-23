@@ -8,10 +8,12 @@ FutureOr<T?> showModal<T>(
   required WidgetBuilder builder,
   ScreenType? screenType,
   bool allowDismiss = true,
+  bool useSafeArea = false,
 }) async =>
     await showDialog<T>(
       context: context,
       barrierDismissible: allowDismiss,
+      useSafeArea: useSafeArea,
       builder: (ctx) => Builder(
         builder: (context) {
           final theme = Theme.of(context);
