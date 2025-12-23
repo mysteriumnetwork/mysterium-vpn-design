@@ -24,25 +24,33 @@ class ModalScaffold extends StatelessWidget {
   Widget build(BuildContext context) => Scaffold(
         appBar: appbar,
         body: _Gradient(
-          child: Builder(
-            builder: (context) {
-              if (autoApplyPadding) {
-                return ModalPadding(
-                  add: appbar is ModalAppbar
-                      ? EdgeInsets.only(top: appbar!.preferredSize.height)
-                      : EdgeInsets.zero,
-                  child: body,
-                );
-              }
-              return body;
-            },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                flex: footer == null ? 0 : 1,
+                child: Builder(
+                  builder: (context) {
+                    if (autoApplyPadding) {
+                      return ModalPadding(
+                        add: appbar is ModalAppbar
+                            ? EdgeInsets.only(top: appbar!.preferredSize.height)
+                            : EdgeInsets.zero,
+                        child: body,
+                      );
+                    }
+                    return body;
+                  },
+                ),
+              ),
+              if (footer != null) footer!,
+            ],
           ),
         ),
         backgroundColor: Theme.of(context).palette.bgPopover,
         extendBodyBehindAppBar: true,
         primary: false,
         resizeToAvoidBottomInset: false,
-        bottomNavigationBar: footer,
       );
 }
 
