@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:ui';
 
 import 'package:collection/collection.dart';
 import 'package:flutter/widgets.dart';
@@ -41,6 +42,23 @@ enum ScreenType implements Comparable<ScreenType> {
           (type) => deviceWidth >= type.breakpoint,
           orElse: () => ScreenType.mobile,
         );
+  }
+
+  static FlutterView? flutterView([BuildContext? context]) {
+    if (context != null) {
+      final view = View.maybeOf(context);
+      if (view != null) {
+        return view;
+      }
+    }
+    final dispatcher = WidgetsBinding.instance.platformDispatcher;
+    try {
+      return dispatcher.implicitView;
+    } catch (e, stack) {
+      log('Error getting implicitView', error: e, stackTrace: stack);
+    }
+
+    return dispatcher.views.firstOrNull;
   }
 
   final double breakpoint;

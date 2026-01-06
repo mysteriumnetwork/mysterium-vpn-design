@@ -3,8 +3,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/modals/modal_appbar.dart';
-import 'package:mysterium_vpn_design/widgets/modals/modal_padding.dart';
 
 class ModalScaffold extends StatelessWidget {
   const ModalScaffold({
