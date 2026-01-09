@@ -59,7 +59,7 @@ class PromoBar extends StatelessWidget {
               top: 0,
               child: IconButton(
                 onPressed: onTap,
-                icon: Icon(actionIcon),
+                icon: Icon(actionIcon, color: Palette.grayLight.shade800),
               ),
             ),
         ],
