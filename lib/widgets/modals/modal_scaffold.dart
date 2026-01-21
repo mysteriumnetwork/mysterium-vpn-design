@@ -7,9 +7,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 class ModalScaffold extends StatelessWidget {
   const ModalScaffold({
     required this.body,
-    this.appbar = const ModalAppbar(),
+    this.appbar,
     this.autoApplyPadding = true,
     this.footer,
+    this.onModalClose,
     super.key,
   });
 
@@ -17,10 +18,11 @@ class ModalScaffold extends StatelessWidget {
   final Widget body;
   final Widget? footer;
   final bool autoApplyPadding;
+  final VoidCallback? onModalClose;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: appbar,
+        appBar: appbar ?? ModalAppbar(onModalClose: onModalClose),
         body: _Gradient(
           child: Builder(
             builder: (context) {
