@@ -65,15 +65,17 @@ Widget _buildButton(BuildContext context, Button Function(_ButtonArgs) buttonBui
     showTrailing: showTrailing,
     buttonText: buttonText,
     size: size,
+    // ignore: require_trailing_commas
   ));
 }
 
-typedef _ButtonArgs = ({
-  bool isDisabled,
-  bool isLoading,
-  String? loadingText,
-  bool showLeading,
-  bool showTrailing,
-  String buttonText,
-  ButtonSize size,
-});
+typedef _ButtonArgs =
+    ({
+      bool isDisabled,
+      bool isLoading,
+      String? loadingText,
+      bool showLeading,
+      bool showTrailing,
+      String buttonText,
+      ButtonSize size,
+    });

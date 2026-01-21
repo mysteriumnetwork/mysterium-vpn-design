@@ -47,6 +47,8 @@ class PromoBar extends StatelessWidget {
                       color: Palette.grayLight.shade800,
                     ),
                     textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
               ],

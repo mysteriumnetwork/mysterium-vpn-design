@@ -5,11 +5,13 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
   const ModalAppbar({
     this.title,
     this.actions,
+    this.onModalClose,
     super.key,
   });
 
   final String? title;
   final List<Widget>? actions;
+  final VoidCallback? onModalClose;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,7 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
       actionsPadding: EdgeInsets.symmetric(horizontal: theme.spacing.xl2),
       actions: [
         ...?actions,
-        if (canPop) const _ModalCloseButton(),
+        if (canPop) _ModalCloseButton(onPressed: onModalClose),
       ],
     );
   }
@@ -40,11 +42,15 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _ModalCloseButton extends StatelessWidget {
-  const _ModalCloseButton();
+  const _ModalCloseButton({
+    this.onPressed,
+  });
+
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) => IconButton(
-        onPressed: Navigator.of(context).pop,
+        onPressed: onPressed ?? Navigator.of(context).pop,
         icon: const Icon(UntitledUI.x_close),
         iconSize: 24,
       );
