@@ -24,13 +24,8 @@ class PromoBar extends StatelessWidget {
       elevation: 0,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       fillColor: Palette.brand.shade300,
-      constraints: const BoxConstraints(
-        minHeight: 48,
-        minWidth: double.infinity,
-        maxHeight: 80,
-      ),
+      constraints: const BoxConstraints(minHeight: 40, minWidth: double.infinity),
       child: Stack(
-        fit: StackFit.expand,
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 48),
