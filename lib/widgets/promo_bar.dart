@@ -18,6 +18,10 @@ class PromoBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final padding = switch (ScreenType.of(context)) {
+      ScreenType.desktop => const EdgeInsets.symmetric(horizontal: 48, vertical: 4),
+      _ => const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+    };
     return RawMaterialButton(
       onPressed: onTap,
       visualDensity: VisualDensity.compact,
@@ -26,7 +30,7 @@ class PromoBar extends StatelessWidget {
       fillColor: Palette.brand.shade300,
       constraints: const BoxConstraints(minHeight: 40, minWidth: double.infinity),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 48),
+        padding: padding,
         child: Row(
           spacing: 8,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -49,6 +53,12 @@ class PromoBar extends StatelessWidget {
             ),
             if (onTap != null)
               IconButton(
+                style: IconButton.styleFrom(
+                  visualDensity: VisualDensity.compact,
+                  minimumSize: Size.zero,
+                  padding: EdgeInsets.zero,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
                 onPressed: onTap,
                 icon: Icon(actionIcon, color: Palette.grayLight.shade800),
               ),
