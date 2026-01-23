@@ -25,45 +25,35 @@ class PromoBar extends StatelessWidget {
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       fillColor: Palette.brand.shade300,
       constraints: const BoxConstraints(minHeight: 40, minWidth: double.infinity),
-      child: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 48),
-            child: Row(
-              spacing: 8,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (icon != null)
-                  IconTheme(
-                    data: IconThemeData(color: Palette.brand.shade700),
-                    child: SizedBox.square(dimension: 24, child: icon),
-                  ),
-                Flexible(
-                  flex: 3,
-                  child: Text(
-                    text,
-                    style: theme.textStyles.textSm.semibold.copyWith(
-                      color: Palette.grayLight.shade800,
-                    ),
-                    textAlign: TextAlign.center,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 48),
+        child: Row(
+          spacing: 8,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null)
+              IconTheme(
+                data: IconThemeData(color: Palette.brand.shade700),
+                child: SizedBox.square(dimension: 24, child: icon),
+              ),
+            Expanded(
+              child: Text(
+                text,
+                style: theme.textStyles.textSm.semibold.copyWith(
+                  color: Palette.grayLight.shade800,
                 ),
-              ],
+                textAlign: TextAlign.center,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
-          ),
-          if (onTap != null)
-            Positioned(
-              right: 0,
-              bottom: 0,
-              top: 0,
-              child: IconButton(
+            if (onTap != null)
+              IconButton(
                 onPressed: onTap,
                 icon: Icon(actionIcon, color: Palette.grayLight.shade800),
               ),
-            ),
-        ],
+          ],
+        ),
       ),
     );
   }
