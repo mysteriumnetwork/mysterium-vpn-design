@@ -11,6 +11,8 @@ class ModalScaffold extends StatelessWidget {
     this.autoApplyPadding = true,
     this.footer,
     this.onModalClose,
+    this.showGradient = true,
+    this.showCloseButton = true,
     super.key,
   });
 
@@ -19,11 +21,14 @@ class ModalScaffold extends StatelessWidget {
   final Widget? footer;
   final bool autoApplyPadding;
   final VoidCallback? onModalClose;
+  final bool showGradient;
+  final bool showCloseButton;
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: appbar ?? ModalAppbar(onModalClose: onModalClose),
+        appBar: appbar ?? ModalAppbar(onModalClose: onModalClose, showCloseButton: showCloseButton),
         body: _Gradient(
+          showGradient: showGradient,
           child: Builder(
             builder: (context) {
               if (autoApplyPadding) {
@@ -47,12 +52,20 @@ class ModalScaffold extends StatelessWidget {
 }
 
 class _Gradient extends StatelessWidget {
-  const _Gradient({required this.child});
+  const _Gradient({
+    required this.child,
+    required this.showGradient,
+  });
 
   final Widget child;
+  final bool showGradient;
 
   @override
   Widget build(BuildContext context) {
+    if (!showGradient) {
+      return child;
+    }
+
     final theme = Theme.of(context);
     final gradientColor1 = switch (theme.brightness) {
       Brightness.light => const Color(0xFFEFB1FF),
