@@ -6,18 +6,20 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.actions,
     this.onModalClose,
+    this.showCloseButton = true,
     super.key,
   });
 
   final String? title;
   final List<Widget>? actions;
   final VoidCallback? onModalClose;
+  final bool showCloseButton;
 
   @override
   Widget build(BuildContext context) {
     final parentRoute = ModalRoute.of(context);
     final theme = Theme.of(context);
-    final canPop = parentRoute?.impliesAppBarDismissal ?? false;
+    final canPop = (parentRoute?.impliesAppBarDismissal ?? false) && showCloseButton;
     return AppBar(
       elevation: 0,
       backgroundColor: Palette.transparent,
