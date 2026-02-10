@@ -69,7 +69,7 @@ class RadioButton<T> extends StatelessWidget {
       return palette.bgInactive;
     }
     if (selected) {
-      return Palette.brand;
+      return Palette.brand.shade400;
     }
     return null;
   }
