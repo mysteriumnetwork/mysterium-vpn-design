@@ -101,16 +101,17 @@ sealed class DesignSystem {
         triggerMode: TooltipTriggerMode.tap,
         enableFeedback: true,
         padding: EdgeInsets.symmetric(
-          horizontal: spacing.xl,
-          vertical: spacing.md,
+          horizontal: spacing.md,
+          vertical: spacing.s,
         ),
+        constraints: const BoxConstraints(maxWidth: 400),
         textStyle: textStyles.textXs.semibold.copyWith(
-          color: palette.textWhite,
+          color: palette.textTooltip,
         ),
         textAlign: TextAlign.center,
         showDuration: const Duration(seconds: 3),
         decoration: BoxDecoration(
-          color: Palette.brandPurple.shade900,
+          color: palette.tooltipBackground,
           borderRadius: BorderRadius.all(radius.s),
           boxShadow: [
             BoxShadow(

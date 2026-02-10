@@ -219,6 +219,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color textWarningPrimary;
   abstract final Color textSuccessPrimary;
   abstract final Color textSuccessTertiary;
+  abstract final Color textTooltip;
 
   ///
   /// Border Colors
@@ -260,6 +261,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgInactive;
   abstract final Color bgPopover;
   abstract final Color bgSuccessTertiary;
+  abstract final Color tooltipBackground;
 
   ///
   /// Shadow Colors
@@ -339,6 +341,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get textSuccessTertiary => Palette.success.shade300;
+
+  @override
+  Color get textTooltip => Palette.grayLight.shade800;
 
   ///
   /// Border Colors
@@ -435,6 +440,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgSuccessTertiary => Palette.success.shade800;
+
+  @override
+  Color get tooltipBackground => Palette.brandPurple.shade25;
 
   ///
   ///  Shadow Colors
@@ -553,6 +561,9 @@ class PaletteLight extends Palette {
   @override
   Color get textSuccessTertiary => Palette.success.shade700;
 
+  @override
+  Color get textTooltip => Palette.white;
+
   ///
   /// Border Colors
   ///
@@ -648,6 +659,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSuccessTertiary => Palette.success.shade25;
+
+  @override
+  Color get tooltipBackground => Palette.brandPurple.shade900;
 
   ///
   /// Shadow Colors
