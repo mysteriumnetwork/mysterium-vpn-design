@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable
@@ -43,6 +42,9 @@ class PlanData {
         other.name == name &&
         other.fullPriceLabel == fullPriceLabel &&
         other.fullPrice == fullPrice &&
+        other.period == period &&
+        other.periodLabel == periodLabel &&
+        other.perMonth == perMonth &&
         other.discountedLabel == discountedLabel &&
         other.monthlyFullPrice == monthlyFullPrice &&
         other.monthlyDiscountedPrice == monthlyDiscountedPrice &&
@@ -57,6 +59,9 @@ class PlanData {
         name,
         fullPriceLabel,
         fullPrice,
+        period,
+        periodLabel,
+        perMonth,
         discountedLabel,
         monthlyFullPrice,
         monthlyDiscountedPrice,
@@ -68,5 +73,5 @@ class PlanData {
 
   @override
   String toString() =>
-      'PlanData(name: $name, fullPriceLabel: $fullPriceLabel, fullPrice: $fullPrice, discountedLabel: $discountedLabel, monthlyFullPrice: $monthlyFullPrice, monthlyDiscountedPrice: $monthlyDiscountedPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge, icon: $icon, isOffer: $isOffer)';
+      'PlanData(name: $name, fullPriceLabel: $fullPriceLabel, fullPrice: $fullPrice, period: $period, periodLabel: $periodLabel, perMonth: $perMonth, discountedLabel: $discountedLabel, monthlyFullPrice: $monthlyFullPrice, monthlyDiscountedPrice: $monthlyDiscountedPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge, icon: $icon, isOffer: $isOffer)';
 }

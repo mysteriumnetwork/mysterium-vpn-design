@@ -55,22 +55,25 @@ class _PlanCardFeaturesState extends State<_PlanCardFeatures> {
             ),
           ),
         if (hasMoreFeatures && widget.isOffer)
-          GestureDetector(
-            onTap: () => setState(() => _expanded = !_expanded),
-            child: Row(
-              spacing: theme.spacing.xs,
-              children: [
-                Text(
-                  _expanded ? widget.viewLessLabel : widget.viewMoreLabel,
-                  style:
-                      theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
-                ),
-                Icon(
-                  _expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
-                  size: 16,
-                  color: theme.palette.iconTertiary,
-                ),
-              ],
+          Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => setState(() => _expanded = !_expanded),
+              child: Row(
+                spacing: theme.spacing.xs,
+                children: [
+                  Text(
+                    _expanded ? widget.viewLessLabel : widget.viewMoreLabel,
+                    style:
+                        theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
+                  ),
+                  Icon(
+                    _expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
+                    size: 16,
+                    color: theme.palette.iconTertiary,
+                  ),
+                ],
+              ),
             ),
           ),
       ],
