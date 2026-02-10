@@ -47,6 +47,7 @@ class TooltipIcon extends StatelessWidget {
     final theme = Theme.of(context);
     return Tooltip(
       mouseCursor: SystemMouseCursors.click,
+      textAlign: TextAlign.start,
       message: message,
       richMessage: richMessage != null ? TextSpan(children: [richMessage!]) : null,
       verticalOffset: (size / 2) + 4,
