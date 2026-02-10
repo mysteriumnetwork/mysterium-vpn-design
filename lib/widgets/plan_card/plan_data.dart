@@ -1,25 +1,37 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 @immutable
 class PlanData {
   const PlanData({
     required this.name,
-    required this.price,
+    required this.fullPriceLabel,
+    required this.fullPrice,
     required this.period,
-    required this.billingInfo,
-    this.oldPrice,
+    required this.periodLabel,
+    required this.perMonth,
+    this.discountedLabel,
+    this.monthlyFullPrice,
+    this.monthlyDiscountedPrice,
     this.promoBadge,
     this.bestValueBadge,
+    this.icon,
+    this.isOffer = false,
   });
 
   final String name;
-  final String price;
-  final String period;
-  final String billingInfo;
-
-  final String? oldPrice;
+  final String fullPriceLabel;
+  final String fullPrice;
+  final String? discountedLabel;
+  final String? monthlyFullPrice;
+  final String? monthlyDiscountedPrice;
   final String? promoBadge;
   final String? bestValueBadge;
+  final IconData? icon;
+  final bool isOffer;
+  final String period;
+  final String periodLabel;
+  final String perMonth;
 
   @override
   bool operator ==(Object other) {
@@ -29,26 +41,32 @@ class PlanData {
 
     return other is PlanData &&
         other.name == name &&
-        other.price == price &&
-        other.period == period &&
-        other.billingInfo == billingInfo &&
-        other.oldPrice == oldPrice &&
+        other.fullPriceLabel == fullPriceLabel &&
+        other.fullPrice == fullPrice &&
+        other.discountedLabel == discountedLabel &&
+        other.monthlyFullPrice == monthlyFullPrice &&
+        other.monthlyDiscountedPrice == monthlyDiscountedPrice &&
         other.promoBadge == promoBadge &&
-        other.bestValueBadge == bestValueBadge;
+        other.bestValueBadge == bestValueBadge &&
+        other.icon == icon &&
+        other.isOffer == isOffer;
   }
 
   @override
   int get hashCode => Object.hash(
         name,
-        price,
-        period,
-        billingInfo,
-        oldPrice,
+        fullPriceLabel,
+        fullPrice,
+        discountedLabel,
+        monthlyFullPrice,
+        monthlyDiscountedPrice,
         promoBadge,
         bestValueBadge,
+        icon,
+        isOffer,
       );
 
   @override
   String toString() =>
-      'PlanData(name: $name, price: $price, period: $period, billingInfo: $billingInfo, oldPrice: $oldPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge)';
+      'PlanData(name: $name, fullPriceLabel: $fullPriceLabel, fullPrice: $fullPrice, discountedLabel: $discountedLabel, monthlyFullPrice: $monthlyFullPrice, monthlyDiscountedPrice: $monthlyDiscountedPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge, icon: $icon, isOffer: $isOffer)';
 }
