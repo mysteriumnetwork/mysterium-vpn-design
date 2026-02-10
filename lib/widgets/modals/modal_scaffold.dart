@@ -51,7 +51,7 @@ class ModalScaffold extends StatelessWidget {
       );
 }
 
-class _Gradient extends StatelessWidget {
+class _Gradient extends StatefulWidget {
   const _Gradient({
     required this.child,
     required this.showGradient,
@@ -61,9 +61,16 @@ class _Gradient extends StatelessWidget {
   final bool showGradient;
 
   @override
+  State<_Gradient> createState() => _GradientState();
+}
+
+class _GradientState extends State<_Gradient> {
+  double _scrollOffset = 0;
+
+  @override
   Widget build(BuildContext context) {
-    if (!showGradient) {
-      return child;
+    if (!widget.showGradient) {
+      return widget.child;
     }
 
     final theme = Theme.of(context);
@@ -73,39 +80,54 @@ class _Gradient extends StatelessWidget {
     };
     const gradientColor2 = Color(0xFF516CEF);
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final size = Size.square(min(constraints.maxWidth, 340));
-        return Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              top: -(size.height * .7),
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      stops: const [0.0, 0.22, 0.85, 1.0],
-                      colors: [
-                        gradientColor1,
-                        gradientColor1,
-                        gradientColor2,
-                        gradientColor2,
-                      ],
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        setState(() {
+          _scrollOffset = notification.metrics.pixels;
+        });
+        return false;
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final size = Size(385, min(constraints.maxHeight, 192));
+          final parallaxOffset = _scrollOffset * 0.3;
+
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned(
+                left: 0,
+                right: 0,
+                top: parallaxOffset,
+                height: size.height,
+                child: Center(
+                  child: SizedBox(
+                    width: 385,
+                    height: size.height,
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            stops: const [0.0, 0.5, 1.0],
+                            colors: [
+                              gradientColor1,
+                              gradientColor1,
+                              gradientColor2,
+                            ],
+                          ),
+                        ),
+                        child: const SizedBox.expand(),
+                      ),
                     ),
                   ),
-                  child: SizedBox.fromSize(size: size),
                 ),
               ),
-            ),
-            child,
-          ],
-        );
-      },
+              widget.child,
+            ],
+          );
+        },
+      ),
     );
   }
 }
