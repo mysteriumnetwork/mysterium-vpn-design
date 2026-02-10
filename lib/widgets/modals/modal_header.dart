@@ -3,14 +3,14 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class ModalHeader extends StatelessWidget {
   const ModalHeader({
-    required this.emblem,
     required this.title,
+    this.emblem,
     this.description,
     this.emblemSpacing,
     super.key,
   });
 
-  final Widget emblem;
+  final Widget? emblem;
   final double? emblemSpacing;
 
   final String title;
@@ -24,11 +24,13 @@ class ModalHeader extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Align(
-          alignment: Alignment.topCenter,
-          child: emblem,
-        ),
-        SizedBox(height: emblemSpacing),
+        if (emblem != null) ...[
+          Align(
+            alignment: Alignment.topCenter,
+            child: emblem,
+          ),
+          SizedBox(height: emblemSpacing),
+        ],
         Text(
           title,
           textAlign: TextAlign.center,
