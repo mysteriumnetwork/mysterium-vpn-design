@@ -38,7 +38,6 @@ Widget buildPlanCardActions(BuildContext context) {
       mode: mode,
       onPressed: () {},
       text: 'Choose Plan',
-      icon: UntitledUI.chevron_down,
     ),
   );
 }
@@ -60,7 +59,6 @@ Widget buildPlanCardActions(BuildContext context) {
     bestValueBadge: context.knobs.stringOrNull(label: 'Best value', initialValue: 'Best Value'),
     promoBadge: context.knobs.stringOrNull(label: 'Promo Badge', initialValue: '20% OFF'),
     isOffer: context.knobs.boolean(label: 'Is Offer'),
-    period: context.knobs.string(label: 'Period', initialValue: 'year'),
     periodLabel: context.knobs.string(label: 'Period Label', initialValue: 'year'),
     perMonth: context.knobs.string(label: 'Per Month', initialValue: 'mo'),
   );

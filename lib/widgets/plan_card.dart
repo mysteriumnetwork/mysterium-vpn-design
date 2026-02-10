@@ -15,7 +15,6 @@ enum PlanCardMode {
 class PlanCard<T> extends StatelessWidget {
   const PlanCard({
     required this.data,
-    this.icon,
     this.footer,
     this.radioGroup,
     this.value,
@@ -28,7 +27,6 @@ class PlanCard<T> extends StatelessWidget {
     required List<String> features,
     required String viewMoreLabel,
     required String viewLessLabel,
-    this.icon,
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
@@ -45,7 +43,6 @@ class PlanCard<T> extends StatelessWidget {
     required VoidCallback onPressed,
     required String text,
     IconData? actionIcon,
-    this.icon,
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
@@ -53,7 +50,6 @@ class PlanCard<T> extends StatelessWidget {
   }) : footer = _PlanCardAction(onPressed: onPressed, text: text, icon: actionIcon);
 
   final PlanData data;
-  final IconData? icon;
   final PlanCardMode mode;
   final Widget? footer;
   final RadioGroupRegistry<T>? radioGroup;
@@ -83,26 +79,6 @@ class PlanCard<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (icon != null) ...[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: theme.palette.bgSecondarySelected,
-                  borderRadius: BorderRadius.all(theme.radius.xs),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Icon(
-                    icon,
-                    size: 16,
-                    color: theme.palette.iconBrandSecondary,
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: theme.spacing.s),
-          ],
           if (data.isOffer && data.promoBadge != null) ...[
             Align(
               alignment: Alignment.centerLeft,

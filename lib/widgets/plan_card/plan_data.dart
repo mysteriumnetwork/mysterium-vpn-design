@@ -6,7 +6,6 @@ class PlanData {
     required this.name,
     required this.fullPriceLabel,
     required this.fullPrice,
-    required this.period,
     required this.periodLabel,
     required this.perMonth,
     this.discountedLabel,
@@ -21,6 +20,8 @@ class PlanData {
   final String name;
   final String fullPriceLabel;
   final String fullPrice;
+  final String periodLabel;
+  final String perMonth;
   final String? discountedLabel;
   final String? monthlyFullPrice;
   final String? monthlyDiscountedPrice;
@@ -28,9 +29,6 @@ class PlanData {
   final String? bestValueBadge;
   final IconData? icon;
   final bool isOffer;
-  final String period;
-  final String periodLabel;
-  final String perMonth;
 
   @override
   bool operator ==(Object other) {
@@ -42,7 +40,6 @@ class PlanData {
         other.name == name &&
         other.fullPriceLabel == fullPriceLabel &&
         other.fullPrice == fullPrice &&
-        other.period == period &&
         other.periodLabel == periodLabel &&
         other.perMonth == perMonth &&
         other.discountedLabel == discountedLabel &&
@@ -59,7 +56,6 @@ class PlanData {
         name,
         fullPriceLabel,
         fullPrice,
-        period,
         periodLabel,
         perMonth,
         discountedLabel,
@@ -73,5 +69,5 @@ class PlanData {
 
   @override
   String toString() =>
-      'PlanData(name: $name, fullPriceLabel: $fullPriceLabel, fullPrice: $fullPrice, period: $period, periodLabel: $periodLabel, perMonth: $perMonth, discountedLabel: $discountedLabel, monthlyFullPrice: $monthlyFullPrice, monthlyDiscountedPrice: $monthlyDiscountedPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge, icon: $icon, isOffer: $isOffer)';
+      'PlanData(name: $name, fullPriceLabel: $fullPriceLabel, fullPrice: $fullPrice, periodLabel: $periodLabel, perMonth: $perMonth, discountedLabel: $discountedLabel, monthlyFullPrice: $monthlyFullPrice, monthlyDiscountedPrice: $monthlyDiscountedPrice, promoBadge: $promoBadge, bestValueBadge: $bestValueBadge, icon: $icon, isOffer: $isOffer)';
 }
