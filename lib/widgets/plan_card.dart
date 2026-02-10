@@ -134,47 +134,48 @@ class _PlanPricing extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Padding(
-          padding: EdgeInsets.only(bottom: theme.spacing.xs),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Flexible(
-                child: Row(
-                  spacing: theme.spacing.s,
-                  children: [
-                    if (data.icon != null)
-                      DecoratedIcon(
-                        icon: data.icon!,
-                        decoration: IconDecoration(
-                          backgroundColor: theme.palette.bgSecondarySelected,
-                          iconSize: 14,
-                          padding: const EdgeInsets.all(8),
+        if (!data.isOffer)
+          Padding(
+            padding: EdgeInsets.only(bottom: theme.spacing.xs),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Flexible(
+                  child: Row(
+                    spacing: theme.spacing.s,
+                    children: [
+                      if (data.icon != null)
+                        DecoratedIcon(
+                          icon: data.icon!,
+                          decoration: IconDecoration(
+                            backgroundColor: theme.palette.bgSecondarySelected,
+                            iconSize: 14,
+                            padding: const EdgeInsets.all(8),
+                          ),
+                        ),
+                      Expanded(
+                        child: Text(
+                          data.name,
+                          maxLines: 1,
+                          style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
+                          textAlign: TextAlign.start,
                         ),
                       ),
-                    Expanded(
-                      child: Text(
-                        data.name,
-                        maxLines: 1,
-                        style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
-                        textAlign: TextAlign.start,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              if (data.promoBadge != null && !data.isOffer)
-                Padding(
-                  padding: EdgeInsets.only(left: theme.spacing.s),
-                  child: Badge(
-                    text: data.promoBadge!,
-                    size: BadgeSize.small,
-                    type: BadgeType.greenSecondary,
+                    ],
                   ),
                 ),
-            ],
+                if (data.promoBadge != null && !data.isOffer)
+                  Padding(
+                    padding: EdgeInsets.only(left: theme.spacing.s),
+                    child: Badge(
+                      text: data.promoBadge!,
+                      size: BadgeSize.small,
+                      type: BadgeType.greenSecondary,
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
