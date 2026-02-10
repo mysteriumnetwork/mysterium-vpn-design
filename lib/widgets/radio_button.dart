@@ -7,7 +7,6 @@ class RadioButton<T> extends StatelessWidget {
     this.onPressed,
     this.enabled = true,
     this.radius = 20.0,
-    this.padding,
     super.key,
   });
 
@@ -15,7 +14,6 @@ class RadioButton<T> extends StatelessWidget {
   final VoidCallback? onPressed;
   final bool enabled;
   final double radius;
-  final EdgeInsets? padding;
 
   static RadioGroupRegistry<T>? findGroupState<T>(BuildContext context) {
     final state = context.findAncestorStateOfType<State<RadioGroup<T>>>();
@@ -40,7 +38,6 @@ class RadioButton<T> extends StatelessWidget {
     }
 
     return RawMaterialButton(
-      padding: padding ?? EdgeInsets.zero,
       onPressed: onPressed,
       shape: const CircleBorder(),
       materialTapTargetSize: MaterialTapTargetSize.padded,
