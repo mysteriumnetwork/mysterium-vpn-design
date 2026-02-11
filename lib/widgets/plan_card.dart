@@ -97,8 +97,6 @@ class PlanCard<T> extends StatelessWidget {
           ),
           if (footer != null) ...[
             SizedBox(height: theme.spacing.s),
-            Divider(color: theme.palette.borderQuaternary),
-            SizedBox(height: theme.spacing.s),
             footer!,
           ],
         ],
@@ -135,53 +133,50 @@ class _PlanPricing extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         if (!data.isOffer)
-          Padding(
-            padding: EdgeInsets.only(bottom: theme.spacing.xs),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Flexible(
-                  child: Row(
-                    spacing: theme.spacing.s,
-                    children: [
-                      if (data.icon != null)
-                        DecoratedIcon(
-                          icon: data.icon!,
-                          decoration: IconDecoration(
-                            backgroundColor: theme.palette.bgSecondarySelected,
-                            iconSize: 14,
-                            padding: const EdgeInsets.all(8),
-                          ),
-                        ),
-                      Expanded(
-                        child: Text(
-                          data.name,
-                          maxLines: 1,
-                          style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
-                          textAlign: TextAlign.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Flexible(
+                child: Row(
+                  spacing: theme.spacing.s,
+                  children: [
+                    if (data.icon != null)
+                      DecoratedIcon(
+                        icon: data.icon!,
+                        decoration: IconDecoration(
+                          backgroundColor: theme.palette.bgSecondarySelected,
+                          padding: const EdgeInsets.all(8),
+                          borderRadius: BorderRadius.all(theme.radius.xs),
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                if (data.promoBadge != null && !data.isOffer)
-                  Padding(
-                    padding: EdgeInsets.only(left: theme.spacing.s),
-                    child: Badge(
-                      text: data.promoBadge!,
-                      size: BadgeSize.small,
-                      type: BadgeType.greenSecondary,
+                    Expanded(
+                      child: Text(
+                        data.name,
+                        maxLines: 1,
+                        style: theme.textStyles.textMd.bold,
+                        textAlign: TextAlign.start,
+                      ),
                     ),
-                  ),
-              ],
-            ),
+                  ],
+                ),
+              ),
+              if (data.promoBadge != null && !data.isOffer)
+                Badge(
+                  text: data.promoBadge!,
+                  size: BadgeSize.small,
+                  type: BadgeType.greenSecondary,
+                ),
+            ],
           ),
+        SizedBox(height: theme.spacing.xs),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   if (hasMonthlyPricing)
                     Padding(
@@ -203,7 +198,7 @@ class _PlanPricing extends StatelessWidget {
                             CharacterSpan.space(),
                             TextSpan(
                               text: data.monthlyDiscountedPrice,
-                              style: theme.textStyles.textMd.bold,
+                              style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
                             ),
                             CharacterSpan.slash(),
                             TextSpan(text: data.perMonth),
@@ -232,7 +227,7 @@ class _PlanPricing extends StatelessWidget {
                         ),
                       ],
                     ),
-                    maxLines: 2,
+                    maxLines: 1,
                     style: theme.textStyles.textSm.regular.copyWith(
                       color: theme.palette.textTertiary,
                     ),
@@ -242,7 +237,8 @@ class _PlanPricing extends StatelessWidget {
             ),
             if (showRadio)
               SizedBox(
-                width: 40,
+                width: 20,
+                height: 20,
                 child: Align(
                   child: IgnorePointer(
                     child: RadioButton(

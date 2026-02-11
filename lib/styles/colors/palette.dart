@@ -529,7 +529,7 @@ class PaletteLight extends Palette {
   Color get textPrimary => gray.shade800;
 
   @override
-  Color get textPrimarySelected => Palette.brand.shade700;
+  Color get textPrimarySelected => Palette.brand.shade600;
 
   @override
   Color get textSecondary => gray.shade700;
