@@ -79,17 +79,16 @@ class PlanCard<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          if (data.isOffer && data.promoBadge != null) ...[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Badge(
-                text: data.promoBadge!,
-                size: BadgeSize.small,
-                type: BadgeType.greenSecondary,
-              ),
+          if (data.isOffer && data.promoBadge != null)
+            Row(
+              children: [
+                Badge(
+                  text: data.promoBadge!,
+                  size: BadgeSize.small,
+                  type: BadgeType.greenSecondary,
+                ),
+              ],
             ),
-            SizedBox(height: theme.spacing.s),
-          ],
           _PlanPricing(
             data: data,
             showRadio: mode == PlanCardMode.selectable,
