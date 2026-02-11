@@ -105,7 +105,7 @@ sealed class DesignSystem {
           vertical: spacing.s,
         ),
         constraints: const BoxConstraints(maxWidth: 400),
-        textStyle: textStyles.textXs.semibold.copyWith(
+        textStyle: textStyles.textXs.medium.copyWith(
           color: palette.textTooltip,
         ),
         textAlign: TextAlign.center,
