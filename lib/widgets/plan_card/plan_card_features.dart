@@ -97,7 +97,7 @@ class _Row extends StatelessWidget {
         Icon(
           UntitledUI.check_circle,
           size: 16,
-          color: theme.palette.iconTertiary,
+          color: theme.palette.textTertiary,
         ),
         Expanded(
           child: Text(
