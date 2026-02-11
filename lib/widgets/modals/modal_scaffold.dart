@@ -75,10 +75,13 @@ class _GradientState extends State<_Gradient> {
 
     final theme = Theme.of(context);
     final gradientColor1 = switch (theme.brightness) {
-      Brightness.light => const Color(0xFFEFB1FF),
+      Brightness.light => const Color.fromARGB(255, 224, 130, 245),
       Brightness.dark => const Color(0xFFAE51CE),
     };
-    const gradientColor2 = Color(0xFF516CEF);
+    final gradientColor2 = switch (theme.brightness) {
+      Brightness.light => const Color.fromARGB(255, 58, 86, 225),
+      Brightness.dark => const Color(0xFF516CEF),
+    };
 
     return NotificationListener<ScrollNotification>(
       onNotification: (notification) {
@@ -89,8 +92,8 @@ class _GradientState extends State<_Gradient> {
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final size = Size(min(constraints.maxWidth, 395), min(constraints.maxHeight, 192));
-          final parallaxOffset = _scrollOffset * 0.2;
+          final size = Size(min(constraints.maxWidth, 395), 80);
+          final parallaxOffset = -_scrollOffset * 0.5;
 
           return Stack(
             fit: StackFit.expand,
@@ -109,7 +112,7 @@ class _GradientState extends State<_Gradient> {
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            stops: const [0.0, 0.5, 1.0],
+                            stops: const [0.0, 0.3, 1.0],
                             colors: [
                               gradientColor1,
                               gradientColor1,
