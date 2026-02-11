@@ -89,7 +89,7 @@ class _GradientState extends State<_Gradient> {
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final size = Size(385, min(constraints.maxHeight, 192));
+          final size = Size(min(constraints.maxWidth, 192), min(constraints.maxHeight, 192));
           final parallaxOffset = _scrollOffset * 0.3;
 
           return Stack(
@@ -102,7 +102,7 @@ class _GradientState extends State<_Gradient> {
                 height: size.height,
                 child: Center(
                   child: SizedBox(
-                    width: 385,
+                    width: size.width,
                     height: size.height,
                     child: ImageFiltered(
                       imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),

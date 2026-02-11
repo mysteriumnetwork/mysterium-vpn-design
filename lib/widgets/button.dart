@@ -134,7 +134,7 @@ class ButtonPrimary extends Button {
         child: FilledButton(
           onPressed: onPressed,
           style: FilledButton.styleFrom(
-            padding: decoration.padding ?? EdgeInsets.zero,
+            padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
             elevation: 4,
             backgroundColor: decoration.decorationColor,
@@ -157,6 +157,7 @@ class ButtonPrimary extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
+            padding: decoration.padding,
             child: child,
           ),
         ),
@@ -181,7 +182,7 @@ class ButtonSecondary extends Button {
         child: OutlinedButton(
           onPressed: onPressed,
           style: OutlinedButton.styleFrom(
-            padding: decoration.padding ?? EdgeInsets.zero,
+            padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
             backgroundColor: decoration.decorationColor,
             foregroundColor: decoration.foregroundColor,
@@ -203,6 +204,7 @@ class ButtonSecondary extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
+            padding: decoration.padding,
             child: child,
           ),
         ),
@@ -227,7 +229,7 @@ class ButtonTertiary extends Button {
         child: TextButton(
           onPressed: onPressed,
           style: TextButton.styleFrom(
-            padding: decoration.padding ?? EdgeInsets.zero,
+            padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: decoration.decorationColor,
@@ -250,6 +252,7 @@ class ButtonTertiary extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
+            padding: decoration.padding,
             child: child,
           ),
         ),
@@ -263,6 +266,7 @@ class _Child extends StatelessWidget {
     required this.trailing,
     required this.loading,
     required this.size,
+    this.padding,
   });
 
   final Widget child;
@@ -271,20 +275,25 @@ class _Child extends StatelessWidget {
   final Widget? trailing;
   final ButtonLoading? loading;
   final ButtonSize size;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: switch (size) {
-          ButtonSize.small => const EdgeInsets.symmetric(
-              vertical: 8,
-            ),
-          ButtonSize.medium => const EdgeInsets.symmetric(
-              vertical: 10,
-            ),
-          ButtonSize.large => const EdgeInsets.symmetric(
-              vertical: 12,
-            ),
-        },
+        padding: padding ??
+            switch (size) {
+              ButtonSize.small => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+              ButtonSize.medium => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+              ButtonSize.large => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+            },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           spacing: switch (size) {
