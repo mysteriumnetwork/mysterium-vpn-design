@@ -89,8 +89,8 @@ class _GradientState extends State<_Gradient> {
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final size = Size(min(constraints.maxWidth, 192), min(constraints.maxHeight, 192));
-          final parallaxOffset = _scrollOffset * 0.3;
+          final size = Size(min(constraints.maxWidth, 395), min(constraints.maxHeight, 192));
+          final parallaxOffset = _scrollOffset * 0.2;
 
           return Stack(
             fit: StackFit.expand,

@@ -22,7 +22,7 @@ class _PlanBestValueBanner extends StatelessWidget {
         padding: EdgeInsets.only(
           left: spacing.xl2,
           right: spacing.xl2,
-          bottom: spacing.xl2,
+          bottom: spacing.xl,
           top: spacing.xs,
         ),
         child: Text(
