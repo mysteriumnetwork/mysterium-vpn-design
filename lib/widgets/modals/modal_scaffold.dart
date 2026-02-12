@@ -92,8 +92,13 @@ class _GradientState extends State<_Gradient> {
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final size = Size(min(constraints.maxWidth, 395), 80);
+          final screenType = ScreenType.of(context);
+          final size = Size(
+            min(constraints.maxWidth, 300),
+            screenType > ScreenType.mobile ? 90 : 200,
+          );
           final parallaxOffset = -_scrollOffset * 0.5;
+          final blurAmount = size.width * 0.2;
 
           return Stack(
             fit: StackFit.expand,
@@ -108,13 +113,13 @@ class _GradientState extends State<_Gradient> {
                     width: size.width,
                     height: size.height,
                     child: ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
+                      imageFilter: ImageFilter.blur(sigmaX: blurAmount, sigmaY: blurAmount),
                       child: DecoratedBox(
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
-                            stops: const [0.0, 0.3, 1.0],
+                            begin: const Alignment(-1, -0.5),
+                            end: const Alignment(1, -0.5),
                             colors: [
-                              gradientColor1,
                               gradientColor1,
                               gradientColor2,
                             ],

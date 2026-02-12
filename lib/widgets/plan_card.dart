@@ -217,7 +217,7 @@ class _PlanPricing extends StatelessWidget {
                         CharacterSpan.space(),
                         TextSpan(
                           text: data.fullPrice,
-                          style: theme.textStyles.textMd.bold,
+                          style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
                         ),
                         CharacterSpan.slash(),
                         TextSpan(
