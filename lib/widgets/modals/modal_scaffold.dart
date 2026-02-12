@@ -99,7 +99,7 @@ class _GradientState extends State<_Gradient> {
           final isMobile = Platform.isIOS || Platform.isAndroid;
           final size = Size(
             min(constraints.maxWidth, isMobile ? constraints.maxWidth * .8 : 380),
-            isMobile ? 190 : 80,
+            isMobile ? 190 : 120,
           );
           final parallaxOffset = _scrollOffset * 0.5;
 
