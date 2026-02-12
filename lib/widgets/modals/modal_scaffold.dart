@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -74,12 +75,15 @@ class _GradientState extends State<_Gradient> {
     }
 
     final theme = Theme.of(context);
+    final isMobile = Platform.isIOS || Platform.isAndroid;
     final gradientColor1 = switch (theme.brightness) {
-      Brightness.light => const Color.fromARGB(255, 224, 130, 245),
-      Brightness.dark => const Color(0xFFAE51CE),
+      Brightness.light =>
+        isMobile ? const Color(0xFFEFB1FF) : const Color.fromARGB(255, 224, 130, 245),
+      Brightness.dark => isMobile ? const Color(0xFFAE51CE) : const Color(0xFFAE51CE),
     };
     final gradientColor2 = switch (theme.brightness) {
-      Brightness.light => const Color.fromARGB(255, 58, 86, 225),
+      Brightness.light =>
+        isMobile ? const Color(0xFF516CEF) : const Color.fromARGB(255, 58, 86, 225),
       Brightness.dark => const Color(0xFF516CEF),
     };
 
@@ -92,13 +96,12 @@ class _GradientState extends State<_Gradient> {
       },
       child: LayoutBuilder(
         builder: (context, constraints) {
-          final screenType = ScreenType.of(context);
+          final isMobile = Platform.isIOS || Platform.isAndroid;
           final size = Size(
-            min(constraints.maxWidth, 300),
-            screenType > ScreenType.mobile ? 90 : 200,
+            min(constraints.maxWidth, isMobile ? constraints.maxWidth * .8 : 380),
+            isMobile ? 190 : 80,
           );
-          final parallaxOffset = -_scrollOffset * 0.5;
-          final blurAmount = size.width * 0.2;
+          final parallaxOffset = _scrollOffset * 0.5;
 
           return Stack(
             fit: StackFit.expand,
@@ -113,19 +116,38 @@ class _GradientState extends State<_Gradient> {
                     width: size.width,
                     height: size.height,
                     child: ImageFiltered(
-                      imageFilter: ImageFilter.blur(sigmaX: blurAmount, sigmaY: blurAmount),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: const Alignment(-1, -0.5),
-                            end: const Alignment(1, -0.5),
-                            colors: [
-                              gradientColor1,
-                              gradientColor2,
-                            ],
+                      imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
+                      child: Stack(
+                        children: [
+                          // Horizontal gradient (left to right)
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                stops: const [0.0, 0.4, 1.0],
+                                colors: [
+                                  gradientColor1,
+                                  gradientColor1,
+                                  gradientColor2,
+                                ],
+                              ),
+                            ),
+                            child: const SizedBox.expand(),
                           ),
-                        ),
-                        child: const SizedBox.expand(),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [0.0, 1.0],
+                                colors: [
+                                  Colors.transparent,
+                                  theme.palette.bgPopover.withValues(alpha: .5),
+                                ],
+                              ),
+                            ),
+                            child: const SizedBox.expand(),
+                          ),
+                        ],
                       ),
                     ),
                   ),
