@@ -44,11 +44,11 @@ class Badge extends StatelessWidget {
 
   EdgeInsets _getPadding(Spacing spacing) => switch (size) {
         BadgeSize.small => EdgeInsets.symmetric(
-            horizontal: spacing.md,
+            horizontal: spacing.ms,
             vertical: spacing.xxs,
           ),
         BadgeSize.medium => EdgeInsets.symmetric(
-            horizontal: spacing.lg,
+            horizontal: spacing.ms,
             vertical: spacing.xxs,
           ),
       };

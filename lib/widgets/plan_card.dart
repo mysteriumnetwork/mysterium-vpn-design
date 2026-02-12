@@ -2,11 +2,8 @@ import 'package:flutter/material.dart' hide Badge;
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 part 'plan_card/plan_best_value_banner.dart';
-
 part 'plan_card/plan_card_action.dart';
-
 part 'plan_card/plan_card_features.dart';
-
 part 'plan_card/plan_container.dart';
 
 enum PlanCardMode {
@@ -18,7 +15,6 @@ enum PlanCardMode {
 class PlanCard<T> extends StatelessWidget {
   const PlanCard({
     required this.data,
-    this.icon,
     this.footer,
     this.radioGroup,
     this.value,
@@ -29,19 +25,24 @@ class PlanCard<T> extends StatelessWidget {
   PlanCard.features({
     required this.data,
     required List<String> features,
-    this.icon,
+    required String viewMoreLabel,
+    required String viewLessLabel,
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
     super.key,
-  }) : footer = _PlanCardFeatures(features: features);
+  }) : footer = _PlanCardFeatures(
+          features: features,
+          viewMoreLabel: viewMoreLabel,
+          viewLessLabel: viewLessLabel,
+          isOffer: data.isOffer,
+        );
 
   PlanCard.actions({
     required this.data,
     required VoidCallback onPressed,
     required String text,
     IconData? actionIcon,
-    this.icon,
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
@@ -49,7 +50,6 @@ class PlanCard<T> extends StatelessWidget {
   }) : footer = _PlanCardAction(onPressed: onPressed, text: text, icon: actionIcon);
 
   final PlanData data;
-  final IconData? icon;
   final PlanCardMode mode;
   final Widget? footer;
   final RadioGroupRegistry<T>? radioGroup;
@@ -77,40 +77,27 @@ class PlanCard<T> extends StatelessWidget {
         _ => null,
       },
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        spacing: theme.spacing.s,
         children: [
-          if (icon != null)
-            Align(
-              alignment: Alignment.centerLeft,
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  color: theme.palette.bgSecondarySelected,
-                  borderRadius: BorderRadius.all(theme.radius.xs),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Icon(
-                    icon,
-                    size: 16,
-                    color: theme.palette.iconBrandSecondary,
-                  ),
-                ),
-              ),
-            ),
-          if (icon == null && mode == PlanCardMode.selectable) const SizedBox(height: 12),
-          ClipRRect(
-            child: Row(
+          if (data.isOffer && data.promoBadge != null)
+            Row(
               children: [
-                Expanded(child: _PlanPricing(data: data)),
-                if (mode == PlanCardMode.selectable)
-                  IgnorePointer(child: RadioButton(value: value)),
+                Badge(
+                  text: data.promoBadge!,
+                  size: BadgeSize.small,
+                  type: BadgeType.greenSecondary,
+                ),
               ],
             ),
+          _PlanPricing(
+            data: data,
+            showRadio: mode == PlanCardMode.selectable,
+            radioValue: value,
           ),
-          if (footer != null) Divider(color: theme.palette.borderQuaternary),
-          if (footer != null) footer!,
+          if (footer != null) ...[
+            SizedBox(height: theme.spacing.s),
+            footer!,
+          ],
         ],
       ),
     );
@@ -125,67 +112,141 @@ class PlanCard<T> extends StatelessWidget {
 }
 
 class _PlanPricing extends StatelessWidget {
-  const _PlanPricing({required this.data});
+  const _PlanPricing({
+    required this.data,
+    this.showRadio = false,
+    this.radioValue,
+  });
 
   final PlanData data;
+  final bool showRadio;
+  final dynamic radioValue;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final hasMonthlyPricing = data.monthlyFullPrice != null && data.monthlyDiscountedPrice != null;
+
     return Column(
-      spacing: theme.spacing.xs,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisSize: MainAxisSize.min,
       children: [
-        ClipRRect(
-          child: Row(
-            spacing: theme.spacing.md,
+        if (!data.isOffer)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Flexible(
-                child: Text(
-                  data.name,
-                  maxLines: 1,
-                  style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
-                ),
-              ),
-              Expanded(
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: data.price,
-                        style: const TextStyle(fontSize: 20),
+                child: Row(
+                  spacing: theme.spacing.s,
+                  children: [
+                    if (data.icon != null)
+                      DecoratedIcon(
+                        icon: data.icon!,
+                        decoration: IconDecoration(
+                          backgroundColor: theme.palette.bgSecondarySelected,
+                          padding: const EdgeInsets.all(8),
+                          borderRadius: BorderRadius.all(theme.radius.xs),
+                        ),
                       ),
-                      CharacterSpan.slash(),
-                      TextSpan(text: data.period),
-                    ],
-                  ),
-                  maxLines: 1,
-                  style: theme.textStyles.textSm.regular,
+                    Expanded(
+                      child: Text(
+                        data.name,
+                        maxLines: 1,
+                        style: theme.textStyles.textMd.bold,
+                        textAlign: TextAlign.start,
+                      ),
+                    ),
+                  ],
                 ),
               ),
+              if (data.promoBadge != null && !data.isOffer)
+                Badge(
+                  text: data.promoBadge!,
+                  size: BadgeSize.small,
+                  type: BadgeType.greenSecondary,
+                ),
             ],
           ),
-        ),
-        Text.rich(
-          TextSpan(
-            children: [
-              if (data.oldPrice != null)
-                TextSpan(
-                  text: data.oldPrice,
-                  style: TextStyle(
-                    decoration: TextDecoration.lineThrough,
-                    color: theme.palette.textErrorPrimary,
+        SizedBox(height: theme.spacing.xs),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (hasMonthlyPricing)
+                    Padding(
+                      padding: EdgeInsets.only(bottom: theme.spacing.xs),
+                      child: Text.rich(
+                        TextSpan(
+                          children: [
+                            if (data.discountedLabel != null)
+                              TextSpan(
+                                text: '${data.discountedLabel} ',
+                                style: theme.textStyles.textMd.regular,
+                              ),
+                            TextSpan(
+                              text: data.monthlyFullPrice,
+                              style: theme.textStyles.textMd.regular.copyWith(
+                                decoration: TextDecoration.lineThrough,
+                              ),
+                            ),
+                            CharacterSpan.space(),
+                            TextSpan(
+                              text: data.monthlyDiscountedPrice,
+                              style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
+                            ),
+                            CharacterSpan.slash(),
+                            TextSpan(text: data.perMonth),
+                          ],
+                        ),
+                        maxLines: 1,
+                        style: theme.textStyles.textMd.regular,
+                      ),
+                    ),
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: data.fullPriceLabel,
+                          style: theme.textStyles.textMd.regular,
+                        ),
+                        CharacterSpan.space(),
+                        TextSpan(
+                          text: data.fullPrice,
+                          style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
+                        ),
+                        CharacterSpan.slash(),
+                        TextSpan(
+                          text: data.periodLabel,
+                          style: theme.textStyles.textMd.regular,
+                        ),
+                      ],
+                    ),
+                    maxLines: 1,
+                    style: theme.textStyles.textSm.regular.copyWith(
+                      color: theme.palette.textTertiary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (showRadio)
+              SizedBox(
+                width: 20,
+                height: 20,
+                child: Align(
+                  child: IgnorePointer(
+                    child: RadioButton(
+                      value: radioValue,
+                    ),
                   ),
                 ),
-              if (data.oldPrice != null) CharacterSpan.space(),
-              TextSpan(text: data.billingInfo),
-            ],
-          ),
-          maxLines: 3,
-          style: theme.textStyles.textSm.regular.copyWith(
-            color: theme.palette.textTertiary,
-          ),
+              ),
+          ],
         ),
       ],
     );

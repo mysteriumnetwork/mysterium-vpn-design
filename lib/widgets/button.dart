@@ -65,16 +65,18 @@ class ButtonDecoration {
     this.foregroundColor,
     this.textStyle,
     this.minimumSize,
+    this.padding,
   });
 
   final Color? decorationColor;
   final Color? foregroundColor;
   final TextStyle? textStyle;
   final Size? minimumSize;
+  final EdgeInsets? padding;
 
   @override
   String toString() =>
-      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, textStyle: $textStyle, minimumSize: $minimumSize)';
+      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, textStyle: $textStyle, minimumSize: $minimumSize, padding: $padding)';
 
   @override
   bool operator ==(Object other) {
@@ -85,7 +87,8 @@ class ButtonDecoration {
         other.decorationColor == decorationColor &&
         other.foregroundColor == foregroundColor &&
         other.textStyle == textStyle &&
-        other.minimumSize == minimumSize;
+        other.minimumSize == minimumSize &&
+        other.padding == padding;
   }
 
   @override
@@ -94,6 +97,7 @@ class ButtonDecoration {
         foregroundColor,
         textStyle,
         minimumSize,
+        padding,
       );
 
   ButtonDecoration copyWith({
@@ -101,12 +105,14 @@ class ButtonDecoration {
     Color? foregroundColor,
     TextStyle? textStyle,
     Size? minimumSize,
+    EdgeInsets? padding,
   }) =>
       ButtonDecoration(
         decorationColor: decorationColor ?? this.decorationColor,
         foregroundColor: foregroundColor ?? this.foregroundColor,
         textStyle: textStyle ?? this.textStyle,
         minimumSize: minimumSize ?? this.minimumSize,
+        padding: padding ?? this.padding,
       );
 }
 
@@ -130,6 +136,7 @@ class ButtonPrimary extends Button {
           style: FilledButton.styleFrom(
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
+            elevation: 4,
             backgroundColor: decoration.decorationColor,
             foregroundColor: decoration.foregroundColor,
             iconColor: decoration.foregroundColor,
@@ -150,6 +157,7 @@ class ButtonPrimary extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
+            padding: decoration.padding,
             child: child,
           ),
         ),
@@ -196,6 +204,7 @@ class ButtonSecondary extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
+            padding: decoration.padding,
             child: child,
           ),
         ),
@@ -219,9 +228,10 @@ class ButtonTertiary extends Button {
         ignoring: loading != null,
         child: TextButton(
           onPressed: onPressed,
-          style: OutlinedButton.styleFrom(
+          style: TextButton.styleFrom(
             padding: EdgeInsets.zero,
             visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             backgroundColor: decoration.decorationColor,
             foregroundColor: decoration.foregroundColor,
             iconColor: decoration.foregroundColor,
@@ -242,6 +252,7 @@ class ButtonTertiary extends Button {
             leading: leading,
             trailing: trailing,
             size: size,
+            padding: decoration.padding,
             child: child,
           ),
         ),
@@ -255,6 +266,7 @@ class _Child extends StatelessWidget {
     required this.trailing,
     required this.loading,
     required this.size,
+    this.padding,
   });
 
   final Widget child;
@@ -263,23 +275,25 @@ class _Child extends StatelessWidget {
   final Widget? trailing;
   final ButtonLoading? loading;
   final ButtonSize size;
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: switch (size) {
-          ButtonSize.small => const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 8,
-            ),
-          ButtonSize.medium => const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 10,
-            ),
-          ButtonSize.large => const EdgeInsets.symmetric(
-              horizontal: 16,
-              vertical: 12,
-            ),
-        },
+        padding: padding ??
+            switch (size) {
+              ButtonSize.small => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
+              ButtonSize.medium => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 10,
+                ),
+              ButtonSize.large => const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+            },
         child: Row(
           mainAxisSize: MainAxisSize.min,
           spacing: switch (size) {

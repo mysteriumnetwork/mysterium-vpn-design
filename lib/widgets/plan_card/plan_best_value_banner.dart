@@ -22,14 +22,14 @@ class _PlanBestValueBanner extends StatelessWidget {
         padding: EdgeInsets.only(
           left: spacing.xl2,
           right: spacing.xl2,
-          bottom: spacing.xl2,
+          bottom: spacing.xl,
           top: spacing.xs,
         ),
         child: Text(
           text,
           textAlign: TextAlign.center,
           style: theme.textStyles.textXs.semibold.copyWith(
-            color: Palette.black,
+            color: Palette.white,
           ),
         ),
       ),

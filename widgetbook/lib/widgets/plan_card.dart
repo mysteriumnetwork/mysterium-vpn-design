@@ -20,6 +20,8 @@ Widget buildPlanCardFeatures(BuildContext context) {
         'No logs policy',
         '24/7 customer support',
       ],
+      viewMoreLabel: 'View all features',
+      viewLessLabel: 'View less',
     ),
   );
 }
@@ -36,7 +38,6 @@ Widget buildPlanCardActions(BuildContext context) {
       mode: mode,
       onPressed: () {},
       text: 'Choose Plan',
-      icon: UntitledUI.chevron_down,
     ),
   );
 }
@@ -44,15 +45,22 @@ Widget buildPlanCardActions(BuildContext context) {
 (PlanData, bool, PlanCardMode) _getArgs(BuildContext context) {
   final data = PlanData(
     name: context.knobs.string(label: 'Plan Name', initialValue: 'Plus'),
-    price: context.knobs.string(label: 'Price', initialValue: r'$9.99'),
-    period: context.knobs.string(label: 'Period', initialValue: 'mo'),
-    billingInfo: context.knobs.string(
-      label: 'Billing Info',
-      initialValue: r'Billed $119.88 annually',
+    fullPriceLabel: context.knobs.string(label: 'Full Price Label', initialValue: 'Yearly'),
+    fullPrice: context.knobs.string(label: 'Full Price', initialValue: r'$119.88'),
+    discountedLabel: context.knobs.stringOrNull(label: 'Discounted Label', initialValue: 'Monthly'),
+    monthlyFullPrice: context.knobs.stringOrNull(
+      label: 'Monthly Full Price',
+      initialValue: r'$14.99',
+    ),
+    monthlyDiscountedPrice: context.knobs.stringOrNull(
+      label: 'Monthly Discounted Price',
+      initialValue: r'$9.99',
     ),
     bestValueBadge: context.knobs.stringOrNull(label: 'Best value', initialValue: 'Best Value'),
-    oldPrice: context.knobs.stringOrNull(label: 'Old Price', initialValue: r'$144.99'),
     promoBadge: context.knobs.stringOrNull(label: 'Promo Badge', initialValue: '20% OFF'),
+    isOffer: context.knobs.boolean(label: 'Is Offer'),
+    periodLabel: context.knobs.string(label: 'Period Label', initialValue: 'year'),
+    perMonth: context.knobs.string(label: 'Per Month', initialValue: 'mo'),
   );
 
   final isSelected = context.knobs.boolean(label: 'Is Selected');

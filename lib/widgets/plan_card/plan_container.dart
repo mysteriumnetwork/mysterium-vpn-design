@@ -17,12 +17,11 @@ class _PlanContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final bestValueBadge = data.bestValueBadge;
-    final promoBadge = data.promoBadge;
 
     return Stack(
       fit: StackFit.passthrough,
       children: [
-        if (bestValueBadge != null)
+        if (bestValueBadge != null && data.isOffer)
           Positioned(
             top: 0,
             left: 0,
@@ -30,7 +29,7 @@ class _PlanContainer extends StatelessWidget {
             child: _PlanBestValueBanner(text: bestValueBadge),
           ),
         Padding(
-          padding: EdgeInsets.only(top: bestValueBadge != null ? 27 : 0),
+          padding: EdgeInsets.only(top: (bestValueBadge != null && data.isOffer) ? 27 : 0),
           child: RawMaterialButton(
             onPressed: onTap,
             elevation: 0,
@@ -47,22 +46,7 @@ class _PlanContainer extends StatelessWidget {
               ),
             ),
             padding: EdgeInsets.all(theme.spacing.md),
-            child: Stack(
-              fit: StackFit.passthrough,
-              children: [
-                child,
-                if (promoBadge != null)
-                  Positioned(
-                    right: 0,
-                    top: 0,
-                    child: Badge(
-                      text: promoBadge,
-                      size: BadgeSize.small,
-                      type: BadgeType.greenSecondary,
-                    ),
-                  ),
-              ],
-            ),
+            child: child,
           ),
         ),
       ],

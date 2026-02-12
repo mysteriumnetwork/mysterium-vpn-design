@@ -27,7 +27,10 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       title: title == null ? null : Text(title!),
       centerTitle: true,
-      actionsPadding: EdgeInsets.symmetric(horizontal: theme.spacing.xl2),
+      actionsPadding: EdgeInsets.only(
+        right: theme.spacing.md,
+        top: theme.spacing.md,
+      ),
       actions: [
         ...?actions,
         if (canPop) _ModalCloseButton(onPressed: onModalClose),

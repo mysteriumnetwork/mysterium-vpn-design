@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'dart:ui';
 
@@ -51,7 +52,7 @@ class ModalScaffold extends StatelessWidget {
       );
 }
 
-class _Gradient extends StatelessWidget {
+class _Gradient extends StatefulWidget {
   const _Gradient({
     required this.child,
     required this.showGradient,
@@ -61,51 +62,102 @@ class _Gradient extends StatelessWidget {
   final bool showGradient;
 
   @override
+  State<_Gradient> createState() => _GradientState();
+}
+
+class _GradientState extends State<_Gradient> {
+  double _scrollOffset = 0;
+
+  @override
   Widget build(BuildContext context) {
-    if (!showGradient) {
-      return child;
+    if (!widget.showGradient) {
+      return widget.child;
     }
 
     final theme = Theme.of(context);
+    final isMobile = Platform.isIOS || Platform.isAndroid;
     final gradientColor1 = switch (theme.brightness) {
-      Brightness.light => const Color(0xFFEFB1FF),
-      Brightness.dark => const Color(0xFFAE51CE),
+      Brightness.light =>
+        isMobile ? const Color(0xFFEFB1FF) : const Color.fromARGB(255, 224, 130, 245),
+      Brightness.dark => isMobile ? const Color(0xFFAE51CE) : const Color(0xFFAE51CE),
     };
-    const gradientColor2 = Color(0xFF516CEF);
+    final gradientColor2 = switch (theme.brightness) {
+      Brightness.light =>
+        isMobile ? const Color(0xFF516CEF) : const Color.fromARGB(255, 58, 86, 225),
+      Brightness.dark => const Color(0xFF516CEF),
+    };
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final size = Size.square(min(constraints.maxWidth, 340));
-        return Stack(
-          fit: StackFit.expand,
-          children: [
-            Positioned(
-              left: 0,
-              right: 0,
-              top: -(size.height * .7),
-              child: ImageFiltered(
-                imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
-                child: DecoratedBox(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      stops: const [0.0, 0.22, 0.85, 1.0],
-                      colors: [
-                        gradientColor1,
-                        gradientColor1,
-                        gradientColor2,
-                        gradientColor2,
-                      ],
+    return NotificationListener<ScrollNotification>(
+      onNotification: (notification) {
+        setState(() {
+          _scrollOffset = notification.metrics.pixels;
+        });
+        return false;
+      },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final isMobile = Platform.isIOS || Platform.isAndroid;
+          final size = Size(
+            min(constraints.maxWidth, isMobile ? constraints.maxWidth * .8 : 380),
+            isMobile ? 190 : 120,
+          );
+          final parallaxOffset = _scrollOffset * 0.5;
+
+          return Stack(
+            fit: StackFit.expand,
+            children: [
+              Positioned(
+                left: 0,
+                right: 0,
+                top: parallaxOffset,
+                height: size.height,
+                child: Center(
+                  child: SizedBox(
+                    width: size.width,
+                    height: size.height,
+                    child: ImageFiltered(
+                      imageFilter: ImageFilter.blur(sigmaX: 60, sigmaY: 60),
+                      child: Stack(
+                        children: [
+                          // Horizontal gradient (left to right)
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                stops: const [0.0, 0.4, 1.0],
+                                colors: [
+                                  gradientColor1,
+                                  gradientColor1,
+                                  gradientColor2,
+                                ],
+                              ),
+                            ),
+                            child: const SizedBox.expand(),
+                          ),
+                          DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [0.0, 1.0],
+                                colors: [
+                                  Colors.transparent,
+                                  theme.palette.bgPopover.withValues(alpha: .5),
+                                ],
+                              ),
+                            ),
+                            child: const SizedBox.expand(),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  child: SizedBox.fromSize(size: size),
                 ),
               ),
-            ),
-            child,
-          ],
-        );
-      },
+              widget.child,
+            ],
+          );
+        },
+      ),
     );
   }
 }

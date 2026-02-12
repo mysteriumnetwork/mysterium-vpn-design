@@ -24,7 +24,10 @@ class ComparisonTable<K> extends StatelessWidget {
     final theme = Theme.of(context);
     final palette = theme.palette;
     final textStyles = theme.textStyles;
-    return Table(
+    final screenType = ScreenType.of(context);
+    final isDesktop = screenType.index >= ScreenType.tablet.index;
+
+    final table = Table(
       border: TableBorder(
         verticalInside: BorderSide(color: palette.borderPrimary),
         bottom: BorderSide(color: palette.borderPrimary),
@@ -54,6 +57,15 @@ class ComparisonTable<K> extends StatelessWidget {
         ),
       ],
     );
+
+    if (isDesktop) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: table,
+      );
+    }
+
+    return table;
   }
 }
 
