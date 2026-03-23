@@ -4,10 +4,12 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 class ModalFooter extends StatelessWidget {
   const ModalFooter({
     required this.children,
+    this.spacing,
     super.key,
   });
 
   final List<Widget> children;
+  final double? spacing;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class ModalFooter extends StatelessWidget {
                     ? const BoxConstraints(maxWidth: 280)
                     : const BoxConstraints(),
                 child: Column(
-                  spacing: theme.spacing.ms,
+                  spacing: spacing ?? theme.spacing.ms,
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: children,
