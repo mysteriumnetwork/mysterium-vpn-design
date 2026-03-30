@@ -84,8 +84,13 @@ class ButtonDecoration {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(decorationColor, foregroundColor, textStyle, minimumSize, padding);
+  int get hashCode => Object.hash(
+    decorationColor,
+    foregroundColor,
+    textStyle,
+    minimumSize,
+    padding,
+  );
 
   ButtonDecoration copyWith({
     Color? decorationColor,
@@ -274,9 +279,18 @@ class _Child extends StatelessWidget {
     padding:
         padding ??
         switch (size) {
-          ButtonSize.small => const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          ButtonSize.medium => const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          ButtonSize.large => const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ButtonSize.small => const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 8,
+          ),
+          ButtonSize.medium => const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 10,
+          ),
+          ButtonSize.large => const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 12,
+          ),
         },
     child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -288,14 +302,15 @@ class _Child extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (leading != null && loading == null) leading!,
-        if (loading != null) _LoadingIndicator(color: IconTheme.of(context).color),
+        if (loading != null)
+          _LoadingIndicator(color: IconTheme.of(context).color),
         Flexible(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2),
             child: loading?.text != null ? Text(loading!.text!) : child,
           ),
         ),
-        if (trailing != null) trailing!,
+        ?trailing,
       ],
     ),
   );
@@ -312,7 +327,11 @@ class _LoadingIndicator extends StatelessWidget {
     const radius = 16 / 2;
     return Stack(
       children: [
-        CupertinoActivityIndicator(color: color, radius: radius, animating: false),
+        CupertinoActivityIndicator(
+          color: color,
+          radius: radius,
+          animating: false,
+        ),
         CupertinoActivityIndicator(color: color, radius: radius),
       ],
     );
