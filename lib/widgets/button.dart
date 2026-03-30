@@ -2,17 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-enum ButtonVariant {
-  primary,
-  secondary,
-  tertiary;
-}
+enum ButtonVariant { primary, secondary, tertiary }
 
-enum ButtonSize {
-  small,
-  medium,
-  large;
-}
+enum ButtonSize { small, medium, large }
 
 @immutable
 class ButtonLoading {
@@ -92,13 +84,8 @@ class ButtonDecoration {
   }
 
   @override
-  int get hashCode => Object.hash(
-        decorationColor,
-        foregroundColor,
-        textStyle,
-        minimumSize,
-        padding,
-      );
+  int get hashCode =>
+      Object.hash(decorationColor, foregroundColor, textStyle, minimumSize, padding);
 
   ButtonDecoration copyWith({
     Color? decorationColor,
@@ -106,14 +93,13 @@ class ButtonDecoration {
     TextStyle? textStyle,
     Size? minimumSize,
     EdgeInsets? padding,
-  }) =>
-      ButtonDecoration(
-        decorationColor: decorationColor ?? this.decorationColor,
-        foregroundColor: foregroundColor ?? this.foregroundColor,
-        textStyle: textStyle ?? this.textStyle,
-        minimumSize: minimumSize ?? this.minimumSize,
-        padding: padding ?? this.padding,
-      );
+  }) => ButtonDecoration(
+    decorationColor: decorationColor ?? this.decorationColor,
+    foregroundColor: foregroundColor ?? this.foregroundColor,
+    textStyle: textStyle ?? this.textStyle,
+    minimumSize: minimumSize ?? this.minimumSize,
+    padding: padding ?? this.padding,
+  );
 }
 
 class ButtonPrimary extends Button {
@@ -130,38 +116,40 @@ class ButtonPrimary extends Button {
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
-        ignoring: loading != null,
-        child: FilledButton(
-          onPressed: onPressed,
-          style: FilledButton.styleFrom(
-            padding: EdgeInsets.zero,
-            visualDensity: VisualDensity.compact,
-            elevation: 4,
-            backgroundColor: decoration.decorationColor,
-            foregroundColor: decoration.foregroundColor,
-            iconColor: decoration.foregroundColor,
-            minimumSize: decoration.minimumSize ??
-                switch (size) {
-                  ButtonSize.small => const Size(60, 36),
-                  ButtonSize.medium => const Size(60, 40),
-                  ButtonSize.large => const Size(60, 44),
-                },
-            textStyle: decoration.textStyle ??
-                switch (size) {
-                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-                  _ => null,
-                },
-          ),
-          child: _Child(
-            loading: loading,
-            leading: leading,
-            trailing: trailing,
-            size: size,
-            padding: decoration.padding,
-            child: child,
-          ),
-        ),
-      );
+    ignoring: loading != null,
+    child: FilledButton(
+      onPressed: onPressed,
+      style: FilledButton.styleFrom(
+        padding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
+        elevation: 4,
+        backgroundColor: decoration.decorationColor,
+        foregroundColor: decoration.foregroundColor,
+        iconColor: decoration.foregroundColor,
+        minimumSize:
+            decoration.minimumSize ??
+            switch (size) {
+              ButtonSize.small => const Size(60, 36),
+              ButtonSize.medium => const Size(60, 40),
+              ButtonSize.large => const Size(60, 44),
+            },
+        textStyle:
+            decoration.textStyle ??
+            switch (size) {
+              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+              _ => null,
+            },
+      ),
+      child: _Child(
+        loading: loading,
+        leading: leading,
+        trailing: trailing,
+        size: size,
+        padding: decoration.padding,
+        child: child,
+      ),
+    ),
+  );
 }
 
 class ButtonSecondary extends Button {
@@ -178,37 +166,39 @@ class ButtonSecondary extends Button {
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
-        ignoring: loading != null,
-        child: OutlinedButton(
-          onPressed: onPressed,
-          style: OutlinedButton.styleFrom(
-            padding: EdgeInsets.zero,
-            visualDensity: VisualDensity.compact,
-            backgroundColor: decoration.decorationColor,
-            foregroundColor: decoration.foregroundColor,
-            iconColor: decoration.foregroundColor,
-            minimumSize: decoration.minimumSize ??
-                switch (size) {
-                  ButtonSize.small => const Size(60, 36),
-                  ButtonSize.medium => const Size(60, 40),
-                  ButtonSize.large => const Size(60, 44),
-                },
-            textStyle: decoration.textStyle ??
-                switch (size) {
-                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-                  _ => null,
-                },
-          ),
-          child: _Child(
-            loading: loading,
-            leading: leading,
-            trailing: trailing,
-            size: size,
-            padding: decoration.padding,
-            child: child,
-          ),
-        ),
-      );
+    ignoring: loading != null,
+    child: OutlinedButton(
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+        padding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
+        backgroundColor: decoration.decorationColor,
+        foregroundColor: decoration.foregroundColor,
+        iconColor: decoration.foregroundColor,
+        minimumSize:
+            decoration.minimumSize ??
+            switch (size) {
+              ButtonSize.small => const Size(60, 36),
+              ButtonSize.medium => const Size(60, 40),
+              ButtonSize.large => const Size(60, 44),
+            },
+        textStyle:
+            decoration.textStyle ??
+            switch (size) {
+              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+              _ => null,
+            },
+      ),
+      child: _Child(
+        loading: loading,
+        leading: leading,
+        trailing: trailing,
+        size: size,
+        padding: decoration.padding,
+        child: child,
+      ),
+    ),
+  );
 }
 
 class ButtonTertiary extends Button {
@@ -225,38 +215,40 @@ class ButtonTertiary extends Button {
 
   @override
   Widget build(BuildContext context) => IgnorePointer(
-        ignoring: loading != null,
-        child: TextButton(
-          onPressed: onPressed,
-          style: TextButton.styleFrom(
-            padding: EdgeInsets.zero,
-            visualDensity: VisualDensity.compact,
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            backgroundColor: decoration.decorationColor,
-            foregroundColor: decoration.foregroundColor,
-            iconColor: decoration.foregroundColor,
-            minimumSize: decoration.minimumSize ??
-                switch (size) {
-                  ButtonSize.small => const Size(60, 36),
-                  ButtonSize.medium => const Size(60, 40),
-                  ButtonSize.large => const Size(60, 44),
-                },
-            textStyle: decoration.textStyle ??
-                switch (size) {
-                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-                  _ => null,
-                },
-          ),
-          child: _Child(
-            loading: loading,
-            leading: leading,
-            trailing: trailing,
-            size: size,
-            padding: decoration.padding,
-            child: child,
-          ),
-        ),
-      );
+    ignoring: loading != null,
+    child: TextButton(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        padding: EdgeInsets.zero,
+        visualDensity: VisualDensity.compact,
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        backgroundColor: decoration.decorationColor,
+        foregroundColor: decoration.foregroundColor,
+        iconColor: decoration.foregroundColor,
+        minimumSize:
+            decoration.minimumSize ??
+            switch (size) {
+              ButtonSize.small => const Size(60, 36),
+              ButtonSize.medium => const Size(60, 40),
+              ButtonSize.large => const Size(60, 44),
+            },
+        textStyle:
+            decoration.textStyle ??
+            switch (size) {
+              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+              _ => null,
+            },
+      ),
+      child: _Child(
+        loading: loading,
+        leading: leading,
+        trailing: trailing,
+        size: size,
+        padding: decoration.padding,
+        child: child,
+      ),
+    ),
+  );
 }
 
 class _Child extends StatelessWidget {
@@ -279,45 +271,34 @@ class _Child extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: padding ??
-            switch (size) {
-              ButtonSize.small => const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 8,
-                ),
-              ButtonSize.medium => const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 10,
-                ),
-              ButtonSize.large => const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-            },
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          spacing: switch (size) {
-            ButtonSize.small => 4,
-            ButtonSize.medium => 4,
-            ButtonSize.large => 8,
-          },
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            if (leading != null && loading == null) leading!,
-            if (loading != null)
-              _LoadingIndicator(
-                color: IconTheme.of(context).color,
-              ),
-            Flexible(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                child: loading?.text != null ? Text(loading!.text!) : child,
-              ),
-            ),
-            if (trailing != null) trailing!,
-          ],
+    padding:
+        padding ??
+        switch (size) {
+          ButtonSize.small => const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ButtonSize.medium => const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          ButtonSize.large => const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        },
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+      spacing: switch (size) {
+        ButtonSize.small => 4,
+        ButtonSize.medium => 4,
+        ButtonSize.large => 8,
+      },
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        if (leading != null && loading == null) leading!,
+        if (loading != null) _LoadingIndicator(color: IconTheme.of(context).color),
+        Flexible(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 2),
+            child: loading?.text != null ? Text(loading!.text!) : child,
+          ),
         ),
-      );
+        if (trailing != null) trailing!,
+      ],
+    ),
+  );
 }
 
 class _LoadingIndicator extends StatelessWidget {
@@ -331,11 +312,7 @@ class _LoadingIndicator extends StatelessWidget {
     const radius = 16 / 2;
     return Stack(
       children: [
-        CupertinoActivityIndicator(
-          color: color,
-          radius: radius,
-          animating: false,
-        ),
+        CupertinoActivityIndicator(color: color, radius: radius, animating: false),
         CupertinoActivityIndicator(color: color, radius: radius),
       ],
     );

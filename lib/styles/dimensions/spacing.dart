@@ -26,9 +26,5 @@ class Spacing extends ThemeExtension<Spacing> {
   ThemeExtension<Spacing> copyWith() => this;
 
   @override
-  ThemeExtension<Spacing> lerp(
-    covariant ThemeExtension<Spacing>? other,
-    double t,
-  ) =>
-      this;
+  ThemeExtension<Spacing> lerp(covariant ThemeExtension<Spacing>? other, double t) => this;
 }

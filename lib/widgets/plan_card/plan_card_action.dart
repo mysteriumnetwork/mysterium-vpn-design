@@ -1,11 +1,7 @@
 part of '../plan_card.dart';
 
 class _PlanCardAction extends StatelessWidget {
-  const _PlanCardAction({
-    required this.onPressed,
-    required this.text,
-    required this.icon,
-  });
+  const _PlanCardAction({required this.onPressed, required this.text, required this.icon});
 
   final VoidCallback onPressed;
   final String text;
@@ -30,12 +26,7 @@ class _PlanCardAction extends StatelessWidget {
                   style: theme.textStyles.textSm.medium.copyWith(color: theme.palette.textTertiary),
                 ),
               ),
-              if (icon != null)
-                Icon(
-                  icon,
-                  size: 16,
-                  color: theme.palette.iconTertiary,
-                ),
+              if (icon != null) Icon(icon, size: 16, color: theme.palette.iconTertiary),
             ],
           ),
         ),

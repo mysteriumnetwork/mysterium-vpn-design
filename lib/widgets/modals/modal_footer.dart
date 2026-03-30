@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class ModalFooter extends StatelessWidget {
-  const ModalFooter({
-    required this.children,
-    this.spacing,
-    super.key,
-  });
+  const ModalFooter({required this.children, this.spacing, super.key});
 
   final List<Widget> children;
   final double? spacing;

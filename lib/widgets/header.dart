@@ -2,28 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class Header extends StatelessWidget implements PreferredSizeWidget {
-  const Header({
-    this.centerTitle = false,
-    this.title,
-    this.actions,
-    super.key,
-  });
+  const Header({this.centerTitle = false, this.title, this.actions, super.key});
 
-  factory Header.logo({List<Widget>? actions}) => Header(
-        title: const Logo(height: 24),
-        actions: actions,
-      );
+  factory Header.logo({List<Widget>? actions}) =>
+      Header(title: const Logo(height: 24), actions: actions);
 
-  factory Header.labeled({
-    required String label,
-    bool centerTitle = true,
-    List<Widget>? actions,
-  }) =>
-      Header(
-        title: Text(label),
-        actions: actions,
-        centerTitle: centerTitle,
-      );
+  factory Header.labeled({required String label, bool centerTitle = true, List<Widget>? actions}) =>
+      Header(title: Text(label), actions: actions, centerTitle: centerTitle);
 
   final Widget? title;
   final bool centerTitle;
@@ -61,9 +46,9 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-        icon: const Icon(UntitledUI.arrow_narrow_left),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      );
+    icon: const Icon(UntitledUI.arrow_narrow_left),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
 }

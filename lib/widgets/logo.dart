@@ -4,12 +4,7 @@ import 'package:mysterium_vpn_design/utils/assets.dart';
 import 'package:mysterium_vpn_design/utils/constants.dart';
 
 class Logo extends StatelessWidget {
-  const Logo({
-    this.width,
-    this.height,
-    this.color,
-    super.key,
-  });
+  const Logo({this.width, this.height, this.color, super.key});
 
   final double? width;
   final double? height;

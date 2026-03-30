@@ -28,6 +28,5 @@ class Radius extends material.ThemeExtension<Radius> {
   material.ThemeExtension<Radius> lerp(
     covariant material.ThemeExtension<Radius>? other,
     double t,
-  ) =>
-      this;
+  ) => this;
 }

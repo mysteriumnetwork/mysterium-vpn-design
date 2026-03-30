@@ -16,9 +16,9 @@ class MaterialWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Material(
-        color: color,
-        clipBehavior: clipBehavior,
-        shape: RoundedRectangleBorder(borderRadius: borderRadius),
-        child: child,
-      );
+    color: color,
+    clipBehavior: clipBehavior,
+    shape: RoundedRectangleBorder(borderRadius: borderRadius),
+    child: child,
+  );
 }

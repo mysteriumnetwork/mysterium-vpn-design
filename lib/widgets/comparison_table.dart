@@ -36,9 +36,7 @@ class ComparisonTable<K> extends StatelessWidget {
         right: BorderSide(color: palette.borderPrimary),
       ),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
-      columnWidths: const {
-        0: FlexColumnWidth(1.75),
-      },
+      columnWidths: const {0: FlexColumnWidth(1.75)},
       children: [
         _Header(
           headerIndexColumn: headerIndexColumn,
@@ -59,10 +57,7 @@ class ComparisonTable<K> extends StatelessWidget {
     );
 
     if (isDesktop) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: table,
-      );
+      return Padding(padding: const EdgeInsets.symmetric(horizontal: 24), child: table);
     }
 
     return table;
@@ -73,31 +68,22 @@ class _Header extends TableRow {
   _Header({
     required Widget? headerIndexColumn,
     required Map<dynamic, String> headerColumns,
-    EdgeInsets padding = const EdgeInsets.only(
-      left: 16,
-      right: 16,
-      top: 24,
-      bottom: 16,
-    ),
+    EdgeInsets padding = const EdgeInsets.only(left: 16, right: 16, top: 24, bottom: 16),
     TextStyle? textStyle,
   }) : super(
-          children: [
-            _Cell(
-              padding: padding,
-              alignment: Alignment.centerLeft,
-              child: headerIndexColumn ?? const SizedBox.shrink(),
-            ),
-            for (final column in headerColumns.values)
-              _Cell(
-                padding: padding,
-                child: Text(
-                  column,
-                  style: textStyle,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-          ],
-        );
+         children: [
+           _Cell(
+             padding: padding,
+             alignment: Alignment.centerLeft,
+             child: headerIndexColumn ?? const SizedBox.shrink(),
+           ),
+           for (final column in headerColumns.values)
+             _Cell(
+               padding: padding,
+               child: Text(column, style: textStyle, textAlign: TextAlign.center),
+             ),
+         ],
+       );
 }
 
 class _FeatureRow<K> extends TableRow {
@@ -109,40 +95,38 @@ class _FeatureRow<K> extends TableRow {
     Color? iconFalseColor,
     TextStyle? textStyle,
   }) : super(
-          decoration: BoxDecoration(color: color),
-          children: [
-            _Cell(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                spacing: 6,
-                children: [
-                  Expanded(child: Text(feature.label, style: textStyle)),
-                  if (feature.description != null) TooltipIcon(message: feature.description!),
-                ],
-              ),
-            ),
-            ...keys
-                .map(
-                  (key) => switch (feature.values[key]) {
-                    final ComparisonText text => Text(
-                        text.value,
-                        style: textStyle,
-                        textAlign: TextAlign.center,
-                      ),
-                    final ComparisonAvailable available => Icon(
-                        available.value ? UntitledUI.check_circle : UntitledUI.x_close,
-                        size: 16,
-                        color: available.value ? iconTrueColor : iconFalseColor,
-                      ),
-                    final ComparisonWidget widget => widget.value,
-                    null => const SizedBox.shrink(),
-                  },
-                )
-                .map(
-                  (widget) => _Cell(child: widget),
-                ),
-          ],
-        );
+         decoration: BoxDecoration(color: color),
+         children: [
+           _Cell(
+             alignment: Alignment.centerLeft,
+             child: Row(
+               spacing: 6,
+               children: [
+                 Expanded(child: Text(feature.label, style: textStyle)),
+                 if (feature.description != null) TooltipIcon(message: feature.description!),
+               ],
+             ),
+           ),
+           ...keys
+               .map(
+                 (key) => switch (feature.values[key]) {
+                   final ComparisonText text => Text(
+                     text.value,
+                     style: textStyle,
+                     textAlign: TextAlign.center,
+                   ),
+                   final ComparisonAvailable available => Icon(
+                     available.value ? UntitledUI.check_circle : UntitledUI.x_close,
+                     size: 16,
+                     color: available.value ? iconTrueColor : iconFalseColor,
+                   ),
+                   final ComparisonWidget widget => widget.value,
+                   null => const SizedBox.shrink(),
+                 },
+               )
+               .map((widget) => _Cell(child: widget)),
+         ],
+       );
 }
 
 class _Cell extends StatelessWidget {
@@ -158,10 +142,7 @@ class _Cell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-        padding: padding,
-        child: Align(
-          alignment: alignment,
-          child: child,
-        ),
-      );
+    padding: padding,
+    child: Align(alignment: alignment, child: child),
+  );
 }

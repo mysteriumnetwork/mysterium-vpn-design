@@ -69,13 +69,12 @@ Widget _buildButton(BuildContext context, Button Function(_ButtonArgs) buttonBui
   ));
 }
 
-typedef _ButtonArgs =
-    ({
-      bool isDisabled,
-      bool isLoading,
-      String? loadingText,
-      bool showLeading,
-      bool showTrailing,
-      String buttonText,
-      ButtonSize size,
-    });
+typedef _ButtonArgs = ({
+  bool isDisabled,
+  bool isLoading,
+  String? loadingText,
+  bool showLeading,
+  bool showTrailing,
+  String buttonText,
+  ButtonSize size,
+});

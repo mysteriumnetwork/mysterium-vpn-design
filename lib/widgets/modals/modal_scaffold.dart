@@ -27,36 +27,33 @@ class ModalScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: appbar ?? ModalAppbar(onModalClose: onModalClose, showCloseButton: showCloseButton),
-        body: _Gradient(
-          showGradient: showGradient,
-          child: Builder(
-            builder: (context) {
-              if (autoApplyPadding) {
-                return ModalPadding(
-                  add: appbar is ModalAppbar
-                      ? EdgeInsets.only(top: appbar!.preferredSize.height)
-                      : EdgeInsets.zero,
-                  child: body,
-                );
-              }
-              return body;
-            },
-          ),
-        ),
-        backgroundColor: Theme.of(context).palette.bgPopover,
-        extendBodyBehindAppBar: true,
-        primary: false,
-        resizeToAvoidBottomInset: false,
-        bottomNavigationBar: footer,
-      );
+    appBar: appbar ?? ModalAppbar(onModalClose: onModalClose, showCloseButton: showCloseButton),
+    body: _Gradient(
+      showGradient: showGradient,
+      child: Builder(
+        builder: (context) {
+          if (autoApplyPadding) {
+            return ModalPadding(
+              add: appbar is ModalAppbar
+                  ? EdgeInsets.only(top: appbar!.preferredSize.height)
+                  : EdgeInsets.zero,
+              child: body,
+            );
+          }
+          return body;
+        },
+      ),
+    ),
+    backgroundColor: Theme.of(context).palette.bgPopover,
+    extendBodyBehindAppBar: true,
+    primary: false,
+    resizeToAvoidBottomInset: false,
+    bottomNavigationBar: footer,
+  );
 }
 
 class _Gradient extends StatefulWidget {
-  const _Gradient({
-    required this.child,
-    required this.showGradient,
-  });
+  const _Gradient({required this.child, required this.showGradient});
 
   final Widget child;
   final bool showGradient;
@@ -124,11 +121,7 @@ class _GradientState extends State<_Gradient> {
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 stops: const [0.0, 0.4, 1.0],
-                                colors: [
-                                  gradientColor1,
-                                  gradientColor1,
-                                  gradientColor2,
-                                ],
+                                colors: [gradientColor1, gradientColor1, gradientColor2],
                               ),
                             ),
                             child: const SizedBox.expand(),

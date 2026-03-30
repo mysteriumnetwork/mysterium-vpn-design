@@ -29,56 +29,41 @@ class Badge extends StatelessWidget {
         text,
         maxLines: 1,
         textAlign: TextAlign.center,
-        textHeightBehavior: const TextHeightBehavior(
-          applyHeightToFirstAscent: false,
-        ),
+        textHeightBehavior: const TextHeightBehavior(applyHeightToFirstAscent: false),
         style: _getTextStyle(theme.textStyles).copyWith(color: _getTextColor(palette)),
       ),
     );
   }
 
   TextStyle _getTextStyle(TextStyles textStyles) => switch (size) {
-        BadgeSize.small => textStyles.textXs.medium,
-        BadgeSize.medium => textStyles.textSm.medium,
-      };
+    BadgeSize.small => textStyles.textXs.medium,
+    BadgeSize.medium => textStyles.textSm.medium,
+  };
 
   EdgeInsets _getPadding(Spacing spacing) => switch (size) {
-        BadgeSize.small => EdgeInsets.symmetric(
-            horizontal: spacing.ms,
-            vertical: spacing.xxs,
-          ),
-        BadgeSize.medium => EdgeInsets.symmetric(
-            horizontal: spacing.ms,
-            vertical: spacing.xxs,
-          ),
-      };
+    BadgeSize.small => EdgeInsets.symmetric(horizontal: spacing.ms, vertical: spacing.xxs),
+    BadgeSize.medium => EdgeInsets.symmetric(horizontal: spacing.ms, vertical: spacing.xxs),
+  };
 
   Color _getBackgroundColor(Palette palette) => switch (type) {
-        BadgeType.green => Palette.success.shade700,
-        BadgeType.greenSecondary => palette.bgSuccessTertiary,
-        _ => palette.bgSecondary,
-      };
+    BadgeType.green => Palette.success.shade700,
+    BadgeType.greenSecondary => palette.bgSuccessTertiary,
+    _ => palette.bgSecondary,
+  };
 
   Color _getTextColor(Palette palette) => switch (type) {
-        BadgeType.green => Palette.success.shade50,
-        BadgeType.greenSecondary => palette.textSuccessTertiary,
-        _ => palette.textPrimary,
-      };
+    BadgeType.green => Palette.success.shade50,
+    BadgeType.greenSecondary => palette.textSuccessTertiary,
+    _ => palette.textPrimary,
+  };
 
   Color _getBorderColor(Palette palette) => switch (type) {
-        BadgeType.green => Palette.success.shade700,
-        BadgeType.greenSecondary => palette.borderSuccessTertiary,
-        _ => palette.borderPrimary,
-      };
+    BadgeType.green => Palette.success.shade700,
+    BadgeType.greenSecondary => palette.borderSuccessTertiary,
+    _ => palette.borderPrimary,
+  };
 }
 
-enum BadgeType {
-  neutral,
-  green,
-  greenSecondary;
-}
+enum BadgeType { neutral, green, greenSecondary }
 
-enum BadgeSize {
-  small,
-  medium;
-}
+enum BadgeSize { small, medium }

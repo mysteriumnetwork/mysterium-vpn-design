@@ -1,6 +1,7 @@
 export 'badge.dart';
 export 'button.dart';
 export 'comparison_table.dart';
+export 'connection_bar.dart';
 export 'decorated_icon.dart';
 export 'header.dart';
 export 'logo.dart';

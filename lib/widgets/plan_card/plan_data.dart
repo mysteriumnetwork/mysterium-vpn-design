@@ -53,19 +53,19 @@ class PlanData {
 
   @override
   int get hashCode => Object.hash(
-        name,
-        fullPriceLabel,
-        fullPrice,
-        periodLabel,
-        perMonth,
-        discountedLabel,
-        monthlyFullPrice,
-        monthlyDiscountedPrice,
-        promoBadge,
-        bestValueBadge,
-        icon,
-        isOffer,
-      );
+    name,
+    fullPriceLabel,
+    fullPrice,
+    periodLabel,
+    perMonth,
+    discountedLabel,
+    monthlyFullPrice,
+    monthlyDiscountedPrice,
+    promoBadge,
+    bestValueBadge,
+    icon,
+    isOffer,
+  );
 
   @override
   String toString() =>

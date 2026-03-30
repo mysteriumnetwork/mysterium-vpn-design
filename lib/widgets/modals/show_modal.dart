@@ -9,35 +9,28 @@ FutureOr<T?> showModal<T>(
   ScreenType? screenType,
   bool allowDismiss = true,
   bool useSafeArea = false,
-}) async =>
-    await showDialog<T>(
-      context: context,
-      barrierDismissible: allowDismiss,
-      useSafeArea: useSafeArea,
-      builder: (ctx) => Builder(
-        builder: (context) {
-          final theme = Theme.of(context);
-          return Theme(
-            data: theme.isDesignSystem
-                ? theme
-                : switch (theme.brightness) {
-                    Brightness.dark => DesignSystem.darkTheme,
-                    Brightness.light => DesignSystem.lightTheme,
-                  },
-            child: _AdaptiveModal(
-              screenType: screenType,
-              child: builder(ctx),
-            ),
-          );
-        },
-      ),
-    );
+}) async => await showDialog<T>(
+  context: context,
+  barrierDismissible: allowDismiss,
+  useSafeArea: useSafeArea,
+  builder: (ctx) => Builder(
+    builder: (context) {
+      final theme = Theme.of(context);
+      return Theme(
+        data: theme.isDesignSystem
+            ? theme
+            : switch (theme.brightness) {
+                Brightness.dark => DesignSystem.darkTheme,
+                Brightness.light => DesignSystem.lightTheme,
+              },
+        child: _AdaptiveModal(screenType: screenType, child: builder(ctx)),
+      );
+    },
+  ),
+);
 
 class _AdaptiveModal extends StatelessWidget {
-  const _AdaptiveModal({
-    required this.child,
-    required this.screenType,
-  });
+  const _AdaptiveModal({required this.child, required this.screenType});
 
   final Widget child;
   final ScreenType? screenType;
@@ -78,10 +71,7 @@ class _AdaptiveModal extends StatelessWidget {
                 ),
               ],
             ),
-            child: ClipRRect(
-              borderRadius: BorderRadius.all(theme.radius.xl),
-              child: child,
-            ),
+            child: ClipRRect(borderRadius: BorderRadius.all(theme.radius.xl), child: child),
           ),
         ),
       ),

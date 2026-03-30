@@ -22,12 +22,7 @@ class _PlanContainer extends StatelessWidget {
       fit: StackFit.passthrough,
       children: [
         if (bestValueBadge != null && data.isOffer)
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: _PlanBestValueBanner(text: bestValueBadge),
-          ),
+          Positioned(top: 0, left: 0, right: 0, child: _PlanBestValueBanner(text: bestValueBadge)),
         Padding(
           padding: EdgeInsets.only(top: (bestValueBadge != null && data.isOffer) ? 27 : 0),
           child: RawMaterialButton(
@@ -40,8 +35,9 @@ class _PlanContainer extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
               side: BorderSide(
-                color:
-                    isHighlighted ? theme.palette.borderBrandPrimary : theme.palette.borderPrimary,
+                color: isHighlighted
+                    ? theme.palette.borderBrandPrimary
+                    : theme.palette.borderPrimary,
                 width: isHighlighted ? 3 : 1,
               ),
             ),
