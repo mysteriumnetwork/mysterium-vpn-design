@@ -55,6 +55,7 @@ class ButtonDecoration {
   const ButtonDecoration({
     this.decorationColor,
     this.foregroundColor,
+    this.borderColor,
     this.textStyle,
     this.minimumSize,
     this.padding,
@@ -62,13 +63,18 @@ class ButtonDecoration {
 
   final Color? decorationColor;
   final Color? foregroundColor;
+
+  /// Override the border color for [ButtonSecondary]. Has no effect on
+  /// [ButtonPrimary] or [ButtonTertiary].
+  final Color? borderColor;
+
   final TextStyle? textStyle;
   final Size? minimumSize;
   final EdgeInsets? padding;
 
   @override
   String toString() =>
-      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, textStyle: $textStyle, minimumSize: $minimumSize, padding: $padding)';
+      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, borderColor: $borderColor, textStyle: $textStyle, minimumSize: $minimumSize, padding: $padding)';
 
   @override
   bool operator ==(Object other) {
@@ -78,29 +84,27 @@ class ButtonDecoration {
     return other is ButtonDecoration &&
         other.decorationColor == decorationColor &&
         other.foregroundColor == foregroundColor &&
+        other.borderColor == borderColor &&
         other.textStyle == textStyle &&
         other.minimumSize == minimumSize &&
         other.padding == padding;
   }
 
   @override
-  int get hashCode => Object.hash(
-    decorationColor,
-    foregroundColor,
-    textStyle,
-    minimumSize,
-    padding,
-  );
+  int get hashCode =>
+      Object.hash(decorationColor, foregroundColor, borderColor, textStyle, minimumSize, padding);
 
   ButtonDecoration copyWith({
     Color? decorationColor,
     Color? foregroundColor,
+    Color? borderColor,
     TextStyle? textStyle,
     Size? minimumSize,
     EdgeInsets? padding,
   }) => ButtonDecoration(
     decorationColor: decorationColor ?? this.decorationColor,
     foregroundColor: foregroundColor ?? this.foregroundColor,
+    borderColor: borderColor ?? this.borderColor,
     textStyle: textStyle ?? this.textStyle,
     minimumSize: minimumSize ?? this.minimumSize,
     padding: padding ?? this.padding,
@@ -180,6 +184,7 @@ class ButtonSecondary extends Button {
         backgroundColor: decoration.decorationColor,
         foregroundColor: decoration.foregroundColor,
         iconColor: decoration.foregroundColor,
+        side: decoration.borderColor != null ? BorderSide(color: decoration.borderColor!) : null,
         minimumSize:
             decoration.minimumSize ??
             switch (size) {
@@ -279,18 +284,9 @@ class _Child extends StatelessWidget {
     padding:
         padding ??
         switch (size) {
-          ButtonSize.small => const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 8,
-          ),
-          ButtonSize.medium => const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 10,
-          ),
-          ButtonSize.large => const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 12,
-          ),
+          ButtonSize.small => const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          ButtonSize.medium => const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          ButtonSize.large => const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         },
     child: Row(
       mainAxisSize: MainAxisSize.min,
@@ -302,8 +298,7 @@ class _Child extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         if (leading != null && loading == null) leading!,
-        if (loading != null)
-          _LoadingIndicator(color: IconTheme.of(context).color),
+        if (loading != null) _LoadingIndicator(color: IconTheme.of(context).color),
         Flexible(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 2),
@@ -327,11 +322,7 @@ class _LoadingIndicator extends StatelessWidget {
     const radius = 16 / 2;
     return Stack(
       children: [
-        CupertinoActivityIndicator(
-          color: color,
-          radius: radius,
-          animating: false,
-        ),
+        CupertinoActivityIndicator(color: color, radius: radius, animating: false),
         CupertinoActivityIndicator(color: color, radius: radius),
       ],
     );

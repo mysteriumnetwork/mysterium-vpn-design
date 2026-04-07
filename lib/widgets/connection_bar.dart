@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-enum BarStatus { connected, disconnected, gettingIp }
+enum BarStatus { connected, disconnected, gettingIp, disconnecting, connecting }
 
 class ConnectionBar extends StatefulWidget {
   const ConnectionBar({
@@ -31,6 +30,8 @@ class _ConnectionBarState extends State<ConnectionBar> with SingleTickerProvider
     BarStatus.connected => Palette.success.shade700,
     BarStatus.disconnected => Palette.error.shade700,
     BarStatus.gettingIp => Palette.warning.shade400,
+    BarStatus.disconnecting => Palette.warning.shade400,
+    BarStatus.connecting => Palette.warning.shade400,
   };
 
   @override
@@ -115,13 +116,23 @@ class _ConnectionBarState extends State<ConnectionBar> with SingleTickerProvider
     ),
     BarStatus.gettingIp => _Header(
       label: widget.label,
-      icon: SpinKitSpinningLines(color: Palette.grayLight.shade800, size: 16),
+      icon: LoadingIndicator(color: Palette.grayLight.shade800, size: 16),
       textColor: Palette.grayLight.shade800,
     ),
     BarStatus.connected => _Header(
       label: widget.label,
       icon: const Icon(UntitledUI.lock_03, size: 16, color: Palette.white),
       textColor: Palette.white,
+    ),
+    BarStatus.disconnecting => _Header(
+      label: widget.label,
+      icon: LoadingIndicator(color: Palette.grayLight.shade800, size: 16),
+      textColor: Palette.grayLight.shade800,
+    ),
+    BarStatus.connecting => _Header(
+      label: widget.label,
+      icon: LoadingIndicator(color: Palette.grayLight.shade800, size: 16),
+      textColor: Palette.grayLight.shade800,
     ),
   };
 }

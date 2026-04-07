@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/tooltip_icon.dart';
 
 part 'comparison_table/comparison_feature.dart';
 part 'comparison_table/comparison_value.dart';
