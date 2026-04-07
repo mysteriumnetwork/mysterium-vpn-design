@@ -49,7 +49,7 @@ class WidgetbookApp extends StatelessWidget {
               return ColoredBox(color: theme.palette.bgTertiary, child: child);
             },
           ),
-          AlignmentAddon(),
+          TextScaleAddon(),
           ViewportAddon([
             IosViewports.iPhoneSE,
             IosViewports.iPhone12,
@@ -63,6 +63,7 @@ class WidgetbookApp extends StatelessWidget {
             AndroidViewports.samsungGalaxyS20,
             AndroidViewports.samsungGalaxyA50,
           ]),
+          AlignmentAddon(),
           BuilderAddon(
             name: 'ScreenUtil',
             builder: (context, child) => ScreenUtilInit(
@@ -71,6 +72,13 @@ class WidgetbookApp extends StatelessWidget {
               splitScreenMode: true,
               useInheritedMediaQuery: true,
               builder: (context, child) => child!,
+              child: child,
+            ),
+          ),
+          BuilderAddon(
+            name: 'Bounds',
+            builder: (context, child) => DecoratedBox(
+              decoration: BoxDecoration(border: Border.all(color: Colors.white)),
               child: child,
             ),
           ),

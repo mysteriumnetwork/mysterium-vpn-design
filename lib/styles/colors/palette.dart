@@ -202,6 +202,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color borderError;
   abstract final Color borderTabs;
   abstract final Color borderBrandPrimary;
+  abstract final Color borderBrandSecondary;
   abstract final Color borderSuccessTertiary;
 
   ///
@@ -219,7 +220,16 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Background Colors
   ///
   abstract final Color bgPrimary;
+
+  /// Figma: bg-primary_hover — card background on pointer hover.
+  /// Light: GrayLight/50 (#FAFAFA). Dark: BrandPurple/700 (#4B2E7A).
+  abstract final Color bgPrimaryHover;
+
   abstract final Color bgSecondary;
+
+  /// Figma: bg-secondary_disabled — card background in disabled state.
+  /// Light: GrayLight/200 (#E9EAEB). Dark: GrayPurple/800 (#37304F).
+  abstract final Color bgSecondaryDisabled;
   abstract final Color bgSecondarySelected;
   abstract final Color bgTertiary;
   abstract final Color bgQuaternary;
@@ -232,6 +242,24 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgPopover;
   abstract final Color bgSuccessTertiary;
   abstract final Color tooltipBackground;
+  abstract final Color bgSidePanel;
+  abstract final Color bgMapCountries;
+
+  /// Figma: Colors/Background/bg-main-ip-card — the background of the main IP
+  /// card. Light: Brand/900 (#5F1877), Dark: Brand/100 (#F9E8FF).
+  abstract final Color bgMainIpCard;
+
+  /// Figma: Colors/Background/bg-main-ip-preview — the background of the
+  /// new-IP preview bar. Light: BrandPurple/200 (#DDD3EE), Dark: BrandPurple/300 (#C1AEE0).
+  abstract final Color bgMainIpPreview;
+
+  /// Figma: Colors/Text/text-ip-card-title — primary text inside the IP card.
+  /// Light: white (#FFFFFF), Dark: GrayLight/800 (#252B37).
+  abstract final Color textIpCardTitle;
+
+  /// Figma: Colors/Text/text-ip-card-subtitle — secondary text inside the IP card.
+  /// Light: white 80%, Dark: GrayLight/600 (#535862).
+  abstract final Color textIpCardSubtitle;
 
   ///
   /// Shadow Colors
@@ -253,6 +281,8 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color shadow3xl02;
   abstract final Color shadowSkeuomorphicInner;
   abstract final Color shadowSkeuomorphicOuter;
+
+  abstract final Color barrierColor;
 
   abstract final ColorScheme materialColors;
 
@@ -279,7 +309,7 @@ class PaletteDark extends Palette {
   Color get textPrimarySelected => Palette.brand.shade300;
 
   @override
-  Color get textSecondary => gray.shade300;
+  Color get textSecondary => gray.shade700;
 
   @override
   Color get textTertiary => Palette.grayDarkAlpha.shade400;
@@ -339,6 +369,9 @@ class PaletteDark extends Palette {
   Color get borderBrandPrimary => Palette.brand.shade400;
 
   @override
+  Color get borderBrandSecondary => Palette.grayPurple.shade400;
+
+  @override
   Color get borderSuccessTertiary => Palette.success.shade300;
 
   ///
@@ -370,6 +403,13 @@ class PaletteDark extends Palette {
   ///
   @override
   Color get bgPrimary => Palette.brandPurple.shade800;
+
+  @override
+  @override
+  Color get bgPrimaryHover => Palette.brandPurple.shade700;
+
+  @override
+  Color get bgSecondaryDisabled => Palette.grayPurple.shade800;
 
   @override
   Color get bgSecondary => Palette.brandPurple.shade900;
@@ -409,6 +449,24 @@ class PaletteDark extends Palette {
 
   @override
   Color get tooltipBackground => Palette.brandPurple.shade25;
+
+  @override
+  Color get bgMainIpCard => Palette.brand.shade100;
+
+  @override
+  Color get bgMainIpPreview => Palette.brandPurple.shade300;
+
+  @override
+  Color get textIpCardTitle => Palette.grayLight.shade800;
+
+  @override
+  Color get textIpCardSubtitle => Palette.grayLight.shade600;
+
+  @override
+  Color get bgSidePanel => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgMapCountries => Palette.brandPurple.shade800;
 
   ///
   ///  Shadow Colors
@@ -465,6 +523,9 @@ class PaletteDark extends Palette {
   Color get shadowSkeuomorphicOuter => Palette.grayDark.withValues(alpha: .18);
 
   @override
+  Color get barrierColor => Palette.grayDark.shade950.withValues(alpha: 0.5);
+
+  @override
   ColorScheme get materialColors => ColorScheme.dark(
     primary: Palette.brand.shade500,
     onPrimary: textPrimary,
@@ -498,7 +559,7 @@ class PaletteLight extends Palette {
   Color get textPrimarySelected => Palette.brand.shade600;
 
   @override
-  Color get textSecondary => gray.shade700;
+  Color get textSecondary => gray.shade600;
 
   @override
   Color get textTertiary => gray.shade500;
@@ -558,6 +619,9 @@ class PaletteLight extends Palette {
   Color get borderBrandPrimary => Palette.brand.shade400;
 
   @override
+  Color get borderBrandSecondary => Palette.grayPurple.shade400;
+
+  @override
   Color get borderSuccessTertiary => Palette.success.shade700;
 
   ///
@@ -589,6 +653,13 @@ class PaletteLight extends Palette {
   ///
   @override
   Color get bgPrimary => Palette.white;
+
+  @override
+  @override
+  Color get bgPrimaryHover => Palette.grayLight.shade50;
+
+  @override
+  Color get bgSecondaryDisabled => Palette.grayLight.shade200;
 
   @override
   Color get bgSecondary => gray.shade100;
@@ -628,6 +699,24 @@ class PaletteLight extends Palette {
 
   @override
   Color get tooltipBackground => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgMainIpCard => Palette.brand.shade900;
+
+  @override
+  Color get bgMainIpPreview => Palette.brandPurple.shade200;
+
+  @override
+  Color get textIpCardTitle => Palette.white;
+
+  @override
+  Color get textIpCardSubtitle => Palette.white.withValues(alpha: 0.8);
+
+  @override
+  Color get bgSidePanel => Palette.grayPurple.shade50;
+
+  @override
+  Color get bgMapCountries => Palette.grayPurple.shade300;
 
   ///
   /// Shadow Colors
@@ -682,6 +771,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get shadowSkeuomorphicOuter => Palette.grayLight.shade950.withValues(alpha: 0.18);
+
+  @override
+  Color get barrierColor => Palette.grayLight.shade950.withValues(alpha: 0.5);
 
   @override
   ColorScheme get materialColors => ColorScheme.light(

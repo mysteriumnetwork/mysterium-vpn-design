@@ -17,6 +17,8 @@ Widget buildConnectionBar(BuildContext context) {
       BarStatus.connected => 'Connected',
       BarStatus.disconnected => 'Disconnected',
       BarStatus.gettingIp => 'Getting IP address',
+      BarStatus.disconnecting => 'Disconnecting',
+      BarStatus.connecting => 'Connecting',
     },
   );
   final killSwitchLabel = context.knobs.string(
