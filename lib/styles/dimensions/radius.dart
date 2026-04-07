@@ -25,8 +25,7 @@ class Radius extends material.ThemeExtension<Radius> {
   material.Radius get full => const material.Radius.circular(9999);
 
   /// Creates a custom circular radius with the given [value].
-  static material.Radius custom(double value) =>
-      material.Radius.circular(value);
+  static material.Radius custom(double value) => material.Radius.circular(value);
 
   @override
   material.ThemeExtension<Radius> copyWith() => this;
