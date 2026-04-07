@@ -13,7 +13,9 @@ sealed class DesignSystem {
     final brightness = switch (palette) {
       PaletteLight _ => Brightness.light,
       PaletteDark _ => Brightness.dark,
-      _ => throw UnimplementedError('Unknown palette type: ${palette.runtimeType}'),
+      _ => throw UnimplementedError(
+        'Unknown palette type: ${palette.runtimeType}',
+      ),
     };
     final textStyles = TextStyles(color: palette.textPrimary);
     const radius = Radius();
@@ -27,7 +29,9 @@ sealed class DesignSystem {
         backgroundColor: palette.bgPrimary,
         surfaceTintColor: palette.bgPrimary,
         foregroundColor: palette.iconPrimary,
-        titleTextStyle: textStyles.textLg.medium.copyWith(color: palette.textPrimary),
+        titleTextStyle: textStyles.textLg.medium.copyWith(
+          color: palette.textPrimary,
+        ),
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
@@ -39,19 +43,25 @@ sealed class DesignSystem {
           disabledBackgroundColor: Palette.grayLight.shade100,
           disabledForegroundColor: Palette.grayLight.shade400,
           disabledIconColor: Palette.grayLight.shade400,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(radius.s),
+          ),
           iconSize: 16,
           textStyle: textStyles.textMd.semibold,
         ),
       ),
+
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
+          backgroundColor: Palette.white,
           foregroundColor: palette.textSecondary,
           iconColor: palette.textSecondary,
           side: BorderSide(color: palette.borderBrand),
           disabledForegroundColor: Palette.grayLight.shade400,
           disabledIconColor: Palette.grayLight.shade400,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(radius.s),
+          ),
           iconSize: 16,
           textStyle: textStyles.textMd.semibold,
         ),
@@ -61,10 +71,28 @@ sealed class DesignSystem {
           foregroundColor: palette.textBrandPrimary,
           disabledForegroundColor: Palette.grayLight.shade400,
           textStyle: textStyles.textMd.semibold,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(radius.s),
+          ),
           iconSize: 16,
           iconColor: palette.textBrandPrimary,
         ),
+      ),
+      checkboxTheme: CheckboxThemeData(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.kXs),
+        ),
+        side: BorderSide(color: palette.borderPrimary),
+        checkColor: WidgetStateProperty.all(palette.textWhite),
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return palette.bgBrandPrimary;
+          }
+          if (states.contains(WidgetState.disabled)) {
+            return palette.iconDisabled;
+          }
+          return palette.bgPrimary;
+        }),
       ),
       tabBarTheme: TabBarThemeData(
         indicatorSize: TabBarIndicatorSize.tab,
@@ -90,9 +118,14 @@ sealed class DesignSystem {
         verticalOffset: 12,
         triggerMode: TooltipTriggerMode.tap,
         enableFeedback: true,
-        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.s),
+        padding: EdgeInsets.symmetric(
+          horizontal: spacing.md,
+          vertical: spacing.s,
+        ),
         constraints: const BoxConstraints(maxWidth: 400),
-        textStyle: textStyles.textXs.medium.copyWith(color: palette.textTooltip),
+        textStyle: textStyles.textXs.medium.copyWith(
+          color: palette.textTooltip,
+        ),
         textAlign: TextAlign.center,
         showDuration: const Duration(seconds: 3),
         decoration: BoxDecoration(
@@ -114,7 +147,12 @@ sealed class DesignSystem {
           ],
         ),
       ),
-      extensions: <ThemeExtension<dynamic>>[palette, textStyles, spacing, radius],
+      extensions: <ThemeExtension<dynamic>>[
+        palette,
+        textStyles,
+        spacing,
+        radius,
+      ],
     );
   }
 }
