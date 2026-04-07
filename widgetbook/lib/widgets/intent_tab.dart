@@ -49,7 +49,7 @@ Widget buildIntentTabCarousel(BuildContext context) {
               IntentTab(icon: UntitledUI.flash, label: 'Best speed'),
               IntentTab(icon: UntitledUI.clock, label: 'Low latency'),
               IntentTab(icon: UntitledUI.marker_pin_04, label: 'Nearest location'),
-              IntentTab(icon: UntitledUI.shield_01, label: 'Max primacy'),
+              IntentTab(icon: UntitledUI.shield_01, label: 'Max privacy'),
               IntentTab(icon: UntitledUI.film_01, label: 'Streaming'),
               IntentTab(icon: UntitledUI.users_02, label: 'P2P'),
             ],

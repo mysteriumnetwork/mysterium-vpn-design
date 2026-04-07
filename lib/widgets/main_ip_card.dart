@@ -705,7 +705,7 @@ class _IconTap extends StatelessWidget {
   final String? tooltip;
   @override
   Widget build(BuildContext context) => CustomIconButton(
-    onPressed: onPressed ?? () {},
+    onPressed: onPressed,
     icon: Icon(icon, size: 24, color: iconColor),
     tooltip: tooltip,
   );

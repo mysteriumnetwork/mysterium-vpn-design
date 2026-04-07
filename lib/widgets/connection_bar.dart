@@ -21,7 +21,7 @@ class ConnectionBar extends StatefulWidget {
   State<ConnectionBar> createState() => _ConnectionBarState();
 }
 
-class _ConnectionBarState extends State<ConnectionBar> with SingleTickerProviderStateMixin {
+class _ConnectionBarState extends State<ConnectionBar> {
   bool _expanded = false;
 
   bool get _canExpand => widget.status == BarStatus.connected;

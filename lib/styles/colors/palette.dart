@@ -405,7 +405,6 @@ class PaletteDark extends Palette {
   Color get bgPrimary => Palette.brandPurple.shade800;
 
   @override
-  @override
   Color get bgPrimaryHover => Palette.brandPurple.shade700;
 
   @override
@@ -654,7 +653,6 @@ class PaletteLight extends Palette {
   @override
   Color get bgPrimary => Palette.white;
 
-  @override
   @override
   Color get bgPrimaryHover => Palette.grayLight.shade50;
 

@@ -22,15 +22,15 @@ class WidgetbookApp extends StatelessWidget {
 
     return ScreenTypeObserver(
       child: Widgetbook.material(
-        directories: directories
-          ..add(
-            WidgetbookComponent(
-              name: '$ScreenContainer',
-              useCases: [
-                WidgetbookUseCase(name: 'Default', builder: (context) => const ScreenContainer()),
-              ],
-            ),
+        directories: [
+          ...directories,
+          WidgetbookComponent(
+            name: '$ScreenContainer',
+            useCases: [
+              WidgetbookUseCase(name: 'Default', builder: (context) => const ScreenContainer()),
+            ],
           ),
+        ],
         lightTheme: lightTheme.data,
         darkTheme: darkTheme.data,
         addons: [

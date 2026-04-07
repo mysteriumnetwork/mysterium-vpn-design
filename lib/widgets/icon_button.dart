@@ -11,7 +11,7 @@ class CustomIconButton extends StatelessWidget {
     this.visualDensity,
     super.key,
   });
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Widget icon;
   final String? tooltip;
   final EdgeInsetsGeometry? padding;
