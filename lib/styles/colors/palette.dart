@@ -261,6 +261,8 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Light: white 80%, Dark: GrayLight/600 (#535862).
   abstract final Color textIpCardSubtitle;
 
+  abstract final Color bgMapPinIdle;
+
   ///
   /// Shadow Colors
   ///
@@ -466,6 +468,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgMapCountries => Palette.brandPurple.shade800;
+
+  @override
+  Color get bgMapPinIdle => Palette.brandPurple.shade500;
 
   ///
   ///  Shadow Colors
@@ -715,6 +720,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgMapCountries => Palette.grayPurple.shade300;
+
+  @override
+  Color get bgMapPinIdle => Palette.brandPurple.shade500;
 
   ///
   /// Shadow Colors

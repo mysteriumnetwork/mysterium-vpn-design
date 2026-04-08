@@ -14,7 +14,7 @@ const _kAnimPulsePurple = 'packages/mysterium_vpn_design/assets/animations/pulse
 /// Mobile: 32 px  |  Desktop: 40 px
 /// Desktop stays at 40 px so the Lottie inner dot (~11.6 px) visibly exceeds
 /// the 12 px idle fill (~10 px after border), preserving the grow-on-select feel.
-const _kActiveSizeMobile = 32.0;
+const _kActiveSizeMobile = 33.0;
 const _kActiveSizeDesktop = 40.0;
 
 /// Sizes for the inactive (dot) pin state.
@@ -96,8 +96,8 @@ class _InactivePin extends StatelessWidget {
       child: DecoratedBox(
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Palette.brand,
-          border: Border.all(color: Palette.brand.shade300),
+          color: Theme.of(context).palette.bgMapPinIdle,
+          border: Border.all(color: Palette.brandPurple.shade300),
         ),
       ),
     ),
@@ -125,10 +125,7 @@ class _ActivePin extends StatelessWidget {
     onPressed: onPressed,
     onDoubleTap: onDoubleTap,
     hitSize: Size.square(size),
-    child: SizedBox.square(
-      dimension: size,
-      child: Lottie.asset(animPath, repeat: true, fit: BoxFit.contain, alignment: Alignment.center),
-    ),
+    child: Lottie.asset(animPath, repeat: true, fit: BoxFit.contain, alignment: Alignment.center),
   );
 }
 
