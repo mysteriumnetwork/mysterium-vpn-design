@@ -43,9 +43,7 @@ class PromoBar extends StatelessWidget {
             Expanded(
               child: Text(
                 text,
-                style: theme.textStyles.textSm.semibold.copyWith(
-                  color: Palette.grayLight.shade800,
-                ),
+                style: theme.textStyles.textSm.semibold.copyWith(color: Palette.grayLight.shade800),
                 textAlign: TextAlign.center,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,

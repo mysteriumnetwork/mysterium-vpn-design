@@ -38,10 +38,7 @@ enum ScreenType implements Comparable<ScreenType> {
 
     return ScreenType.values
         .sortedByCompare((it) => it.breakpoint, (a, b) => b.compareTo(a))
-        .firstWhere(
-          (type) => deviceWidth >= type.breakpoint,
-          orElse: () => ScreenType.mobile,
-        );
+        .firstWhere((type) => deviceWidth >= type.breakpoint, orElse: () => ScreenType.mobile);
   }
 
   static FlutterView? flutterView([BuildContext? context]) {
@@ -76,10 +73,7 @@ enum ScreenType implements Comparable<ScreenType> {
 }
 
 class _ScreenTypeScope extends InheritedNotifier<ValueNotifier<ScreenType>> {
-  const _ScreenTypeScope({
-    required ValueNotifier<ScreenType> super.notifier,
-    required super.child,
-  });
+  const _ScreenTypeScope({required ValueNotifier<ScreenType> super.notifier, required super.child});
 
   static ValueNotifier<ScreenType>? maybeOf(BuildContext context) {
     final scope = context.dependOnInheritedWidgetOfExactType<_ScreenTypeScope>();

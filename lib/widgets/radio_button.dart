@@ -51,20 +51,14 @@ class RadioButton<T> extends StatelessWidget {
     );
   }
 
-  Color? _getBorderColor(
-    Palette palette,
-    bool selected,
-  ) {
+  Color? _getBorderColor(Palette palette, bool selected) {
     if (selected && enabled) {
       return null;
     }
     return palette.borderPrimary;
   }
 
-  Color? _getBackgroundColor(
-    Palette palette,
-    bool selected,
-  ) {
+  Color? _getBackgroundColor(Palette palette, bool selected) {
     if (!enabled) {
       return palette.bgInactive;
     }
@@ -74,10 +68,7 @@ class RadioButton<T> extends StatelessWidget {
     return null;
   }
 
-  Color? _getForegroundColor(
-    Palette palette,
-    bool selected,
-  ) {
+  Color? _getForegroundColor(Palette palette, bool selected) {
     if (!selected) {
       return null;
     }
@@ -103,26 +94,23 @@ class _Icon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Stack(
-        alignment: Alignment.center,
-        children: [
-          DecoratedBox(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: backgroundColor,
-              border: borderColor != null
-                  ? BoxBorder.fromBorderSide(BorderSide(color: borderColor!))
-                  : null,
-            ),
-            child: SizedBox.square(dimension: radius),
-          ),
-          if (foregroundColor != null)
-            DecoratedBox(
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: foregroundColor,
-              ),
-              child: SizedBox.square(dimension: radius * .4),
-            ),
-        ],
-      );
+    alignment: Alignment.center,
+    children: [
+      DecoratedBox(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: backgroundColor,
+          border: borderColor != null
+              ? BoxBorder.fromBorderSide(BorderSide(color: borderColor!))
+              : null,
+        ),
+        child: SizedBox.square(dimension: radius),
+      ),
+      if (foregroundColor != null)
+        DecoratedBox(
+          decoration: BoxDecoration(shape: BoxShape.circle, color: foregroundColor),
+          child: SizedBox.square(dimension: radius * .4),
+        ),
+    ],
+  );
 }

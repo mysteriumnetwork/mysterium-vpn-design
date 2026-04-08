@@ -2,28 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
 class DecoratedIcon extends StatelessWidget {
-  const DecoratedIcon({
-    required this.icon,
-    this.decoration = const IconDecoration(),
-    super.key,
-  });
+  const DecoratedIcon({required this.icon, this.decoration = const IconDecoration(), super.key});
 
   final IconData icon;
   final IconDecoration decoration;
 
   @override
   Widget build(BuildContext context) => Container(
-        padding: decoration.padding,
-        decoration: BoxDecoration(
-          color: decoration.backgroundColor,
-          borderRadius: decoration.borderRadius,
-        ),
-        child: Icon(
-          icon,
-          size: decoration.iconSize,
-          color: decoration.iconColor,
-        ),
-      );
+    padding: decoration.padding,
+    decoration: BoxDecoration(
+      color: decoration.backgroundColor,
+      borderRadius: decoration.borderRadius,
+    ),
+    child: Icon(icon, size: decoration.iconSize, color: decoration.iconColor),
+  );
 }
 
 @immutable

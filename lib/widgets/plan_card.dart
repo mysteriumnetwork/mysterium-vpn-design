@@ -6,11 +6,7 @@ part 'plan_card/plan_card_action.dart';
 part 'plan_card/plan_card_features.dart';
 part 'plan_card/plan_container.dart';
 
-enum PlanCardMode {
-  selectable,
-  highlight,
-  normal,
-}
+enum PlanCardMode { selectable, highlight, normal }
 
 class PlanCard<T> extends StatelessWidget {
   const PlanCard({
@@ -32,11 +28,11 @@ class PlanCard<T> extends StatelessWidget {
     this.mode = PlanCardMode.selectable,
     super.key,
   }) : footer = _PlanCardFeatures(
-          features: features,
-          viewMoreLabel: viewMoreLabel,
-          viewLessLabel: viewLessLabel,
-          isOffer: data.isOffer,
-        );
+         features: features,
+         viewMoreLabel: viewMoreLabel,
+         viewLessLabel: viewLessLabel,
+         isOffer: data.isOffer,
+       );
 
   PlanCard.actions({
     required this.data,
@@ -89,15 +85,8 @@ class PlanCard<T> extends StatelessWidget {
                 ),
               ],
             ),
-          _PlanPricing(
-            data: data,
-            showRadio: mode == PlanCardMode.selectable,
-            radioValue: value,
-          ),
-          if (footer != null) ...[
-            SizedBox(height: theme.spacing.s),
-            footer!,
-          ],
+          _PlanPricing(data: data, showRadio: mode == PlanCardMode.selectable, radioValue: value),
+          if (footer != null) ...[SizedBox(height: theme.spacing.s), footer!],
         ],
       ),
     );
@@ -112,11 +101,7 @@ class PlanCard<T> extends StatelessWidget {
 }
 
 class _PlanPricing extends StatelessWidget {
-  const _PlanPricing({
-    required this.data,
-    this.showRadio = false,
-    this.radioValue,
-  });
+  const _PlanPricing({required this.data, this.showRadio = false, this.radioValue});
 
   final PlanData data;
   final bool showRadio;
@@ -145,7 +130,7 @@ class _PlanPricing extends StatelessWidget {
                         decoration: IconDecoration(
                           backgroundColor: theme.palette.bgSecondarySelected,
                           padding: const EdgeInsets.all(8),
-                          borderRadius: BorderRadius.all(theme.radius.xs),
+                          borderRadius: BorderRadius.all(theme.radius.xxs),
                         ),
                       ),
                     Expanded(
@@ -210,20 +195,14 @@ class _PlanPricing extends StatelessWidget {
                   Text.rich(
                     TextSpan(
                       children: [
-                        TextSpan(
-                          text: data.fullPriceLabel,
-                          style: theme.textStyles.textMd.regular,
-                        ),
+                        TextSpan(text: data.fullPriceLabel, style: theme.textStyles.textMd.regular),
                         CharacterSpan.space(),
                         TextSpan(
                           text: data.fullPrice,
                           style: theme.textStyles.textLg.bold.copyWith(fontSize: 20),
                         ),
                         CharacterSpan.slash(),
-                        TextSpan(
-                          text: data.periodLabel,
-                          style: theme.textStyles.textMd.regular,
-                        ),
+                        TextSpan(text: data.periodLabel, style: theme.textStyles.textMd.regular),
                       ],
                     ),
                     maxLines: 1,
@@ -239,11 +218,7 @@ class _PlanPricing extends StatelessWidget {
                 width: 20,
                 height: 20,
                 child: Align(
-                  child: IgnorePointer(
-                    child: RadioButton(
-                      value: radioValue,
-                    ),
-                  ),
+                  child: IgnorePointer(child: RadioButton(value: radioValue)),
                 ),
               ),
           ],

@@ -29,10 +29,7 @@ class ModalHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (emblem != null) ...[
-          Align(
-            alignment: Alignment.topCenter,
-            child: emblem,
-          ),
+          Align(alignment: Alignment.topCenter, child: emblem),
           SizedBox(height: emblemSpacing),
         ],
         Text(
@@ -47,7 +44,8 @@ class ModalHeader extends StatelessWidget {
             description!,
             textAlign: TextAlign.center,
             maxLines: 2,
-            style: descriptionStyle ??
+            style:
+                descriptionStyle ??
                 theme.textStyles.textMd.regular.copyWith(color: theme.palette.textSecondary),
           ),
         ],

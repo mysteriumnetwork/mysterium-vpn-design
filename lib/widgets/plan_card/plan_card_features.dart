@@ -64,8 +64,9 @@ class _PlanCardFeaturesState extends State<_PlanCardFeatures> {
                 children: [
                   Text(
                     _expanded ? widget.viewLessLabel : widget.viewMoreLabel,
-                    style:
-                        theme.textStyles.textSm.regular.copyWith(color: theme.palette.textTertiary),
+                    style: theme.textStyles.textSm.regular.copyWith(
+                      color: theme.palette.textTertiary,
+                    ),
                   ),
                   Icon(
                     _expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
@@ -82,9 +83,7 @@ class _PlanCardFeaturesState extends State<_PlanCardFeatures> {
 }
 
 class _Row extends StatelessWidget {
-  const _Row({
-    required this.feature,
-  });
+  const _Row({required this.feature});
 
   final String feature;
 
@@ -94,11 +93,7 @@ class _Row extends StatelessWidget {
     return Row(
       spacing: theme.spacing.s,
       children: [
-        Icon(
-          UntitledUI.check_circle,
-          size: 16,
-          color: theme.palette.textTertiary,
-        ),
+        Icon(UntitledUI.check_circle, size: 16, color: theme.palette.textTertiary),
         Expanded(
           child: Text(
             feature,

@@ -16,21 +16,20 @@ class PaletteColor extends MaterialColor {
     required Color shade800,
     required Color shade900,
     required Color shade950,
-  }) =>
-      PaletteColor(shade500.toARGB32(), {
-        25: shade25,
-        50: shade50,
-        100: shade100,
-        200: shade200,
-        300: shade300,
-        400: shade400,
-        500: shade500,
-        600: shade600,
-        700: shade700,
-        800: shade800,
-        900: shade900,
-        950: shade950,
-      });
+  }) => PaletteColor(shade500.toARGB32(), {
+    25: shade25,
+    50: shade50,
+    100: shade100,
+    200: shade200,
+    300: shade300,
+    400: shade400,
+    500: shade500,
+    600: shade600,
+    700: shade700,
+    800: shade800,
+    900: shade900,
+    950: shade950,
+  });
 
   Color get shade25 => this[25]!;
 

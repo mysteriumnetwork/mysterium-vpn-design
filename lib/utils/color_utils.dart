@@ -19,10 +19,7 @@ extension ColorUtils on Color {
 
   String toHex() => '#${toARGB32().toRadixString(16).padLeft(8, '0').toUpperCase()}';
 
-  Color getForeground({
-    required Color onLight,
-    required Color onDark,
-  }) {
+  Color getForeground({required Color onLight, required Color onDark}) {
     final brightness = ThemeData.estimateBrightnessForColor(this);
     return switch (brightness) {
       Brightness.dark => onDark,

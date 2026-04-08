@@ -6,38 +6,68 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     this.centerTitle = false,
     this.title,
     this.actions,
+    this.backgroundColor,
+    this.automaticallyImplyLeading,
+    this.showBackButton,
     super.key,
   });
 
-  factory Header.logo({List<Widget>? actions}) => Header(
-        title: const Logo(height: 24),
-        actions: actions,
-      );
+  factory Header.logo({
+    List<Widget>? actions,
+    Color? backgroundColor,
+    bool? automaticallyImplyLeading,
+    bool? showBackButton,
+  }) => Header(
+    title: const Logo(height: 24),
+    actions: actions,
+    backgroundColor: backgroundColor,
+    automaticallyImplyLeading: automaticallyImplyLeading,
+    showBackButton: showBackButton,
+  );
 
   factory Header.labeled({
     required String label,
     bool centerTitle = true,
     List<Widget>? actions,
-  }) =>
-      Header(
-        title: Text(label),
-        actions: actions,
-        centerTitle: centerTitle,
-      );
+    Color? backgroundColor,
+    bool? automaticallyImplyLeading,
+    bool? showBackButton,
+  }) => Header(
+    title: Text(label),
+    actions: actions,
+    centerTitle: centerTitle,
+    backgroundColor: backgroundColor,
+    automaticallyImplyLeading: automaticallyImplyLeading,
+    showBackButton: showBackButton,
+  );
 
   final Widget? title;
   final bool centerTitle;
   final List<Widget>? actions;
+  final Color? backgroundColor;
+  final bool? automaticallyImplyLeading;
+  final bool? showBackButton;
 
   @override
   Widget build(BuildContext context) {
     final canGoBack = Navigator.of(context).canPop();
     final title = this.title ?? (canGoBack ? const _BackLabel() : null);
+    final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
+    final theme = Theme.of(context);
+    final resolvedBg =
+        backgroundColor ??
+        (isDesktop ? theme.palette.bgSidePanel : theme.palette.bgPrimary);
+    final horizontalPadding =
+        isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     return AppBar(
-      leading: canGoBack ? const _BackButton() : null,
+      leading: (showBackButton ?? canGoBack) ? const _BackButton() : null,
+      automaticallyImplyLeading: automaticallyImplyLeading ?? false,
       title: title,
       centerTitle: centerTitle,
+      titleSpacing: horizontalPadding,
       actions: actions,
+      backgroundColor: resolvedBg,
+      actionsPadding: EdgeInsets.symmetric(horizontal: horizontalPadding),
     );
   }
 
@@ -61,9 +91,9 @@ class _BackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-        icon: const Icon(UntitledUI.arrow_narrow_left),
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
-      );
+    icon: const Icon(UntitledUI.arrow_narrow_left),
+    onPressed: () {
+      Navigator.of(context).pop();
+    },
+  );
 }

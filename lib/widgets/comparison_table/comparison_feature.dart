@@ -2,11 +2,7 @@ part of '../comparison_table.dart';
 
 @immutable
 class ComparisonFeature<K> {
-  const ComparisonFeature({
-    required this.values,
-    required this.label,
-    this.description,
-  });
+  const ComparisonFeature({required this.values, required this.label, this.description});
 
   final String label;
   final String? description;

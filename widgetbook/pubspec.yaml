@@ -4,24 +4,25 @@ publish_to: 'none'
 version: 0.1.0
 
 environment:
-  sdk: ^3.9.2
-  flutter: 3.35.3
+  sdk: ">=3.9.0 <4.0.0"
+  flutter: 3.41.5
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_screenutil: 5.9.1
   mysterium_vpn_design:
     path: ../
-  widgetbook: ^3.20.2
-  widgetbook_annotation: ^3.9.0
+  widgetbook: 3.22.0
+  widgetbook_annotation: 3.11.0
 
 
 dev_dependencies:
-  build_runner: ^2.10.1
-  flutter_lints: ^5.0.0
+  build_runner: 2.13.1
+  flutter_lints: 6.0.0
   flutter_test:
     sdk: flutter
-  widgetbook_generator: ^3.20.1
+  widgetbook_generator: 3.22.0
 
 flutter:
   uses-material-design: true

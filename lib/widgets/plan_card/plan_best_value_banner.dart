@@ -28,9 +28,7 @@ class _PlanBestValueBanner extends StatelessWidget {
         child: Text(
           text,
           textAlign: TextAlign.center,
-          style: theme.textStyles.textXs.semibold.copyWith(
-            color: Palette.white,
-          ),
+          style: theme.textStyles.textXs.semibold.copyWith(color: Palette.white),
         ),
       ),
     );
