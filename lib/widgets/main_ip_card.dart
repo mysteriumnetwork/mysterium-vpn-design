@@ -157,7 +157,11 @@ class MainIpCard extends StatelessWidget {
           onConnect: onConnect,
         ),
       ),
-      MainIpCardLocationSelected(:final country, :final countryIcon, :final serviceQuality) =>
+      MainIpCardLocationSelected(
+        :final country,
+        :final countryIcon,
+        :final serviceQuality,
+      ) =>
         _CardShell(
           child: _LocationSelectedContent(
             country: country,
@@ -167,14 +171,19 @@ class MainIpCard extends StatelessWidget {
             onConnect: onConnect,
           ),
         ),
-      MainIpCardConnecting(:final country, :final countryIcon, :final serviceQuality) => _CardShell(
-        child: _ConnectingContent(
-          country: country,
-          countryIcon: countryIcon,
-          serviceQuality: serviceQuality,
-          connectingLabel: connectingLabel,
+      MainIpCardConnecting(
+        :final country,
+        :final countryIcon,
+        :final serviceQuality,
+      ) =>
+        _CardShell(
+          child: _ConnectingContent(
+            country: country,
+            countryIcon: countryIcon,
+            serviceQuality: serviceQuality,
+            connectingLabel: connectingLabel,
+          ),
         ),
-      ),
       MainIpCardConnected(
         :final country,
         :final countryIcon,
@@ -257,8 +266,12 @@ class MainIpCard extends StatelessWidget {
         ),
     };
 
+    final maxWidth = ScreenType.of(context) >= ScreenType.tablet
+        ? _cardMaxWidthDesktop
+        : _cardMaxWidthMobile;
+
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: _cardMaxWidth),
+      constraints: BoxConstraints(maxWidth: maxWidth),
       child: card,
     );
   }
@@ -266,7 +279,8 @@ class MainIpCard extends StatelessWidget {
 
 // ─── Layout constants ─────────────────────────────────────────────────────────
 
-const _cardMaxWidth = 480.0;
+const _cardMaxWidthMobile = 480.0;
+const _cardMaxWidthDesktop = 343.0;
 const _previewBarHeight = 80.0;
 const _previewBarContentOffset = 64.0;
 
@@ -282,7 +296,13 @@ class _CardShell extends StatelessWidget {
     decoration: BoxDecoration(
       color: Theme.of(context).palette.bgMainIpCard,
       borderRadius: const BorderRadius.all(Radius.kM),
-      boxShadow: const [BoxShadow(color: Color(0x0D0A0D12), blurRadius: 2, offset: Offset(0, 1))],
+      boxShadow: const [
+        BoxShadow(
+          color: Color(0x0D0A0D12),
+          blurRadius: 2,
+          offset: Offset(0, 1),
+        ),
+      ],
     ),
     child: Padding(padding: const EdgeInsets.all(16), child: child),
   );
@@ -323,7 +343,11 @@ class _NotConnectedContent extends StatelessWidget {
                 color: Palette.grayDarkAlpha.shade700,
                 shape: BoxShape.circle,
               ),
-              child: Icon(UntitledUI.zap_fast, size: 32, color: palette.textIpCardTitle),
+              child: Icon(
+                UntitledUI.zap_fast,
+                size: 32,
+                color: palette.textIpCardTitle,
+              ),
             ),
             Expanded(
               child: Column(
@@ -347,7 +371,11 @@ class _NotConnectedContent extends StatelessWidget {
             ),
           ],
         ),
-        ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
+        ButtonPrimary(
+          onPressed: onConnect,
+          size: ButtonSize.large,
+          child: Text(connectLabel),
+        ),
       ],
     );
   }
@@ -463,7 +491,11 @@ class _LocationSelectedContent extends StatelessWidget {
             ),
           ],
         ),
-        ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
+        ButtonPrimary(
+          onPressed: onConnect,
+          size: ButtonSize.large,
+          child: Text(connectLabel),
+        ),
       ],
     );
   }
@@ -561,7 +593,11 @@ class _ConnectedContent extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Container(width: 1, height: 16, color: palette.textIpCardSubtitle),
+                        Container(
+                          width: 1,
+                          height: 16,
+                          color: palette.textIpCardSubtitle,
+                        ),
                         Flexible(
                           child: Text(
                             serviceQuality,
@@ -581,11 +617,17 @@ class _ConnectedContent extends StatelessWidget {
               children: [
                 _IconTap(
                   icon: UntitledUI.refresh_cw_05,
-                  iconColor: isRefreshActive ? palette.textIpCardTitle : palette.textIpCardSubtitle,
+                  iconColor: isRefreshActive
+                      ? palette.textIpCardTitle
+                      : palette.textIpCardSubtitle,
                   onPressed: isRefreshActive ? onRefreshIp : null,
                   tooltip: refreshIpTooltip,
                 ),
-                Text('IP pool: $ipPoolCount', style: subtitleStyle, textAlign: TextAlign.right),
+                Text(
+                  'IP pool: $ipPoolCount',
+                  style: subtitleStyle,
+                  textAlign: TextAlign.right,
+                ),
               ],
             ),
           ],
@@ -610,7 +652,9 @@ class _ConnectedContent extends StatelessWidget {
             Expanded(
               child: Text(
                 connectionRatingLabel,
-                style: theme.textStyles.textSm.medium.copyWith(color: palette.textIpCardSubtitle),
+                style: theme.textStyles.textSm.medium.copyWith(
+                  color: palette.textIpCardSubtitle,
+                ),
               ),
             ),
             Row(
@@ -642,7 +686,11 @@ class _ConnectedContent extends StatelessWidget {
 // ─── Preview bar ──────────────────────────────────────────────────────────────
 
 class _PreviewBar extends StatelessWidget {
-  const _PreviewBar({required this.country, required this.countryIcon, this.onDismiss});
+  const _PreviewBar({
+    required this.country,
+    required this.countryIcon,
+    this.onDismiss,
+  });
 
   final String country;
   final Widget countryIcon;
@@ -654,7 +702,10 @@ class _PreviewBar extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Theme.of(context).palette.bgMainIpPreview,
-        borderRadius: const BorderRadius.only(topLeft: Radius.kM, topRight: Radius.kM),
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.kM,
+          topRight: Radius.kM,
+        ),
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
