@@ -55,10 +55,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
     final resolvedBg =
-        backgroundColor ??
-        (isDesktop ? theme.palette.bgSidePanel : theme.palette.bgPrimary);
-    final horizontalPadding =
-        isDesktop ? theme.spacing.xl3 : theme.spacing.md;
+        backgroundColor ?? (isDesktop ? theme.palette.bgSidePanel : theme.palette.bgPrimary);
+    final horizontalPadding = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     return AppBar(
       leading: (showBackButton ?? canGoBack) ? const _BackButton() : null,
       automaticallyImplyLeading: automaticallyImplyLeading ?? false,

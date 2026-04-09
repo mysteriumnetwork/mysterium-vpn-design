@@ -5,8 +5,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 abstract class Palette extends ThemeExtension<Palette> {
   const Palette();
 
-  factory Palette.of(BuildContext context) =>
-      Theme.of(context).extension<Palette>()!;
+  factory Palette.of(BuildContext context) => Theme.of(context).extension<Palette>()!;
 
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
@@ -294,10 +293,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   ThemeExtension<Palette> copyWith() => this;
 
   @override
-  ThemeExtension<Palette> lerp(
-    covariant ThemeExtension<Palette>? other,
-    double t,
-  ) => this;
+  ThemeExtension<Palette> lerp(covariant ThemeExtension<Palette>? other, double t) => this;
 }
 
 class PaletteDark extends Palette {
@@ -529,8 +525,7 @@ class PaletteDark extends Palette {
   Color get shadow3xl02 => Palette.transparent;
 
   @override
-  Color get shadowSkeuomorphicInner =>
-      Palette.grayDark.shade950.withValues(alpha: .05);
+  Color get shadowSkeuomorphicInner => Palette.grayDark.shade950.withValues(alpha: .05);
 
   @override
   Color get shadowSkeuomorphicOuter => Palette.grayDark.withValues(alpha: .18);
@@ -785,12 +780,10 @@ class PaletteLight extends Palette {
   Color get shadow3xl02 => Palette.grayLight.shade950.withValues(alpha: 0.04);
 
   @override
-  Color get shadowSkeuomorphicInner =>
-      Palette.grayLight.shade950.withValues(alpha: 0.05);
+  Color get shadowSkeuomorphicInner => Palette.grayLight.shade950.withValues(alpha: 0.05);
 
   @override
-  Color get shadowSkeuomorphicOuter =>
-      Palette.grayLight.shade950.withValues(alpha: 0.18);
+  Color get shadowSkeuomorphicOuter => Palette.grayLight.shade950.withValues(alpha: 0.18);
 
   @override
   Color get barrierColor => Palette.grayLight.shade950.withValues(alpha: 0.5);

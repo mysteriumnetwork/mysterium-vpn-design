@@ -5,10 +5,14 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 // ─── Animation asset paths ────────────────────────────────────────────────────
 
-const _kAnimPulseGreen =
-    'packages/mysterium_vpn_design/assets/animations/pulse_green.json';
-const _kAnimPulsePurple =
-    'packages/mysterium_vpn_design/assets/animations/pulse_purple.json';
+const _kAnimPulseGreenLight =
+    'packages/mysterium_vpn_design/assets/animations/pulse_green_light.json';
+const _kAnimPulseGreenDark =
+    'packages/mysterium_vpn_design/assets/animations/pulse_green_dark.json';
+const _kAnimPulsePurpleLight =
+    'packages/mysterium_vpn_design/assets/animations/pulse_purple_light.json';
+const _kAnimPulsePurpleDark =
+    'packages/mysterium_vpn_design/assets/animations/pulse_purple_dark.json';
 
 // ─── Sizes per breakpoint ─────────────────────────────────────────────────────
 
@@ -20,9 +24,14 @@ const _kActiveSizeMobile = 33.0;
 const _kActiveSizeDesktop = 40.0;
 
 /// Sizes for the inactive (dot) pin state.
-/// Mobile: 8 px   |  Desktop: 12 px
-const _kInactiveSizeMobile = 8.0;
+/// Mobile: 11 px   |  Desktop: 12 px
+const _kInactiveSizeMobile = 11.0;
 const _kInactiveSizeDesktop = 12.0;
+
+/// Hit-target multiplier for the inactive pin.
+/// The visible dot is small (11–12 px), so we expand the tappable area by 30%
+/// to improve tap accuracy without changing the visual size.
+const _kInactiveHitMultiplier = 1.3;
 
 // ─── MapLocationMarker ────────────────────────────────────────────────────────
 
@@ -66,7 +75,10 @@ class MapLocationMarker extends StatelessWidget {
       );
     }
 
-    final animPath = isConnected ? _kAnimPulseGreen : _kAnimPulsePurple;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final animPath = isConnected
+        ? (isDark ? _kAnimPulseGreenDark : _kAnimPulseGreenLight)
+        : (isDark ? _kAnimPulsePurpleDark : _kAnimPulsePurpleLight);
     return _ActivePin(
       size: isDesktop ? _kActiveSizeDesktop : _kActiveSizeMobile,
       animPath: animPath,
@@ -82,11 +94,7 @@ class MapLocationMarker extends StatelessWidget {
 /// Mobile: 8 px outer / 4 px inner.
 /// Desktop: 12 px outer / 6 px inner.
 class _InactivePin extends StatelessWidget {
-  const _InactivePin({
-    required this.size,
-    required this.onPressed,
-    this.onDoubleTap,
-  });
+  const _InactivePin({required this.size, required this.onPressed, this.onDoubleTap});
 
   final double size;
   final VoidCallback onPressed;
@@ -96,7 +104,7 @@ class _InactivePin extends StatelessWidget {
   Widget build(BuildContext context) => _GestureHandler(
     onPressed: onPressed,
     onDoubleTap: onDoubleTap,
-    hitSize: Size.square(size),
+    hitSize: Size.square(size * _kInactiveHitMultiplier),
     child: SizedBox.square(
       dimension: size,
       child: DecoratedBox(
@@ -131,12 +139,7 @@ class _ActivePin extends StatelessWidget {
     onPressed: onPressed,
     onDoubleTap: onDoubleTap,
     hitSize: Size.square(size),
-    child: Lottie.asset(
-      animPath,
-      repeat: true,
-      fit: BoxFit.contain,
-      alignment: Alignment.center,
-    ),
+    child: Lottie.asset(animPath, repeat: true, fit: BoxFit.contain, alignment: Alignment.center),
   );
 }
 
@@ -186,9 +189,7 @@ class MapLocationTooltip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Text(
           'Connect to $label',
-          style: theme.textStyles.textXs.semibold.copyWith(
-            color: palette.textPrimary,
-          ),
+          style: theme.textStyles.textXs.semibold.copyWith(color: palette.textPrimary),
         ),
       ),
     );
@@ -245,10 +246,7 @@ class _GestureHandlerState extends State<_GestureHandler> {
               color: Palette.transparent,
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
-              child: InkWell(
-                onTap: _handleTap,
-                customBorder: const CircleBorder(),
-              ),
+              child: InkWell(onTap: _handleTap, customBorder: const CircleBorder()),
             ),
           ),
         ),
