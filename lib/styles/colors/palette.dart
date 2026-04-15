@@ -244,6 +244,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color tooltipBackground;
   abstract final Color bgSidePanel;
   abstract final Color bgMapCountries;
+  abstract final Color bgMapBackground;
 
   /// Figma: Colors/Background/bg-main-ip-card — the background of the main IP
   /// card. Light: Brand/900 (#5F1877), Dark: Brand/100 (#F9E8FF).
@@ -471,6 +472,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgMapPinIdle => Palette.brandPurple.shade500;
+
+  @override
+  Color get bgMapBackground => Palette.grayDark.shade800;
 
   ///
   ///  Shadow Colors
@@ -723,6 +727,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgMapPinIdle => Palette.brandPurple.shade500;
+
+  @override
+  Color get bgMapBackground => Palette.white;
 
   ///
   /// Shadow Colors

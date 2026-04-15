@@ -257,8 +257,12 @@ class MainIpCard extends StatelessWidget {
         ),
     };
 
+    final maxWidth = ScreenType.of(context) >= ScreenType.tablet
+        ? _cardMaxWidthDesktop
+        : _cardMaxWidthMobile;
+
     return ConstrainedBox(
-      constraints: const BoxConstraints(maxWidth: _cardMaxWidth),
+      constraints: BoxConstraints(maxWidth: maxWidth),
       child: card,
     );
   }
@@ -266,7 +270,8 @@ class MainIpCard extends StatelessWidget {
 
 // ─── Layout constants ─────────────────────────────────────────────────────────
 
-const _cardMaxWidth = 480.0;
+const _cardMaxWidthMobile = 480.0;
+const _cardMaxWidthDesktop = 343.0;
 const _previewBarHeight = 80.0;
 const _previewBarContentOffset = 64.0;
 
