@@ -1,5 +1,4 @@
 export 'app_badge.dart';
-export 'app_header.dart';
 export 'button.dart';
 export 'comparison_table.dart';
 export 'connection_bar.dart';
