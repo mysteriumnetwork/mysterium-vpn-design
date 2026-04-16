@@ -78,7 +78,7 @@ class PlanCard<T> extends StatelessWidget {
           if (data.isOffer && data.promoBadge != null)
             Row(
               children: [
-                Badge(
+                AppBadge(
                   text: data.promoBadge!,
                   size: BadgeSize.small,
                   type: BadgeType.greenSecondary,
@@ -145,7 +145,7 @@ class _PlanPricing extends StatelessWidget {
                 ),
               ),
               if (data.promoBadge != null && !data.isOffer)
-                Badge(
+                AppBadge(
                   text: data.promoBadge!,
                   size: BadgeSize.small,
                   type: BadgeType.greenSecondary,

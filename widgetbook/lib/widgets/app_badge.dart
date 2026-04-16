@@ -1,9 +1,9 @@
-import 'package:flutter/material.dart' hide Badge;
+import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
-@UseCase(name: 'Badge', type: Badge)
+@UseCase(name: 'Badge', type: AppBadge)
 Widget buildBadge(BuildContext context) {
   final text = context.knobs.string(label: 'Text', initialValue: 'Badge');
   final type = context.knobs.object.dropdown(
@@ -20,5 +20,5 @@ Widget buildBadge(BuildContext context) {
     labelBuilder: (size) => size.name,
   );
 
-  return Badge(text: text, type: type, size: size);
+  return AppBadge(text: text, type: type, size: size);
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-class Badge extends StatelessWidget {
-  const Badge({
+class AppBadge extends StatelessWidget {
+  const AppBadge({
     required this.text,
     this.type = BadgeType.neutral,
     this.size = BadgeSize.medium,

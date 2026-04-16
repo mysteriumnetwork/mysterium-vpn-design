@@ -81,6 +81,34 @@ class _ScreenTypeScope extends InheritedNotifier<ValueNotifier<ScreenType>> {
   }
 }
 
+/// Overrides the [ScreenType] for the subtree, bypassing the system view size.
+///
+/// Useful in tests and widgetbook use cases to verify responsive behaviour
+/// without changing the physical screen dimensions.
+///
+/// ```dart
+/// ScreenTypeOverride(
+///   screenType: ScreenType.mobile,
+///   child: SettingsCard(title: 'VPN protocol'),
+/// )
+/// ```
+class ScreenTypeOverride extends StatelessWidget {
+  const ScreenTypeOverride({
+    required this.screenType,
+    required this.child,
+    super.key,
+  });
+
+  final ScreenType screenType;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => _ScreenTypeScope(
+    notifier: ValueNotifier(screenType),
+    child: child,
+  );
+}
+
 class ScreenTypeObserver extends StatefulWidget {
   const ScreenTypeObserver({required this.child, super.key});
 
