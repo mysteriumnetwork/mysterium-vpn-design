@@ -80,7 +80,7 @@ class _IntentTabState extends State<IntentTab> {
               mainAxisSize: MainAxisSize.min,
               spacing: 4,
               children: [
-                _SkeuomorphicIconBox(icon: widget.icon, color: contentColor),
+                Icon(widget.icon, size: 20, color: contentColor),
                 Text(
                   widget.label,
                   style: theme.textStyles.textMd.semibold.copyWith(color: contentColor),
@@ -89,34 +89,6 @@ class _IntentTabState extends State<IntentTab> {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-// ─── Skeuomorphic icon box ────────────────────────────────────────────────────
-
-/// A 24×24 rounded container with a drop shadow and skeuomorphic inner border.
-class _SkeuomorphicIconBox extends StatelessWidget {
-  const _SkeuomorphicIconBox({required this.icon, required this.color});
-
-  final IconData icon;
-  final Color color;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = Theme.of(context).palette;
-    return Container(
-      width: 24,
-      height: 24,
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.kS),
-        border: Border.all(color: palette.shadowSkeuomorphicOuter),
-        boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
-      ),
-      child: ClipRRect(
-        borderRadius: const BorderRadius.all(Radius.kS),
-        child: Center(child: Icon(icon, size: 16, color: color)),
       ),
     );
   }

@@ -130,7 +130,7 @@ class _ExpandableIpCardState extends State<ExpandableIpCard> {
         expanded: _effectiveExpanded,
         plusUpgrade: widget.plusUpgrade,
         onChevronTap: widget.items.isEmpty ? null : _handleChevronTap,
-        onContentTap: widget.onConnect,
+        onContentTap: widget.items.isEmpty ? widget.onConnect : _handleChevronTap,
       ),
       if (_effectiveExpanded)
         for (int i = 0; i < widget.items.length; i++)
