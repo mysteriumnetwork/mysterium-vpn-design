@@ -79,7 +79,7 @@ Widget buildSettingsCardToggle(BuildContext context) {
       title: title,
       subtitle: subtitle,
       position: position,
-      trailing: Switch(value: toggled, onChanged: null),
+      trailing: Switch(value: toggled, onChanged: (_) {}),
     ),
   );
 }
@@ -118,7 +118,7 @@ Widget buildSettingsCardGroup(BuildContext context) => _scaffold(
         title: 'Kill switch',
         subtitle: 'Block internet when VPN drops',
         position: SettingsCardPosition.top,
-        trailing: const Switch(value: true, onChanged: null),
+        trailing: Switch(value: true, onChanged: (_) {}),
       ),
       SettingsCard(
         icon: _CheckCircleIcon(),

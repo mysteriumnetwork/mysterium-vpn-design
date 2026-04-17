@@ -74,7 +74,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final showBack = showBackButton ?? canGoBack;
 
     var resolvedTitle = title;
-    if (resolvedTitle == null && canGoBack) {
+    if (resolvedTitle == null && showBack) {
       resolvedTitle = Text(
         backLabel ?? 'Back to home',
         style: theme.textStyles.textMd.semibold.copyWith(color: palette.textPrimary),

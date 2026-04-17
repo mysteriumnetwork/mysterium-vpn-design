@@ -30,7 +30,7 @@ class NavItem extends StatefulWidget {
     super.key,
   });
 
-  /// Icon content displayed inside a 24×24 skeuomorphic container.
+  /// Icon content themed at 24 px.
   ///
   /// Colour is driven by [current]: brand icon when active, tertiary when not.
   /// Pass an [Icon] without an explicit colour to let [NavItem] tint it.
