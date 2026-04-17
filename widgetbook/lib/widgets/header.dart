@@ -21,10 +21,7 @@ Widget buildLabeledHeader(BuildContext context) => _View(
 @UseCase(name: 'Empty', type: Header)
 Widget buildEmptyHeader(BuildContext context) => _View(
   header: Header(
-    backLabel: context.knobs.stringOrNull(
-      label: 'Back label',
-      initialValue: 'Back to home',
-    ),
+    backLabel: context.knobs.stringOrNull(label: 'Back label', initialValue: 'Back to home'),
     actions: _mockActions(context),
   ),
   canGoBack: context.knobs.boolean(label: 'Has back button', initialValue: true),

@@ -93,20 +93,14 @@ class _ScreenTypeScope extends InheritedNotifier<ValueNotifier<ScreenType>> {
 /// )
 /// ```
 class ScreenTypeOverride extends StatelessWidget {
-  const ScreenTypeOverride({
-    required this.screenType,
-    required this.child,
-    super.key,
-  });
+  const ScreenTypeOverride({required this.screenType, required this.child, super.key});
 
   final ScreenType screenType;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => _ScreenTypeScope(
-    notifier: ValueNotifier(screenType),
-    child: child,
-  );
+  Widget build(BuildContext context) =>
+      _ScreenTypeScope(notifier: ValueNotifier(screenType), child: child);
 }
 
 class ScreenTypeObserver extends StatefulWidget {

@@ -96,8 +96,7 @@ class SettingsCard extends StatelessWidget {
   };
 
   bool get _showBottomBorder =>
-      position == SettingsCardPosition.top ||
-      position == SettingsCardPosition.middle;
+      position == SettingsCardPosition.top || position == SettingsCardPosition.middle;
 
   @override
   Widget build(BuildContext context) {
@@ -113,17 +112,9 @@ class SettingsCard extends StatelessWidget {
             borderRadius: _borderRadius,
             boxShadow: isDesktop
                 ? null
-                : [
-                    BoxShadow(
-                      color: palette.shadowXs,
-                      blurRadius: 2,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
+                : [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
           ),
-          padding: isDesktop
-              ? const EdgeInsets.symmetric(vertical: 16)
-              : const EdgeInsets.all(16),
+          padding: isDesktop ? const EdgeInsets.symmetric(vertical: 16) : const EdgeInsets.all(16),
           child: Row(
             spacing: 16,
             children: [
@@ -171,9 +162,7 @@ class _TextColumn extends StatelessWidget {
       children: [
         Text(
           title,
-          style: theme.textStyles.textMd.regular.copyWith(
-            color: palette.textPrimary,
-          ),
+          style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
@@ -182,9 +171,7 @@ class _TextColumn extends StatelessWidget {
         else if (subtitle != null)
           Text(
             subtitle!,
-            style: theme.textStyles.textXs.regular.copyWith(
-              color: palette.textTertiary,
-            ),
+            style: theme.textStyles.textXs.regular.copyWith(color: palette.textTertiary),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),

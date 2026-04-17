@@ -73,8 +73,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   static const double _mobileHeight = 56;
   static const double _desktopHeight = 64;
 
-  static bool _isDesktop(Size screenSize) =>
-      ScreenType.fromSize(screenSize) >= ScreenType.tablet;
+  static bool _isDesktop(Size screenSize) => ScreenType.fromSize(screenSize) >= ScreenType.tablet;
 
   @override
   Widget build(BuildContext context) {
@@ -82,9 +81,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
     final palette = theme.palette;
-    final resolvedBg =
-        backgroundColor ??
-        (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
+    final resolvedBg = backgroundColor ?? (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     final toolbarH = isDesktop ? _desktopHeight : _mobileHeight;
     final showBack = showBackButton ?? canGoBack;
@@ -93,9 +90,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     if (resolvedTitle == null && canGoBack) {
       resolvedTitle = Text(
         backLabel ?? 'Back to home',
-        style: theme.textStyles.textMd.semibold.copyWith(
-          color: palette.textPrimary,
-        ),
+        style: theme.textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       );
@@ -104,11 +99,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     return ColoredBox(
       color: resolvedBg,
       child: Padding(
-        padding: EdgeInsets.only(
-          top: MediaQuery.paddingOf(context).top,
-          left: hPad,
-          right: hPad,
-        ),
+        padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top, left: hPad, right: hPad),
         child: SizedBox(
           height: toolbarH,
           child: Row(
@@ -118,24 +109,15 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 CustomIconButton(
                   onPressed: () => Navigator.of(context).maybePop(),
                   minimumSize: const Size(32, 32),
-                  icon: Icon(
-                    UntitledUI.arrow_narrow_left,
-                    size: 24,
-                    color: palette.iconPrimary,
-                  ),
+                  icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
                 ),
               if (resolvedTitle != null)
                 Expanded(
                   child: DefaultTextStyle(
-                    style: theme.textStyles.textLg.medium.copyWith(
-                      color: palette.textPrimary,
-                    ),
+                    style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
                     child: centerTitle
                         ? Center(child: resolvedTitle)
-                        : Align(
-                            alignment: Alignment.centerLeft,
-                            child: resolvedTitle,
-                          ),
+                        : Align(alignment: Alignment.centerLeft, child: resolvedTitle),
                   ),
                 )
               else

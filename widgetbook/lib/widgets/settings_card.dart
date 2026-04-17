@@ -5,10 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'Dropdown', type: SettingsCard)
 Widget buildSettingsCardDropdown(BuildContext context) {
-  final title = context.knobs.string(
-    label: 'Title',
-    initialValue: 'VPN protocol',
-  );
+  final title = context.knobs.string(label: 'Title', initialValue: 'VPN protocol');
   final subtitle = context.knobs.stringOrNull(
     label: 'Subtitle',
     initialValue: 'Refresh to get a new IP address',
@@ -19,10 +16,7 @@ Widget buildSettingsCardDropdown(BuildContext context) {
     initialOption: SettingsCardPosition.single,
     labelBuilder: (p) => p.name,
   );
-  final value = context.knobs.string(
-    label: 'Selected value',
-    initialValue: 'Fast (WireGuard)',
-  );
+  final value = context.knobs.string(label: 'Selected value', initialValue: 'Fast (WireGuard)');
 
   return _scaffold(
     context,
@@ -93,10 +87,7 @@ Widget buildSettingsCardToggle(BuildContext context) {
 @UseCase(name: 'Arrow', type: SettingsCard)
 Widget buildSettingsCardArrow(BuildContext context) {
   final title = context.knobs.string(label: 'Title', initialValue: 'VPN protocol');
-  final subtitle = context.knobs.stringOrNull(
-    label: 'Subtitle',
-    initialValue: 'Fast (WireGuard)',
-  );
+  final subtitle = context.knobs.stringOrNull(label: 'Subtitle', initialValue: 'Fast (WireGuard)');
   final position = context.knobs.object.dropdown(
     label: 'Position',
     options: SettingsCardPosition.values,
@@ -118,34 +109,34 @@ Widget buildSettingsCardArrow(BuildContext context) {
 
 @UseCase(name: 'Group', type: SettingsCard)
 Widget buildSettingsCardGroup(BuildContext context) => _scaffold(
-      context,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SettingsCard(
-            icon: _CheckCircleIcon(),
-            title: 'Kill switch',
-            subtitle: 'Block internet when VPN drops',
-            position: SettingsCardPosition.top,
-            trailing: const Switch(value: true, onChanged: null),
-          ),
-          SettingsCard(
-            icon: _CheckCircleIcon(),
-            title: 'VPN protocol',
-            subtitle: 'Fast (WireGuard)',
-            position: SettingsCardPosition.middle,
-            trailing: const _ArrowTrailing(),
-          ),
-          SettingsCard(
-            icon: _CheckCircleIcon(),
-            title: 'Reset app',
-            subtitle: "Reset when something isn't working",
-            position: SettingsCardPosition.bottom,
-            trailing: const _TextButtonTrailing(label: 'Reset'),
-          ),
-        ],
+  context,
+  child: Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      SettingsCard(
+        icon: _CheckCircleIcon(),
+        title: 'Kill switch',
+        subtitle: 'Block internet when VPN drops',
+        position: SettingsCardPosition.top,
+        trailing: const Switch(value: true, onChanged: null),
       ),
-    );
+      SettingsCard(
+        icon: _CheckCircleIcon(),
+        title: 'VPN protocol',
+        subtitle: 'Fast (WireGuard)',
+        position: SettingsCardPosition.middle,
+        trailing: const _ArrowTrailing(),
+      ),
+      SettingsCard(
+        icon: _CheckCircleIcon(),
+        title: 'Reset app',
+        subtitle: "Reset when something isn't working",
+        position: SettingsCardPosition.bottom,
+        trailing: const _TextButtonTrailing(label: 'Reset'),
+      ),
+    ],
+  ),
+);
 
 // ─── Scaffold ─────────────────────────────────────────────────────────────────
 
@@ -158,9 +149,7 @@ Widget _scaffold(BuildContext context, {required Widget child}) {
       child: SizedBox(width: width, child: child),
     ),
   );
-  return isMobile
-      ? ScreenTypeOverride(screenType: ScreenType.mobile, child: content)
-      : content;
+  return isMobile ? ScreenTypeOverride(screenType: ScreenType.mobile, child: content) : content;
 }
 
 // ─── Trailing helpers ─────────────────────────────────────────────────────────
@@ -175,9 +164,7 @@ class _TextButtonTrailing extends StatelessWidget {
     final theme = Theme.of(context);
     return Text(
       label,
-      style: theme.textStyles.textSm.semibold.copyWith(
-        color: theme.palette.textBrandPrimary,
-      ),
+      style: theme.textStyles.textSm.semibold.copyWith(color: theme.palette.textBrandPrimary),
     );
   }
 }
@@ -198,13 +185,7 @@ class _DropdownTrailing extends StatelessWidget {
         color: palette.bgPrimary,
         border: Border.all(color: palette.borderPrimary),
         borderRadius: const BorderRadius.all(Radius.kS),
-        boxShadow: [
-          BoxShadow(
-            color: palette.shadowXs,
-            blurRadius: 2,
-            offset: const Offset(0, 1),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
@@ -212,9 +193,7 @@ class _DropdownTrailing extends StatelessWidget {
           Expanded(
             child: Text(
               label,
-              style: theme.textStyles.textMd.regular.copyWith(
-                color: palette.textTertiary,
-              ),
+              style: theme.textStyles.textMd.regular.copyWith(color: palette.textTertiary),
               overflow: TextOverflow.ellipsis,
             ),
           ),
@@ -230,20 +209,14 @@ class _ArrowTrailing extends StatelessWidget {
   const _ArrowTrailing();
 
   @override
-  Widget build(BuildContext context) => Icon(
-        UntitledUI.chevron_right,
-        size: 24,
-        color: Theme.of(context).palette.iconTertiary,
-      );
+  Widget build(BuildContext context) =>
+      Icon(UntitledUI.chevron_right, size: 24, color: Theme.of(context).palette.iconTertiary);
 }
 
 // ─── Icon placeholder ─────────────────────────────────────────────────────────
 
 class _CheckCircleIcon extends StatelessWidget {
   @override
-  Widget build(BuildContext context) => Icon(
-        UntitledUI.check_circle,
-        size: 20,
-        color: Theme.of(context).palette.iconBrandSecondary,
-      );
+  Widget build(BuildContext context) =>
+      Icon(UntitledUI.check_circle, size: 20, color: Theme.of(context).palette.iconBrandSecondary);
 }

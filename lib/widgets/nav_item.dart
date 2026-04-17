@@ -72,12 +72,8 @@ class _NavItemState extends State<NavItem> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
-    final iconColor = widget.current
-        ? palette.iconBrandSecondary
-        : palette.iconTertiary;
-    final textColor = widget.current
-        ? palette.textPrimarySelected
-        : palette.textTertiary;
+    final iconColor = widget.current ? palette.iconBrandSecondary : palette.iconTertiary;
+    final textColor = widget.current ? palette.textPrimarySelected : palette.textTertiary;
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
@@ -101,9 +97,7 @@ class _NavItemState extends State<NavItem> {
                   Flexible(
                     child: Text(
                       widget.label,
-                      style: theme.textStyles.textMd.semibold.copyWith(
-                        color: textColor,
-                      ),
+                      style: theme.textStyles.textMd.semibold.copyWith(color: textColor),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),

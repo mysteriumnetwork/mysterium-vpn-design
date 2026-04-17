@@ -157,9 +157,7 @@ sealed class DesignSystem {
           overlayColor: WidgetStatePropertyAll(palette.bgPrimaryHover),
           backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
           textStyle: WidgetStatePropertyAll(textStyles.textMd.regular),
-          padding: const WidgetStatePropertyAll(
-            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          ),
+          padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
           minimumSize: const WidgetStatePropertyAll(Size(0, 36)),
         ),
       ),
