@@ -24,7 +24,6 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     this.title,
     this.actions,
     this.backgroundColor,
-    this.automaticallyImplyLeading,
     this.showBackButton,
     this.backLabel,
     super.key,
@@ -33,13 +32,11 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   factory Header.logo({
     List<Widget>? actions,
     Color? backgroundColor,
-    bool? automaticallyImplyLeading,
     bool? showBackButton,
   }) => Header(
     title: const Logo(height: 24),
     actions: actions,
     backgroundColor: backgroundColor,
-    automaticallyImplyLeading: automaticallyImplyLeading,
     showBackButton: showBackButton,
   );
 
@@ -48,14 +45,12 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     bool centerTitle = true,
     List<Widget>? actions,
     Color? backgroundColor,
-    bool? automaticallyImplyLeading,
     bool? showBackButton,
   }) => Header(
     title: Text(label),
     actions: actions,
     centerTitle: centerTitle,
     backgroundColor: backgroundColor,
-    automaticallyImplyLeading: automaticallyImplyLeading,
     showBackButton: showBackButton,
   );
 
@@ -63,7 +58,6 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   final bool centerTitle;
   final List<Widget>? actions;
   final Color? backgroundColor;
-  final bool? automaticallyImplyLeading;
   final bool? showBackButton;
 
   /// Label shown next to the back-arrow when [title] is null and the navigator

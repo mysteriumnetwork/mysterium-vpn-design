@@ -92,15 +92,41 @@ class _ScreenTypeScope extends InheritedNotifier<ValueNotifier<ScreenType>> {
 ///   child: SettingsCard(title: 'VPN protocol'),
 /// )
 /// ```
-class ScreenTypeOverride extends StatelessWidget {
+class ScreenTypeOverride extends StatefulWidget {
   const ScreenTypeOverride({required this.screenType, required this.child, super.key});
 
   final ScreenType screenType;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) =>
-      _ScreenTypeScope(notifier: ValueNotifier(screenType), child: child);
+  State<ScreenTypeOverride> createState() => _ScreenTypeOverrideState();
+}
+
+class _ScreenTypeOverrideState extends State<ScreenTypeOverride> {
+  late final ValueNotifier<ScreenType> _notifier;
+
+  @override
+  void initState() {
+    super.initState();
+    _notifier = ValueNotifier(widget.screenType);
+  }
+
+  @override
+  void didUpdateWidget(ScreenTypeOverride oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.screenType != widget.screenType) {
+      _notifier.value = widget.screenType;
+    }
+  }
+
+  @override
+  void dispose() {
+    _notifier.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => _ScreenTypeScope(notifier: _notifier, child: widget.child);
 }
 
 class ScreenTypeObserver extends StatefulWidget {
