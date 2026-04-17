@@ -58,11 +58,13 @@ class NavItem extends StatefulWidget {
 class _NavItemState extends State<NavItem> {
   bool _hovered = false;
 
+  bool get _interactive => widget.onTap != null;
+
   Color _bgColor(Palette palette) {
     if (widget.current) {
       return palette.bgSecondarySelected;
     }
-    if (_hovered) {
+    if (_hovered && _interactive) {
       return palette.bgPrimaryHover;
     }
     return Palette.transparent;
@@ -78,9 +80,9 @@ class _NavItemState extends State<NavItem> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (_) => setState(() => _hovered = true),
-        onExit: (_) => setState(() => _hovered = false),
+        cursor: _interactive ? SystemMouseCursors.click : SystemMouseCursors.basic,
+        onEnter: _interactive ? (_) => setState(() => _hovered = true) : null,
+        onExit: _interactive ? (_) => setState(() => _hovered = false) : null,
         child: GestureDetector(
           onTap: widget.onTap,
           child: DecoratedBox(

@@ -7,7 +7,7 @@ import 'package:mysterium_vpn_design/widgets/icon_button.dart';
 /// A responsive app-bar header with symmetric horizontal padding.
 ///
 /// Horizontal padding is 16 px on mobile and 32 px on desktop. Content is
-/// vertically centred within a fixed height of 56 px (mobile) or 64 px (desktop).
+/// vertically centred within a fixed height of 64 px.
 ///
 /// Use the named factories for common configurations:
 /// * [Header.logo] — logo in the title slot
@@ -29,16 +29,13 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     super.key,
   });
 
-  factory Header.logo({
-    List<Widget>? actions,
-    Color? backgroundColor,
-    bool? showBackButton,
-  }) => Header(
-    title: const Logo(height: 24),
-    actions: actions,
-    backgroundColor: backgroundColor,
-    showBackButton: showBackButton,
-  );
+  factory Header.logo({List<Widget>? actions, Color? backgroundColor, bool? showBackButton}) =>
+      Header(
+        title: const Logo(height: 24),
+        actions: actions,
+        backgroundColor: backgroundColor,
+        showBackButton: showBackButton,
+      );
 
   factory Header.labeled({
     required String label,
@@ -64,10 +61,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   /// can pop. Defaults to `'Back to home'`.
   final String? backLabel;
 
-  static const double _mobileHeight = 56;
-  static const double _desktopHeight = 64;
-
-  static bool _isDesktop(Size screenSize) => ScreenType.fromSize(screenSize) >= ScreenType.tablet;
+  static const double _height = 64;
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +71,6 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final palette = theme.palette;
     final resolvedBg = backgroundColor ?? (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
-    final toolbarH = isDesktop ? _desktopHeight : _mobileHeight;
     final showBack = showBackButton ?? canGoBack;
 
     var resolvedTitle = title;
@@ -95,7 +88,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
       child: Padding(
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top, left: hPad, right: hPad),
         child: SizedBox(
-          height: toolbarH,
+          height: _height,
           child: Row(
             spacing: 8,
             children: [
@@ -125,12 +118,5 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize {
-    final view = ScreenType.flutterView();
-    if (view != null) {
-      final size = view.physicalSize / view.devicePixelRatio;
-      return Size.fromHeight(_isDesktop(size) ? _desktopHeight : _mobileHeight);
-    }
-    return const Size.fromHeight(_mobileHeight);
-  }
+  Size get preferredSize => const Size.fromHeight(_height);
 }
