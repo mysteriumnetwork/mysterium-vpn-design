@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  analyze:
+    name: Analyze & Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter (FVM)
+        uses: chika3742/setup-fvm@v3
+        with:
+          cache: true
+
+      - name: Install dependencies
+        run: fvm flutter pub get
+
+      - name: Analyze
+        run: fvm flutter analyze --fatal-infos
+
+      - name: Test
+        run: fvm flutter test
+
+  widgetbook:
+    name: Widgetbook
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter (FVM)
+        uses: chika3742/setup-fvm@v3
+        with:
+          project-dir: widgetbook
+          cache: true
+
+      - name: Enable web
+        run: fvm flutter config --enable-web
+
+      - name: Install dependencies
+        working-directory: widgetbook
+        run: fvm flutter pub get
+
+      - name: Run build_runner
+        working-directory: widgetbook
+        run: make generate
+
+      - name: Analyze
+        working-directory: widgetbook
+        run: fvm flutter analyze --fatal-infos
+
+      - name: Build web
+        working-directory: widgetbook
+        run: fvm flutter build web
