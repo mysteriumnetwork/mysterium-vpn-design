@@ -130,7 +130,7 @@ class _ExpandableIpCardState extends State<ExpandableIpCard> {
         expanded: _effectiveExpanded,
         plusUpgrade: widget.plusUpgrade,
         onChevronTap: widget.items.isEmpty ? null : _handleChevronTap,
-        onContentTap: widget.items.isEmpty ? widget.onConnect : _handleChevronTap,
+        onContentTap: widget.onConnect,
       ),
       if (_effectiveExpanded)
         for (int i = 0; i < widget.items.length; i++)
@@ -186,30 +186,33 @@ class ExpandableIpCardHeader extends StatelessWidget {
     return _IpCardShell(
       status: status,
       borderRadius: borderRadius,
-      onTap: onContentTap,
       child: Row(
         spacing: 12,
         children: [
           Expanded(
-            child: Row(
-              spacing: 12,
-              children: [
-                _CountryLeadingIcon(status: status, countryIcon: countryIcon),
-                Expanded(
-                  child: _TextColumn(
-                    name: name,
-                    subtitle: subtitle,
-                    disabled: status == IpCardStatus.disabled,
+            child: GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onContentTap,
+              child: Row(
+                spacing: 12,
+                children: [
+                  _CountryLeadingIcon(status: status, countryIcon: countryIcon),
+                  Expanded(
+                    child: _TextColumn(
+                      name: name,
+                      subtitle: subtitle,
+                      disabled: status == IpCardStatus.disabled,
+                    ),
                   ),
-                ),
-                if (plusUpgrade &&
-                    (status == IpCardStatus.idle ||
-                        status == IpCardStatus.connected ||
-                        status == IpCardStatus.connecting))
-                  const _PlusBadge(disabled: false),
-                if (plusUpgrade && status == IpCardStatus.disabled)
-                  const _PlusBadge(disabled: true),
-              ],
+                  if (plusUpgrade &&
+                      (status == IpCardStatus.idle ||
+                          status == IpCardStatus.connected ||
+                          status == IpCardStatus.connecting))
+                    const _PlusBadge(disabled: false),
+                  if (plusUpgrade && status == IpCardStatus.disabled)
+                    const _PlusBadge(disabled: true),
+                ],
+              ),
             ),
           ),
           // Chevron is its own tap target per Figma spec.
