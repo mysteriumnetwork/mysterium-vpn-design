@@ -30,8 +30,10 @@ class NavItem extends StatefulWidget {
     super.key,
   });
 
-  /// Icon content themed at 24 px.
+  /// Icon widget tinted and themed at 24 px via [IconTheme].
   ///
+  /// No fixed-size container is applied — the icon is only constrained by its
+  /// own intrinsic size and the surrounding [IconThemeData.size].
   /// Colour is driven by [current]: brand icon when active, tertiary when not.
   /// Pass an [Icon] without an explicit colour to let [NavItem] tint it.
   final Widget icon;
