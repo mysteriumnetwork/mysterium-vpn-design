@@ -68,6 +68,27 @@ sealed class DesignSystem {
           iconColor: palette.textBrandPrimary,
         ),
       ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return Palette.grayLight.shade50;
+          }
+          return Palette.white;
+        }),
+        trackColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.disabled)) {
+            return palette.bgInactive;
+          }
+          if (states.contains(WidgetState.selected)) {
+            if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+              return Palette.brand.shade500;
+            }
+            return Palette.brand.shade400;
+          }
+          return Palette.grayLight.shade300;
+        }),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+      ),
       checkboxTheme: CheckboxThemeData(
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kXs)),
         side: BorderSide(color: palette.borderPrimary),
@@ -81,6 +102,64 @@ sealed class DesignSystem {
           }
           return palette.bgPrimary;
         }),
+      ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        textStyle: textStyles.textMd.regular.copyWith(color: palette.textPrimary),
+        inputDecorationTheme: InputDecorationTheme(
+          filled: true,
+          fillColor: palette.bgPrimary,
+          isDense: true,
+          contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          constraints: const BoxConstraints(minHeight: 40),
+          border: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.kS),
+            borderSide: BorderSide(color: palette.borderPrimary),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.kS),
+            borderSide: BorderSide(color: palette.borderPrimary),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.kS),
+            borderSide: BorderSide(color: palette.borderBrand),
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.kS),
+            borderSide: BorderSide(color: palette.borderError),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: const BorderRadius.all(Radius.kS),
+            borderSide: BorderSide(color: palette.borderError),
+          ),
+          hintStyle: textStyles.textMd.regular.copyWith(color: palette.textTertiary),
+        ),
+        menuStyle: MenuStyle(
+          backgroundColor: WidgetStatePropertyAll(palette.bgPrimary),
+          surfaceTintColor: const WidgetStatePropertyAll(Colors.transparent),
+          elevation: const WidgetStatePropertyAll(2),
+          shape: WidgetStatePropertyAll(
+            RoundedRectangleBorder(
+              borderRadius: const BorderRadius.all(Radius.kS),
+              side: BorderSide(color: palette.borderPrimary),
+            ),
+          ),
+          padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(vertical: 4)),
+        ),
+      ),
+      menuButtonTheme: MenuButtonThemeData(
+        style: ButtonStyle(
+          foregroundColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.selected)) {
+              return palette.textBrandPrimary;
+            }
+            return palette.textPrimary;
+          }),
+          overlayColor: WidgetStatePropertyAll(palette.bgPrimaryHover),
+          backgroundColor: const WidgetStatePropertyAll(Colors.transparent),
+          textStyle: WidgetStatePropertyAll(textStyles.textMd.regular),
+          padding: const WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 12, vertical: 8)),
+          minimumSize: const WidgetStatePropertyAll(Size(0, 36)),
+        ),
       ),
       tabBarTheme: TabBarThemeData(
         indicatorSize: TabBarIndicatorSize.tab,

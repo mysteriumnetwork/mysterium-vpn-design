@@ -3,7 +3,8 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 class RadioButton<T> extends StatelessWidget {
   const RadioButton({
-    required this.value,
+    this.value,
+    this.selected,
     this.onPressed,
     this.enabled = true,
     this.radius = 20.0,
@@ -11,6 +12,11 @@ class RadioButton<T> extends StatelessWidget {
   });
 
   final T? value;
+
+  /// Explicit selection state. When non-null, overrides the group-based
+  /// selection so the widget can be used without a [RadioGroup] ancestor.
+  final bool? selected;
+
   final VoidCallback? onPressed;
   final bool enabled;
   final double radius;
@@ -27,27 +33,34 @@ class RadioButton<T> extends StatelessWidget {
   Widget build(BuildContext context) {
     final palette = Palette.of(context);
     final groupState = findGroupState<T>(context);
-    final selected = groupState != null && groupState.groupValue == value;
+    final isSelected = selected ?? (groupState != null && groupState.groupValue == value);
 
-    void onPressed() {
-      if (this.onPressed != null) {
-        this.onPressed!.call();
+    final icon = _Icon(
+      radius: radius,
+      foregroundColor: _getForegroundColor(palette, isSelected),
+      backgroundColor: _getBackgroundColor(palette, isSelected),
+      borderColor: _getBorderColor(palette, isSelected),
+    );
+
+    // Standalone mode: render just the visual indicator.
+    if (groupState == null && onPressed == null) {
+      return icon;
+    }
+
+    void handlePressed() {
+      if (onPressed != null) {
+        onPressed!.call();
       } else {
         groupState?.onChanged.call(value);
       }
     }
 
     return RawMaterialButton(
-      onPressed: onPressed,
+      onPressed: handlePressed,
       shape: const CircleBorder(),
       materialTapTargetSize: MaterialTapTargetSize.padded,
       constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
-      child: _Icon(
-        radius: radius,
-        foregroundColor: _getForegroundColor(palette, selected),
-        backgroundColor: _getBackgroundColor(palette, selected),
-        borderColor: _getBorderColor(palette, selected),
-      ),
+      child: icon,
     );
   }
 

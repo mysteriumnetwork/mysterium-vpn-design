@@ -5,8 +5,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 // ─── Animation asset paths ────────────────────────────────────────────────────
 
-const _kAnimPulseGreen =
-    'packages/mysterium_vpn_design/assets/animations/pulse_green.json';
+const _kAnimPulseGreen = 'packages/mysterium_vpn_design/assets/animations/pulse_green.json';
 const _kAnimPulsePurpleLight =
     'packages/mysterium_vpn_design/assets/animations/pulse_purple_light.json';
 const _kAnimPulsePurpleDark =
@@ -92,11 +91,7 @@ class MapLocationMarker extends StatelessWidget {
 /// Mobile: 8 px outer / 4 px inner.
 /// Desktop: 12 px outer / 6 px inner.
 class _InactivePin extends StatelessWidget {
-  const _InactivePin({
-    required this.size,
-    required this.onPressed,
-    this.onDoubleTap,
-  });
+  const _InactivePin({required this.size, required this.onPressed, this.onDoubleTap});
 
   final double size;
   final VoidCallback onPressed;
@@ -141,12 +136,7 @@ class _ActivePin extends StatelessWidget {
     onPressed: onPressed,
     onDoubleTap: onDoubleTap,
     hitSize: Size.square(size),
-    child: Lottie.asset(
-      animPath,
-      repeat: true,
-      fit: BoxFit.contain,
-      alignment: Alignment.center,
-    ),
+    child: Lottie.asset(animPath, repeat: true, fit: BoxFit.contain, alignment: Alignment.center),
   );
 }
 
@@ -196,9 +186,7 @@ class MapLocationTooltip extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Text(
           'Connect to $label',
-          style: theme.textStyles.textXs.semibold.copyWith(
-            color: palette.textPrimary,
-          ),
+          style: theme.textStyles.textXs.semibold.copyWith(color: palette.textPrimary),
         ),
       ),
     );
@@ -255,10 +243,7 @@ class _GestureHandlerState extends State<_GestureHandler> {
               color: Palette.transparent,
               shadowColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
-              child: InkWell(
-                onTap: _handleTap,
-                customBorder: const CircleBorder(),
-              ),
+              child: InkWell(onTap: _handleTap, customBorder: const CircleBorder()),
             ),
           ),
         ),

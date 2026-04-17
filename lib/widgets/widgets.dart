@@ -1,4 +1,4 @@
-export 'badge.dart';
+export 'app_badge.dart';
 export 'button.dart';
 export 'comparison_table.dart';
 export 'connection_bar.dart';
@@ -14,9 +14,11 @@ export 'map_location_marker.dart';
 export 'material_wrapper.dart';
 export 'minimal_alert.dart';
 export 'modals/modals.dart';
+export 'nav_item.dart';
 export 'plan_card.dart';
 export 'plan_card/plan_data.dart';
 export 'radio_button.dart';
 export 'search_field.dart';
+export 'settings_card.dart';
 export 'spans/spans.dart';
 export 'tooltip_icon.dart';

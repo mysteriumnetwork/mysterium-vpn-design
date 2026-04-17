@@ -24,6 +24,7 @@ analyzer:
     - "packages/vpn_api/**"
     - "lib/gen/**"
     - "lib/generated/**"
+    - "widgetbook/**"
 
 linter:
   rules:
