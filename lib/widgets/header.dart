@@ -4,10 +4,10 @@ import 'package:mysterium_vpn_design/widgets/icon_button.dart';
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
-/// A responsive app-bar header that maintains symmetric leading/trailing padding.
+/// A responsive app-bar header with symmetric horizontal padding.
 ///
-/// Horizontal padding is 16 px on mobile and 32 px on desktop. Vertical
-/// padding is 12 px on mobile (total height 56) and 16 px on desktop (64).
+/// Horizontal padding is 16 px on mobile and 32 px on desktop. Content is
+/// vertically centred within a fixed height of 56 px (mobile) or 64 px (desktop).
 ///
 /// Use the named factories for common configurations:
 /// * [Header.logo] — logo in the title slot
