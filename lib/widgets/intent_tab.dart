@@ -21,7 +21,7 @@ enum IntentTabStatus {
 
 /// A single preference-selection tab (e.g. "Low latency", "High privacy").
 ///
-/// Displays an [icon] in a skeuomorphic container alongside a [label].
+/// Displays a plain [Icon] alongside a [label].
 /// Hover state is managed internally via [MouseRegion].
 class IntentTab extends StatefulWidget {
   const IntentTab({
