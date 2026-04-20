@@ -586,7 +586,7 @@ class _ConnectedContent extends StatelessWidget {
               children: [
                 _IconTap(
                   icon: UntitledUI.refresh_cw_05,
-                  iconColor: isRefreshActive ? palette.textIpCardTitle : palette.textIpCardSubtitle,
+                  iconColor: isRefreshActive ? palette.textIpCardTitle : palette.iconBrandSecondary,
                   onPressed: isRefreshActive ? onRefreshIp : null,
                   tooltip: refreshIpTooltip,
                 ),

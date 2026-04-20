@@ -408,7 +408,10 @@ class PaletteDark extends Palette {
   Color get bgPrimary => Palette.brandPurple.shade800;
 
   @override
-  Color get bgPrimaryHover => Palette.brandPurple.shade700;
+  Color get bgPrimaryHover => Color.alphaBlend(
+    Palette.grayDarkAlpha.shade800, // 8% white overlay for subtle hover
+    Palette.brandPurple.shade800,
+  );
 
   @override
   Color get bgSecondaryDisabled => Palette.grayPurple.shade800;
@@ -564,7 +567,7 @@ class PaletteLight extends Palette {
   Color get textPrimary => gray.shade800;
 
   @override
-  Color get textPrimarySelected => Palette.brand.shade600;
+  Color get textPrimarySelected => Palette.brand.shade700;
 
   @override
   Color get textSecondary => gray.shade600;
