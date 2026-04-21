@@ -14,7 +14,7 @@ const _kAnimPulsePurpleDark =
 // ─── Sizes per breakpoint ─────────────────────────────────────────────────────
 
 /// Sizes for the active (Lottie) pin state.
-/// Mobile: 32 px  |  Desktop: 40 px
+/// Mobile: 33 px  |  Desktop: 40 px
 /// Desktop stays at 40 px so the Lottie inner dot (~11.6 px) visibly exceeds
 /// the 12 px idle fill (~10 px after border), preserving the grow-on-select feel.
 const _kActiveSizeMobile = 33.0;
@@ -22,13 +22,13 @@ const _kActiveSizeDesktop = 40.0;
 
 /// Sizes for the inactive (dot) pin state.
 /// Mobile: 11 px   |  Desktop: 12 px
-const _kInactiveSizeMobile = 11.0;
-const _kInactiveSizeDesktop = 12.0;
+const _kInactiveSizeMobile = 14.0;
+const _kInactiveSizeDesktop = 16.0;
 
 /// Hit-target multiplier for the inactive pin.
-/// The visible dot is small (11–12 px), so we expand the tappable area by 30%
+/// The visible dot is small (14–16 px), so we expand the tappable area by 50%
 /// to improve tap accuracy without changing the visual size.
-const _kInactiveHitMultiplier = 1.3;
+const _kInactiveHitMultiplier = 1.5;
 
 // ─── MapLocationMarker ────────────────────────────────────────────────────────
 
@@ -88,8 +88,7 @@ class MapLocationMarker extends StatelessWidget {
 // ─── Inactive pin ─────────────────────────────────────────────────────────────
 
 /// Small purple dot for unselected, disconnected locations.
-/// Mobile: 8 px outer / 4 px inner.
-/// Desktop: 12 px outer / 6 px inner.
+/// Mobile: 14 px  |  Desktop: 16 px
 class _InactivePin extends StatelessWidget {
   const _InactivePin({required this.size, required this.onPressed, this.onDoubleTap});
 
@@ -230,24 +229,32 @@ class _GestureHandlerState extends State<_GestureHandler> {
   }
 
   @override
-  Widget build(BuildContext context) => Stack(
-    children: [
-      IgnorePointer(child: Center(child: widget.child)),
-      Positioned.fill(
-        child: Center(
-          child: SizedBox.fromSize(
-            size: widget.hitSize,
-            child: Material(
-              type: MaterialType.transparency,
-              shape: const CircleBorder(),
-              color: Palette.transparent,
-              shadowColor: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-              child: InkWell(onTap: _handleTap, customBorder: const CircleBorder()),
+  Widget build(BuildContext context) => MouseRegion(
+    cursor: SystemMouseCursors.click,
+    hitTestBehavior: HitTestBehavior.translucent,
+    child: Stack(
+      children: [
+        IgnorePointer(child: Center(child: widget.child)),
+        Positioned.fill(
+          child: Center(
+            child: SizedBox.fromSize(
+              size: widget.hitSize,
+              child: Material(
+                type: MaterialType.transparency,
+                shape: const CircleBorder(),
+                color: Palette.transparent,
+                shadowColor: Colors.transparent,
+                surfaceTintColor: Colors.transparent,
+                child: InkWell(
+                  onTap: _handleTap,
+                  customBorder: const CircleBorder(),
+                  mouseCursor: SystemMouseCursors.click,
+                ),
+              ),
             ),
           ),
         ),
-      ),
-    ],
+      ],
+    ),
   );
 }

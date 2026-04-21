@@ -585,7 +585,7 @@ class PaletteLight extends Palette {
   Color get textPlaceholder => gray.shade500;
 
   @override
-  Color get textBrandPrimary => Palette.brand.shade900;
+  Color get textBrandPrimary => Palette.brand.shade600;
 
   @override
   Color get textErrorPrimary => Palette.error.shade600;
