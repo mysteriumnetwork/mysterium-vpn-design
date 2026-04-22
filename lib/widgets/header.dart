@@ -26,16 +26,24 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.showBackButton,
     this.backLabel,
+    this.onBackPressed,
     super.key,
   });
 
-  factory Header.logo({List<Widget>? actions, Color? backgroundColor, bool? showBackButton}) =>
-      Header(
-        title: const Logo(height: 24),
-        actions: actions,
-        backgroundColor: backgroundColor,
-        showBackButton: showBackButton,
-      );
+  factory Header.logo({
+    bool centerTitle = false,
+    List<Widget>? actions,
+    Color? backgroundColor,
+    bool? showBackButton,
+    VoidCallback? onBackPressed,
+  }) => Header(
+    title: const Logo(height: 24),
+    centerTitle: centerTitle,
+    actions: actions,
+    backgroundColor: backgroundColor,
+    showBackButton: showBackButton,
+    onBackPressed: onBackPressed,
+  );
 
   factory Header.labeled({
     required String label,
@@ -43,12 +51,14 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     List<Widget>? actions,
     Color? backgroundColor,
     bool? showBackButton,
+    VoidCallback? onBackPressed,
   }) => Header(
     title: Text(label),
     actions: actions,
     centerTitle: centerTitle,
     backgroundColor: backgroundColor,
     showBackButton: showBackButton,
+    onBackPressed: onBackPressed,
   );
 
   final Widget? title;
@@ -60,6 +70,10 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   /// Label shown next to the back-arrow when [title] is null and the navigator
   /// can pop. Defaults to `'Back to home'`.
   final String? backLabel;
+
+  /// Called when the back button is tapped. Falls back to
+  /// `Navigator.of(context).maybePop()` when null.
+  final VoidCallback? onBackPressed;
 
   static const double _height = 64;
 
@@ -94,7 +108,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             children: [
               if (showBack)
                 CustomIconButton(
-                  onPressed: () => Navigator.of(context).maybePop(),
+                  onPressed: onBackPressed ?? () => Navigator.of(context).maybePop(),
                   minimumSize: const Size(32, 32),
                   icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
                 ),
