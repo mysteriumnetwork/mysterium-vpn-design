@@ -2,14 +2,31 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-enum ButtonVariant { primary, secondary, tertiary }
+/// Visual style of a [Button]: filled, outlined, or text.
+enum ButtonVariant {
+  /// Filled background. Primary call-to-action.
+  primary,
 
+  /// Outlined border, transparent background. Secondary action.
+  secondary,
+
+  /// No border or background. Low-emphasis / inline action.
+  tertiary,
+}
+
+/// Vertical size of a [Button]. Affects min height, padding, and text size.
 enum ButtonSize { small, medium, large }
 
+/// Loading state for a [Button].
+///
+/// When set, the button becomes non-interactive and renders a spinner in
+/// place of the leading widget. If [text] is non-null it replaces the
+/// button's child while loading.
 @immutable
 class ButtonLoading {
   const ButtonLoading({this.text});
 
+  /// Label to show while loading. When null, the original child is kept.
   final String? text;
 
   @override
@@ -27,6 +44,11 @@ class ButtonLoading {
   int get hashCode => text.hashCode;
 }
 
+/// Base class for the themed button variants.
+///
+/// Do not extend directly — use [ButtonPrimary], [ButtonSecondary], or
+/// [ButtonTertiary]. The sealed hierarchy exists so [variant] can be pattern
+/// matched at call sites.
 sealed class Button extends StatelessWidget {
   const Button({
     required this.onPressed,
@@ -40,16 +62,35 @@ sealed class Button extends StatelessWidget {
     super.key,
   });
 
+  /// Tap handler. Pass `null` to render the button as disabled.
   final VoidCallback? onPressed;
+
+  /// Which concrete variant this is (primary / secondary / tertiary).
   final ButtonVariant variant;
+
+  /// Size preset — affects min height, padding, and text size.
   final ButtonSize size;
+
+  /// Main button content. Typically a [Text].
   final Widget child;
+
+  /// Optional leading widget (e.g. icon). Hidden while [loading] is set.
   final Widget? leading;
+
+  /// Optional trailing widget (e.g. icon).
   final Widget? trailing;
+
+  /// When non-null the button shows a spinner and becomes non-interactive.
   final ButtonLoading? loading;
+
+  /// Overrides for colours, text style, min size, and padding.
   final ButtonDecoration decoration;
 }
 
+/// Overrides for a [Button]'s appearance.
+///
+/// Every field is optional — unspecified fields fall back to the button's
+/// variant + size defaults.
 @immutable
 class ButtonDecoration {
   const ButtonDecoration({
@@ -61,15 +102,23 @@ class ButtonDecoration {
     this.padding,
   });
 
+  /// Background colour.
   final Color? decorationColor;
+
+  /// Text / icon colour.
   final Color? foregroundColor;
 
   /// Override the border color for [ButtonSecondary]. Has no effect on
   /// [ButtonPrimary] or [ButtonTertiary].
   final Color? borderColor;
 
+  /// Overrides the default size-derived text style.
   final TextStyle? textStyle;
+
+  /// Overrides the default size-derived minimum size.
   final Size? minimumSize;
+
+  /// Overrides the default size-derived padding.
   final EdgeInsets? padding;
 
   @override
@@ -111,6 +160,7 @@ class ButtonDecoration {
   );
 }
 
+/// Filled call-to-action button — the highest-emphasis variant.
 class ButtonPrimary extends Button {
   const ButtonPrimary({
     required super.onPressed,
@@ -161,6 +211,7 @@ class ButtonPrimary extends Button {
   );
 }
 
+/// Outlined button for secondary actions alongside a [ButtonPrimary].
 class ButtonSecondary extends Button {
   const ButtonSecondary({
     required super.onPressed,
@@ -211,6 +262,7 @@ class ButtonSecondary extends Button {
   );
 }
 
+/// Text-only button for low-emphasis / inline actions.
 class ButtonTertiary extends Button {
   const ButtonTertiary({
     required super.onPressed,

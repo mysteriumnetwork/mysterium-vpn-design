@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// A small pill-shaped label used to tag or annotate content.
+///
+/// Use [type] to pick a colour scheme (neutral / green / green secondary)
+/// and [size] for density.
 class AppBadge extends StatelessWidget {
   const AppBadge({
     required this.text,
@@ -9,8 +13,13 @@ class AppBadge extends StatelessWidget {
     super.key,
   });
 
+  /// Label shown inside the badge. Rendered on a single line.
   final String text;
+
+  /// Colour scheme. Defaults to [BadgeType.neutral].
   final BadgeType type;
+
+  /// Badge density preset. Defaults to [BadgeSize.medium].
   final BadgeSize size;
 
   @override
@@ -64,6 +73,17 @@ class AppBadge extends StatelessWidget {
   };
 }
 
-enum BadgeType { neutral, green, greenSecondary }
+/// Colour scheme for an [AppBadge].
+enum BadgeType {
+  /// Neutral gray palette. Default.
+  neutral,
 
+  /// Solid green — high emphasis (e.g. "New", "Best value").
+  green,
+
+  /// Tinted green — low emphasis green.
+  greenSecondary,
+}
+
+/// Size preset for an [AppBadge].
 enum BadgeSize { small, medium }

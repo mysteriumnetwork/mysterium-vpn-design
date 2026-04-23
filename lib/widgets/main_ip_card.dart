@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/icon_button.dart';
 
 // ─── Connection rating ────────────────────────────────────────────────────────
 

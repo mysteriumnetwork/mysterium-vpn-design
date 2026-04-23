@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// Transparent app bar used by [ModalScaffold].
+///
+/// Renders an optional centred [title], arbitrary [actions], and a
+/// trailing × close button when the route can be dismissed.
 class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
   const ModalAppbar({
     this.title,
@@ -10,9 +14,16 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
     super.key,
   });
 
+  /// Optional centred title.
   final String? title;
+
+  /// Trailing action widgets rendered before the close button.
   final List<Widget>? actions;
+
+  /// Close handler for the × button. Falls back to `Navigator.pop`.
   final VoidCallback? onModalClose;
+
+  /// Whether the × close button is shown (when the route is dismissible).
   final bool showCloseButton;
 
   @override

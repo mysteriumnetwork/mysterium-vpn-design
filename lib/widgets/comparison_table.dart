@@ -6,6 +6,12 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 part 'comparison_table/comparison_feature.dart';
 part 'comparison_table/comparison_value.dart';
 
+/// A feature comparison grid where rows are features and columns are
+/// compared entities (e.g. plans, tiers) keyed by [K].
+///
+/// Each [ComparisonFeature] specifies per-column [ComparisonValue]s — text,
+/// a check / cross icon, or an arbitrary widget. Zebra striping is applied
+/// automatically; on tablet+ a horizontal margin is added.
 class ComparisonTable<K> extends StatelessWidget {
   const ComparisonTable({
     required this.headerColumns,
@@ -14,8 +20,14 @@ class ComparisonTable<K> extends StatelessWidget {
     super.key,
   });
 
+  /// Optional widget for the empty top-left cell above the feature labels.
   final Widget? headerIndexColumn;
+
+  /// Ordered mapping of column key → header label. Column order follows
+  /// iteration order of this map.
   final Map<K, String> headerColumns;
+
+  /// One row per feature, keyed by the same [K] as [headerColumns].
   final List<ComparisonFeature<K>> features;
 
   @override

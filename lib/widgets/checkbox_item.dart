@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// A row combining a [Checkbox] with a tappable label.
+///
+/// The whole row acts as the hit target — tapping anywhere calls
+/// [onChanged]. Intended for forms and option lists where the label is
+/// rich (e.g. contains [LinkSpan]s).
 class CheckboxItem extends StatelessWidget {
   const CheckboxItem({
     required this.value,
@@ -9,8 +14,13 @@ class CheckboxItem extends StatelessWidget {
     super.key,
   });
 
+  /// Whether the checkbox is currently checked.
   final bool value;
+
+  /// Invoked when the row is tapped. Pass `null` to render as read-only.
   final VoidCallback? onChanged;
+
+  /// Label shown next to the checkbox. Typically a [Text] or [RichText].
   final Widget label;
 
   @override

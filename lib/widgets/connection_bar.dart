@@ -1,8 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-enum BarStatus { connected, disconnected, gettingIp, disconnecting, connecting }
+/// VPN connection lifecycle state rendered by [ConnectionBar].
+enum BarStatus {
+  /// Fully connected — green; the bar can expand to show the kill switch.
+  connected,
 
+  /// Disconnected (no tunnel) — red.
+  disconnected,
+
+  /// Connection established, still fetching the new IP — amber + spinner.
+  gettingIp,
+
+  /// Tearing down the tunnel — amber + spinner.
+  disconnecting,
+
+  /// Establishing the tunnel — amber + spinner.
+  connecting,
+}
+
+/// A full-width status bar shown above the app content that reflects the
+/// current [BarStatus].
+///
+/// When [status] is [BarStatus.connected] the bar becomes tappable and
+/// expands to reveal a kill-switch hint ([killSwitchLabel] +
+/// [killSwitchDescription]). Other statuses are not expandable.
 class ConnectionBar extends StatefulWidget {
   const ConnectionBar({
     required this.label,
@@ -12,9 +34,16 @@ class ConnectionBar extends StatefulWidget {
     super.key,
   });
 
+  /// Primary status text (e.g. "Connected", "Connecting...").
   final String label;
+
+  /// Current connection lifecycle status.
   final BarStatus status;
+
+  /// Kill-switch label shown in the expanded drawer.
   final String killSwitchLabel;
+
+  /// Kill-switch description paired with [killSwitchLabel].
   final String killSwitchDescription;
 
   @override

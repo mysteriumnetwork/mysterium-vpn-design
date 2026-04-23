@@ -6,8 +6,24 @@ part 'plan_card/plan_card_action.dart';
 part 'plan_card/plan_card_features.dart';
 part 'plan_card/plan_container.dart';
 
-enum PlanCardMode { selectable, highlight, normal }
+/// Presentation mode of a [PlanCard].
+enum PlanCardMode {
+  /// Part of a [RadioGroup]-style picker; shows a radio control and
+  /// reflects the group selection in its border.
+  selectable,
 
+  /// Always-highlighted card, e.g. a suggested or best-value plan.
+  highlight,
+
+  /// Neutral card with no selection affordance.
+  normal,
+}
+
+/// A pricing card describing a single plan / offer.
+///
+/// Use [PlanCard.features] to attach an expandable feature list or
+/// [PlanCard.actions] to attach a call-to-action row. Mode controls
+/// whether the card participates in a [RadioGroup] of type [T].
 class PlanCard<T> extends StatelessWidget {
   const PlanCard({
     required this.data,
@@ -18,6 +34,7 @@ class PlanCard<T> extends StatelessWidget {
     super.key,
   });
 
+  /// Factory that attaches a collapsible feature list as the card footer.
   PlanCard.features({
     required this.data,
     required List<String> features,
@@ -34,6 +51,7 @@ class PlanCard<T> extends StatelessWidget {
          isOffer: data.isOffer,
        );
 
+  /// Factory that attaches a single call-to-action button as the footer.
   PlanCard.actions({
     required this.data,
     required VoidCallback onPressed,
@@ -45,10 +63,20 @@ class PlanCard<T> extends StatelessWidget {
     super.key,
   }) : footer = _PlanCardAction(onPressed: onPressed, text: text, icon: actionIcon);
 
+  /// Pricing, name, icon, and badge data shown on the card.
   final PlanData data;
+
+  /// Visual mode — selectable / highlight / normal.
   final PlanCardMode mode;
+
+  /// Widget rendered below the pricing block (features list, action button).
   final Widget? footer;
+
+  /// Optional explicit [RadioGroup] registry. Falls back to the nearest
+  /// ancestor registry when null.
   final RadioGroupRegistry<T>? radioGroup;
+
+  /// Value registered with the radio group for this card.
   final T? value;
 
   @override

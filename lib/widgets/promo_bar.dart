@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// A full-width promotional banner with an optional leading [icon], a
+/// centred [text] message, and a trailing chevron when [onTap] is set.
+///
+/// Padding adapts to screen size (roomier on desktop). When [onTap] is
+/// null the trailing chevron is hidden and the banner is non-interactive.
 class PromoBar extends StatelessWidget {
   const PromoBar({
     required this.text,
@@ -10,9 +15,17 @@ class PromoBar extends StatelessWidget {
     super.key,
   });
 
+  /// Optional leading icon rendered in a 24×24 box.
   final Widget? icon;
+
+  /// Trailing icon shown only when [onTap] is set. Defaults to a chevron.
   final IconData actionIcon;
+
+  /// Promo message (wraps up to 3 lines, then ellipsizes).
   final String text;
+
+  /// Tap handler. When null the banner is non-interactive and the
+  /// trailing icon is hidden.
   final VoidCallback? onTap;
 
   @override
