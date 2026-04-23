@@ -118,9 +118,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: isBackLabel ? backAction : null,
-                    behavior: isBackLabel
-                        ? HitTestBehavior.opaque
-                        : HitTestBehavior.deferToChild,
+                    behavior: isBackLabel ? HitTestBehavior.opaque : HitTestBehavior.deferToChild,
                     child: DefaultTextStyle(
                       style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
                       child: centerTitle

@@ -324,10 +324,7 @@ class _NotConnectedContent extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              decoration: BoxDecoration(
-                color: palette.bgInfoIcon,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: palette.bgInfoIcon, shape: BoxShape.circle),
               child: Icon(UntitledUI.star_01, size: 24, color: palette.textIpCardTitle),
             ),
             Expanded(

@@ -222,6 +222,8 @@ abstract class Palette extends ThemeExtension<Palette> {
 
   /// Figma: icon-IP-card — refresh icon on multi-IP cards.
   /// Light: white 80%, Dark: GrayLight/600 (#535862).
+  /// Currently identical to [textIpCardSubtitle]; kept as a separate token
+  /// so icon and text colours can diverge independently in Figma.
   abstract final Color iconIpCard;
 
   ///

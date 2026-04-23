@@ -1,5 +1,6 @@
 export 'app_badge.dart';
 export 'button.dart';
+export 'checkbox_item.dart';
 export 'comparison_table.dart';
 export 'connection_bar.dart';
 export 'decorated_icon.dart';
