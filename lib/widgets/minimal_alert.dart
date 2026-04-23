@@ -44,17 +44,18 @@ class MinimalAlert extends StatelessWidget {
   /// If null, no dismiss button is rendered.
   final VoidCallback? onDismiss;
 
-  TooltipIcon? _effectiveTooltip() =>
+  TooltipIcon? _effectiveTooltip(Color color) =>
       tooltip ??
       (tooltipTitle != null
-          ? TooltipIcon.titled(title: tooltipTitle!, body: tooltipBody!)
-          : (tooltipMsg != null ? TooltipIcon(message: tooltipMsg!) : null));
+          ? TooltipIcon.titled(title: tooltipTitle!, body: tooltipBody!, color: color)
+          : (tooltipMsg != null ? TooltipIcon(message: tooltipMsg!, color: color) : null));
 
   @override
   Widget build(BuildContext context) {
     final palette = Theme.of(context).palette;
     final theme = Theme.of(context);
-    final effectiveTooltip = _effectiveTooltip();
+    final textColor = palette.textTertiary;
+    final effectiveTooltip = _effectiveTooltip(textColor);
 
     return Stack(
       children: [
@@ -83,7 +84,7 @@ class MinimalAlert extends StatelessWidget {
                       TextSpan(
                         text: message,
                         style: theme.textStyles.textSm.regular.copyWith(
-                          color: palette.textTertiary,
+                          color: textColor,
                         ),
                       ),
                       if (effectiveTooltip != null)

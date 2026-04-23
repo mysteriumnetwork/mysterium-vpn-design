@@ -105,7 +105,7 @@ class _FeatureRow<K> extends TableRow {
                spacing: 6,
                children: [
                  Expanded(child: Text(feature.label, style: textStyle)),
-                 if (feature.description != null) TooltipIcon(message: feature.description!),
+                 if (feature.description != null) TooltipIcon(message: feature.description!, color: textStyle?.color),
                ],
              ),
            ),

@@ -6,23 +6,26 @@ class TooltipIcon extends StatelessWidget {
     required String message,
     IconData icon = UntitledUI.help_circle,
     double size = 16.0,
+    Color? color,
     Key? key,
-  }) : this._(key: key, message: message, icon: icon, size: size);
+  }) : this._(key: key, message: message, icon: icon, size: size, color: color);
 
   const TooltipIcon.richMessage({
     required InlineSpan message,
     IconData icon = UntitledUI.help_circle,
     double size = 16.0,
+    Color? color,
     Key? key,
-  }) : this._(key: key, richMessage: message, icon: icon, size: size);
+  }) : this._(key: key, richMessage: message, icon: icon, size: size, color: color);
 
   /// Shows [content] — any widget — inside the tooltip popup.
   const TooltipIcon.widget({
     required Widget content,
     IconData icon = UntitledUI.help_circle,
     double size = 16.0,
+    Color? color,
     Key? key,
-  }) : this._(key: key, content: content, icon: icon, size: size);
+  }) : this._(key: key, content: content, icon: icon, size: size, color: color);
 
   /// Shows a titled tooltip with a [title] (semibold) and [body] (medium),
   /// matching the Figma "Content" tooltip spec.
@@ -31,12 +34,14 @@ class TooltipIcon extends StatelessWidget {
     required String body,
     IconData icon = UntitledUI.help_circle,
     double size = 16.0,
+    Color? color,
     Key? key,
   }) : this._(
          key: key,
          content: _TitledBody(title: title, body: body),
          icon: icon,
          size: size,
+         color: color,
        );
 
   const TooltipIcon._({
@@ -46,6 +51,7 @@ class TooltipIcon extends StatelessWidget {
     this.content,
     this.icon = UntitledUI.help_circle,
     this.size = 16.0,
+    this.color,
   }) : assert(
          message != null || richMessage != null || content != null,
          'Either message, richMessage, or content must be provided.',
@@ -59,6 +65,9 @@ class TooltipIcon extends StatelessWidget {
 
   final IconData icon;
   final double size;
+
+  /// Icon color. Defaults to [Palette.textTertiary] when null.
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +85,7 @@ class TooltipIcon extends StatelessWidget {
       message: effectiveRichMessage != null ? null : message,
       richMessage: effectiveRichMessage,
       verticalOffset: (size / 2) + 4,
-      child: Icon(icon, size: size, color: theme.palette.textTertiary),
+      child: Icon(icon, size: size, color: color ?? theme.palette.textTertiary),
     );
   }
 }
