@@ -44,8 +44,7 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade100;
                 }
-                if (states.contains(WidgetState.hovered) ||
-                    states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
                   return Palette.brand.shade600;
                 }
                 return palette.bgBrandPrimary;
@@ -75,8 +74,7 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade100;
                 }
-                if (states.contains(WidgetState.hovered) ||
-                    states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
                   return Palette.grayLight.shade100;
                 }
                 return Palette.white;
@@ -91,8 +89,7 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }
-                if (states.contains(WidgetState.hovered) ||
-                    states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
                   return Palette.grayLight.shade900;
                 }
                 return Palette.grayLight.shade600;
@@ -101,8 +98,7 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }
-                if (states.contains(WidgetState.hovered) ||
-                    states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
                   return Palette.grayLight.shade900;
                 }
                 return Palette.grayLight.shade600;
@@ -124,8 +120,7 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }
-                if (states.contains(WidgetState.hovered) ||
-                    states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
                   return Palette.brand.shade700;
                 }
                 return palette.textBrandPrimary;
@@ -134,8 +129,7 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }
-                if (states.contains(WidgetState.hovered) ||
-                    states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
                   return Palette.brand.shade700;
                 }
                 return palette.textBrandPrimary;

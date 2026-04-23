@@ -83,9 +83,7 @@ class MinimalAlert extends StatelessWidget {
                     children: [
                       TextSpan(
                         text: message,
-                        style: theme.textStyles.textSm.regular.copyWith(
-                          color: textColor,
-                        ),
+                        style: theme.textStyles.textSm.regular.copyWith(color: textColor),
                       ),
                       if (effectiveTooltip != null)
                         WidgetSpan(
