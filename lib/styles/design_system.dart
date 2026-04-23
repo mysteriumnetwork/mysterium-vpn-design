@@ -95,7 +95,7 @@ sealed class DesignSystem {
         checkColor: WidgetStateProperty.all(palette.textWhite),
         fillColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return palette.bgBrandPrimary;
+            return Palette.brand.shade400;
           }
           if (states.contains(WidgetState.disabled)) {
             return palette.iconDisabled;

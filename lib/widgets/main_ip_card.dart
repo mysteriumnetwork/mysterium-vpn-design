@@ -325,10 +325,10 @@ class _NotConnectedContent extends StatelessWidget {
               width: 48,
               height: 48,
               decoration: BoxDecoration(
-                color: Palette.grayDarkAlpha.shade700,
+                color: palette.bgInfoIcon,
                 shape: BoxShape.circle,
               ),
-              child: Icon(UntitledUI.zap_fast, size: 32, color: palette.textIpCardTitle),
+              child: Icon(UntitledUI.star_01, size: 24, color: palette.textIpCardTitle),
             ),
             Expanded(
               child: Column(
@@ -586,7 +586,7 @@ class _ConnectedContent extends StatelessWidget {
               children: [
                 _IconTap(
                   icon: UntitledUI.refresh_cw_05,
-                  iconColor: isRefreshActive ? palette.textIpCardTitle : palette.iconBrandSecondary,
+                  iconColor: isRefreshActive ? palette.iconIpCard : palette.iconBrandPrimaryHover,
                   onPressed: isRefreshActive ? onRefreshIp : null,
                   tooltip: refreshIpTooltip,
                 ),
@@ -627,6 +627,7 @@ class _ConnectedContent extends StatelessWidget {
                       ? Palette.error
                       : palette.textIpCardSubtitle,
                   onPressed: onThumbsDown,
+                  padding: const EdgeInsets.all(4),
                 ),
                 _IconTap(
                   icon: UntitledUI.thumbs_up,
@@ -634,6 +635,7 @@ class _ConnectedContent extends StatelessWidget {
                       ? Palette.success
                       : palette.textIpCardSubtitle,
                   onPressed: onThumbsUp,
+                  padding: const EdgeInsets.all(4),
                 ),
               ],
             ),
@@ -702,16 +704,19 @@ class _IconTap extends StatelessWidget {
     this.tooltip,
     this.iconColor = Palette.white,
     this.onPressed,
+    this.padding,
   });
 
   final IconData icon;
   final Color iconColor;
   final VoidCallback? onPressed;
   final String? tooltip;
+  final EdgeInsetsGeometry? padding;
   @override
   Widget build(BuildContext context) => CustomIconButton(
     onPressed: onPressed,
     icon: Icon(icon, size: 24, color: iconColor),
     tooltip: tooltip,
+    padding: padding,
   );
 }

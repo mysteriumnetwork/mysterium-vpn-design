@@ -87,6 +87,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     final showBack = showBackButton ?? canGoBack;
 
+    final isBackLabel = showBack && title == null;
     var resolvedTitle = title;
     if (resolvedTitle == null && showBack) {
       resolvedTitle = Text(
@@ -96,6 +97,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         overflow: TextOverflow.ellipsis,
       );
     }
+    final backAction = onBackPressed ?? () => Navigator.of(context).maybePop();
 
     return ColoredBox(
       color: resolvedBg,
@@ -108,17 +110,23 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             children: [
               if (showBack)
                 CustomIconButton(
-                  onPressed: onBackPressed ?? () => Navigator.of(context).maybePop(),
+                  onPressed: backAction,
                   minimumSize: const Size(32, 32),
                   icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
                 ),
               if (resolvedTitle != null)
                 Expanded(
-                  child: DefaultTextStyle(
-                    style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
-                    child: centerTitle
-                        ? Center(child: resolvedTitle)
-                        : Align(alignment: Alignment.centerLeft, child: resolvedTitle),
+                  child: GestureDetector(
+                    onTap: isBackLabel ? backAction : null,
+                    behavior: isBackLabel
+                        ? HitTestBehavior.opaque
+                        : HitTestBehavior.deferToChild,
+                    child: DefaultTextStyle(
+                      style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
+                      child: centerTitle
+                          ? Center(child: resolvedTitle)
+                          : Align(alignment: Alignment.centerLeft, child: resolvedTitle),
+                    ),
                   ),
                 )
               else

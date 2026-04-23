@@ -216,6 +216,14 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color iconDisabled;
   abstract final Color iconBrandSecondary;
 
+  /// Figma: icon-brand-primary-hover — refresh icon on single-IP cards.
+  /// Light: Brand/700 (#8B1AB1), Dark: Brand/200 (#F2D0FE).
+  abstract final Color iconBrandPrimaryHover;
+
+  /// Figma: icon-IP-card — refresh icon on multi-IP cards.
+  /// Light: white 80%, Dark: GrayLight/600 (#535862).
+  abstract final Color iconIpCard;
+
   ///
   /// Background Colors
   ///
@@ -253,6 +261,11 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Figma: Colors/Background/bg-main-ip-preview — the background of the
   /// new-IP preview bar. Light: BrandPurple/200 (#DDD3EE), Dark: BrandPurple/300 (#C1AEE0).
   abstract final Color bgMainIpPreview;
+
+  /// Figma: Colors/Background/bg-transparent — circle background for
+  /// informational icons on the IP card (best-server, not-signed-in, etc.).
+  /// Light: 16 % white, Dark: 8 % black.
+  abstract final Color bgInfoIcon;
 
   /// Figma: Colors/Text/text-ip-card-title — primary text inside the IP card.
   /// Light: white (#FFFFFF), Dark: GrayLight/800 (#252B37).
@@ -401,6 +414,12 @@ class PaletteDark extends Palette {
   @override
   Color get iconBrandSecondary => Palette.brand.shade400;
 
+  @override
+  Color get iconBrandPrimaryHover => Palette.brand.shade200;
+
+  @override
+  Color get iconIpCard => Palette.grayLight.shade600;
+
   ///
   /// Background Colors
   ///
@@ -460,6 +479,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgMainIpPreview => Palette.brandPurple.shade300;
+
+  @override
+  Color get bgInfoIcon => const Color(0x14000000);
 
   @override
   Color get textIpCardTitle => Palette.grayLight.shade800;
@@ -659,6 +681,12 @@ class PaletteLight extends Palette {
   @override
   Color get iconBrandSecondary => Palette.brand.shade500;
 
+  @override
+  Color get iconBrandPrimaryHover => Palette.brand.shade700;
+
+  @override
+  Color get iconIpCard => Palette.white.withValues(alpha: 0.8);
+
   ///
   /// Background Colors
   ///
@@ -715,6 +743,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgMainIpPreview => Palette.brandPurple.shade200;
+
+  @override
+  Color get bgInfoIcon => Palette.grayDarkAlpha.shade700;
 
   @override
   Color get textIpCardTitle => Palette.white;

@@ -131,7 +131,7 @@ class ButtonPrimary extends Button {
       style: FilledButton.styleFrom(
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
-        elevation: 4,
+        elevation: 0,
         backgroundColor: decoration.decorationColor,
         foregroundColor: decoration.foregroundColor,
         iconColor: decoration.foregroundColor,
