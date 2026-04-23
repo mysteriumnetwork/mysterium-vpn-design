@@ -19,8 +19,11 @@ class PromoBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final padding = switch (ScreenType.of(context)) {
-      ScreenType.desktop => const EdgeInsets.symmetric(horizontal: 48, vertical: 4),
-      _ => const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      ScreenType.desktop => EdgeInsets.symmetric(
+        horizontal: theme.spacing.xl5,
+        vertical: theme.spacing.xs,
+      ),
+      _ => EdgeInsets.symmetric(horizontal: theme.spacing.md, vertical: theme.spacing.xs),
     };
     return RawMaterialButton(
       onPressed: onTap,
@@ -32,7 +35,7 @@ class PromoBar extends StatelessWidget {
       child: Padding(
         padding: padding,
         child: Row(
-          spacing: 8,
+          spacing: theme.spacing.s,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (icon != null)

@@ -106,7 +106,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         child: SizedBox(
           height: _height,
           child: Row(
-            spacing: 8,
+            spacing: theme.spacing.s,
             children: [
               if (showBack)
                 CustomIconButton(
@@ -129,7 +129,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 )
               else
                 const Spacer(),
-              if (actions != null) Row(spacing: 16, children: actions!),
+              if (actions != null) Row(spacing: theme.spacing.md, children: actions!),
             ],
           ),
         ),

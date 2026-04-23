@@ -8,7 +8,7 @@ class Spacing extends ThemeExtension<Spacing> {
   double get xs => 4; // spacing-xs
   double get sm => 6; // spacing-xs
   double get s => 8; // spacing-sm
-  double get lg => 12; // spacing-lg
+  double get lg => 10; // spacing-lg
   double get ms => 12; // spacing-ms
   double get md => 16; // spacing-md
   double get xl => 20; // spacing-xl

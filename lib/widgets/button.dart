@@ -280,35 +280,38 @@ class _Child extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding:
-        padding ??
-        switch (size) {
-          ButtonSize.small => const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          ButtonSize.medium => const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          ButtonSize.large => const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+  Widget build(BuildContext context) {
+    final spacing = Theme.of(context).spacing;
+    return Padding(
+      padding:
+          padding ??
+          switch (size) {
+            ButtonSize.small => EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.s),
+            ButtonSize.medium => EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.lg),
+            ButtonSize.large => EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.ms),
+          },
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        spacing: switch (size) {
+          ButtonSize.small => spacing.xs,
+          ButtonSize.medium => spacing.xs,
+          ButtonSize.large => spacing.s,
         },
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: switch (size) {
-        ButtonSize.small => 4,
-        ButtonSize.medium => 4,
-        ButtonSize.large => 8,
-      },
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        if (leading != null && loading == null) leading!,
-        if (loading != null) _LoadingIndicator(color: IconTheme.of(context).color),
-        Flexible(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 2),
-            child: loading?.text != null ? Text(loading!.text!) : child,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          if (leading != null && loading == null) leading!,
+          if (loading != null) _LoadingIndicator(color: IconTheme.of(context).color),
+          Flexible(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: spacing.xxs),
+              child: loading?.text != null ? Text(loading!.text!) : child,
+            ),
           ),
-        ),
-        ?trailing,
-      ],
-    ),
-  );
+          ?trailing,
+        ],
+      ),
+    );
+  }
 }
 
 class _LoadingIndicator extends StatelessWidget {

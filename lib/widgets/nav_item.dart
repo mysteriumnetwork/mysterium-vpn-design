@@ -79,7 +79,7 @@ class _NavItemState extends State<NavItem> {
     final color = widget.current ? palette.textPrimarySelected : palette.textTertiary;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
+      padding: EdgeInsets.symmetric(vertical: theme.spacing.xs),
       child: MouseRegion(
         cursor: _interactive ? SystemMouseCursors.click : SystemMouseCursors.basic,
         onEnter: _interactive ? (_) => setState(() => _hovered = true) : null,
@@ -92,9 +92,12 @@ class _NavItemState extends State<NavItem> {
               borderRadius: const BorderRadius.all(Radius.kXs),
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: theme.spacing.ms,
+                vertical: theme.spacing.s,
+              ),
               child: Row(
-                spacing: 8,
+                spacing: theme.spacing.s,
                 children: [
                   _NavIcon(icon: widget.icon, color: color),
                   Flexible(

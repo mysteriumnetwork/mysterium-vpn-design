@@ -71,7 +71,12 @@ class MinimalAlert extends StatelessWidget {
             children: [
               Padding(
                 // 44px right reserves space for the 36px dismiss button at right: 7
-                padding: const EdgeInsets.fromLTRB(16, 16, 44, 16),
+                padding: EdgeInsets.fromLTRB(
+                  theme.spacing.md,
+                  theme.spacing.md,
+                  44,
+                  theme.spacing.md,
+                ),
                 child: Text.rich(
                   TextSpan(
                     children: [
@@ -85,7 +90,7 @@ class MinimalAlert extends StatelessWidget {
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 4),
+                            padding: EdgeInsets.only(left: theme.spacing.xs),
                             child: effectiveTooltip,
                           ),
                         ),

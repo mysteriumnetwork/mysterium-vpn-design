@@ -129,7 +129,7 @@ class _PlanPricing extends StatelessWidget {
                         icon: data.icon!,
                         decoration: IconDecoration(
                           backgroundColor: theme.palette.bgSecondarySelected,
-                          padding: const EdgeInsets.all(8),
+                          padding: EdgeInsets.all(theme.spacing.s),
                           borderRadius: BorderRadius.all(theme.radius.xxs),
                         ),
                       ),

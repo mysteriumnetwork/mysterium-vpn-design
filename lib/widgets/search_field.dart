@@ -51,7 +51,7 @@ class _SearchFieldState extends State<SearchField> {
     final theme = Theme.of(context);
 
     return SizedBox(
-      height: 40,
+      height: theme.spacing.xl4,
       child: DecoratedBox(
         decoration: BoxDecoration(
           color: palette.bgPrimary,
@@ -62,9 +62,9 @@ class _SearchFieldState extends State<SearchField> {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: theme.spacing.ms, vertical: theme.spacing.s),
           child: Row(
-            spacing: 8,
+            spacing: theme.spacing.s,
             children: [
               Icon(UntitledUI.search_sm, size: 20, color: palette.textTertiary),
               Expanded(

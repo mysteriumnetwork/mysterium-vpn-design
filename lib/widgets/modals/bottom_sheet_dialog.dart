@@ -68,7 +68,7 @@ FutureOr<T?> showBottomSheetDialog<T>(
           context,
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(32),
+              padding: EdgeInsets.all(dsTheme.spacing.xl3),
               child: ConstrainedBox(
                 constraints:
                     desktopConstraints ?? const BoxConstraints(maxWidth: 600, maxHeight: 700),

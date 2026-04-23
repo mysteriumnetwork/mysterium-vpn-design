@@ -80,7 +80,7 @@ class PromptDialog extends StatelessWidget {
               // ── Centred content ──────────────────────────────────────────────
               Expanded(
                 child: Padding(
-                  padding: contentPadding ?? const EdgeInsets.symmetric(horizontal: 24),
+                  padding: contentPadding ?? EdgeInsets.symmetric(horizontal: theme.spacing.xl2),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -105,7 +105,9 @@ class PromptDialog extends StatelessWidget {
               // ── Action buttons ───────────────────────────────────────────────
               if (hasButtons)
                 Padding(
-                  padding: buttonsPadding ?? const EdgeInsets.fromLTRB(16, 0, 16, 50),
+                  padding:
+                      buttonsPadding ??
+                      EdgeInsets.fromLTRB(theme.spacing.md, 0, theme.spacing.md, theme.spacing.xl5),
                   child: isDesktop
                       ? _DesktopButtons(
                           primaryButton: primaryButton,

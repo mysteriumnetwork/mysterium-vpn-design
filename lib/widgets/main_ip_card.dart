@@ -289,7 +289,7 @@ class _CardShell extends StatelessWidget {
       borderRadius: const BorderRadius.all(Radius.kM),
       boxShadow: const [BoxShadow(color: Color(0x0D0A0D12), blurRadius: 2, offset: Offset(0, 1))],
     ),
-    child: Padding(padding: const EdgeInsets.all(16), child: child),
+    child: Padding(padding: EdgeInsets.all(Theme.of(context).spacing.md), child: child),
   );
 }
 
@@ -315,11 +315,11 @@ class _NotConnectedContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16,
+      spacing: theme.spacing.md,
       children: [
         Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 12,
+          spacing: theme.spacing.ms,
           children: [
             Container(
               width: 48,
@@ -330,7 +330,7 @@ class _NotConnectedContent extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 8,
+                spacing: theme.spacing.s,
                 children: [
                   Text(
                     title,
@@ -375,16 +375,16 @@ class _ConnectingContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16,
+      spacing: theme.spacing.md,
       children: [
         Row(
-          spacing: 12,
+          spacing: theme.spacing.ms,
           children: [
             SizedBox(width: 32, height: 32, child: countryIcon),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 2,
+                spacing: theme.spacing.xxs,
                 children: [
                   Text(
                     country,
@@ -437,16 +437,16 @@ class _LocationSelectedContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16,
+      spacing: theme.spacing.md,
       children: [
         Row(
-          spacing: 12,
+          spacing: theme.spacing.ms,
           children: [
             SizedBox(width: 32, height: 32, child: countryIcon),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 2,
+                spacing: theme.spacing.xxs,
                 children: [
                   Text(
                     country,
@@ -516,27 +516,27 @@ class _ConnectedContent extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
-      spacing: 16,
+      spacing: theme.spacing.md,
       children: [
         // Header area
         Row(
           crossAxisAlignment: CrossAxisAlignment.end,
-          spacing: 2,
+          spacing: theme.spacing.xxs,
           children: [
             // Location + IP info column
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 2,
+                spacing: theme.spacing.xxs,
                 children: [
                   Row(
-                    spacing: 12,
+                    spacing: theme.spacing.ms,
                     children: [
                       SizedBox(width: 32, height: 32, child: countryIcon),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: 2,
+                          spacing: theme.spacing.xxs,
                           children: [
                             Text(
                               country,
@@ -554,7 +554,7 @@ class _ConnectedContent extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 44),
                     child: Row(
-                      spacing: 8,
+                      spacing: theme.spacing.s,
                       children: [
                         Flexible(
                           child: Text(
@@ -607,7 +607,7 @@ class _ConnectedContent extends StatelessWidget {
         ),
         // Connection rating row
         Row(
-          spacing: 16,
+          spacing: theme.spacing.md,
           children: [
             Expanded(
               child: Text(
@@ -616,7 +616,7 @@ class _ConnectedContent extends StatelessWidget {
               ),
             ),
             Row(
-              spacing: 8,
+              spacing: theme.spacing.s,
               children: [
                 _IconTap(
                   icon: UntitledUI.thumbs_down,
@@ -624,7 +624,7 @@ class _ConnectedContent extends StatelessWidget {
                       ? Palette.error
                       : palette.textIpCardSubtitle,
                   onPressed: onThumbsDown,
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(theme.spacing.xs),
                 ),
                 _IconTap(
                   icon: UntitledUI.thumbs_up,
@@ -632,7 +632,7 @@ class _ConnectedContent extends StatelessWidget {
                       ? Palette.success
                       : palette.textIpCardSubtitle,
                   onPressed: onThumbsUp,
-                  padding: const EdgeInsets.all(4),
+                  padding: EdgeInsets.all(theme.spacing.xs),
                 ),
               ],
             ),
@@ -661,13 +661,13 @@ class _PreviewBar extends StatelessWidget {
         borderRadius: const BorderRadius.only(topLeft: Radius.kM, topRight: Radius.kM),
       ),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
         child: Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
             height: _previewBarContentOffset,
             child: Row(
-              spacing: 12,
+              spacing: theme.spacing.ms,
               children: [
                 SizedBox(width: 32, height: 32, child: countryIcon),
                 Expanded(

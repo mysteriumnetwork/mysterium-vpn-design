@@ -56,7 +56,10 @@ class ComparisonTable<K> extends StatelessWidget {
     );
 
     if (isDesktop) {
-      return Padding(padding: const EdgeInsets.symmetric(horizontal: 24), child: table);
+      return Padding(
+        padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl2),
+        child: table,
+      );
     }
 
     return table;

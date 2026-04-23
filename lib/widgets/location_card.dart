@@ -53,7 +53,8 @@ class _LocationCardState extends State<LocationCard> {
 
   @override
   Widget build(BuildContext context) {
-    final palette = Theme.of(context).palette;
+    final theme = Theme.of(context);
+    final palette = theme.palette;
     final isDisabled = widget.status == LocationCardStatus.disabled;
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 208, maxWidth: 258),
@@ -71,10 +72,13 @@ class _LocationCardState extends State<LocationCard> {
               ],
             ),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(
+                horizontal: theme.spacing.md,
+                vertical: theme.spacing.ms,
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                spacing: 12,
+                spacing: theme.spacing.ms,
                 children: [
                   _LeadingIcon(status: widget.status, icon: widget.icon),
                   Flexible(
@@ -137,7 +141,7 @@ class _TextColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
-      spacing: 4,
+      spacing: theme.spacing.xs,
       children: [
         Text(
           name,
