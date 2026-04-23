@@ -183,9 +183,11 @@ class ExpandableIpCardHeader extends StatelessWidget {
     final borderRadius = expanded
         ? const BorderRadius.only(topLeft: Radius.kS, topRight: Radius.kS)
         : const BorderRadius.all(Radius.kS);
+    final hasChevron = onChevronTap != null;
     return _IpCardShell(
       status: status,
       borderRadius: borderRadius,
+      rightPadding: hasChevron ? 16 : 60,
       child: Row(
         spacing: 12,
         children: [

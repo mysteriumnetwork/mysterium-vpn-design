@@ -50,37 +50,42 @@ class _SearchFieldState extends State<SearchField> {
     final palette = Theme.of(context).palette;
     final theme = Theme.of(context);
 
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: palette.bgPrimary,
-        borderRadius: const BorderRadius.all(Radius.kS),
-        border: Border.all(color: _focused ? palette.borderBrand : palette.borderPrimary),
-        boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        child: Row(
-          spacing: 8,
-          children: [
-            Icon(UntitledUI.search_sm, size: 20, color: palette.iconTertiary),
-            Expanded(
-              child: TextField(
-                focusNode: _focus,
-                controller: widget.controller,
-                onChanged: widget.onChanged,
-                onSubmitted: widget.onSubmitted,
-                autocorrect: widget.autocorrect,
-                style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
-                decoration: InputDecoration.collapsed(
-                  hintText: widget.placeholder,
-                  hintStyle: theme.textStyles.textMd.regular.copyWith(
-                    color: palette.textPlaceholder,
-                  ),
-                ),
-                cursorColor: palette.borderBrand,
-              ),
-            ),
+    return SizedBox(
+      height: 40,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: palette.bgPrimary,
+          borderRadius: const BorderRadius.all(Radius.kS),
+          border: Border.all(color: _focused ? palette.borderBrand : palette.borderPrimary),
+          boxShadow: [
+            BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1)),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            spacing: 8,
+            children: [
+              Icon(UntitledUI.search_sm, size: 20, color: palette.textTertiary),
+              Expanded(
+                child: TextField(
+                  focusNode: _focus,
+                  controller: widget.controller,
+                  onChanged: widget.onChanged,
+                  onSubmitted: widget.onSubmitted,
+                  autocorrect: widget.autocorrect,
+                  style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
+                  decoration: InputDecoration.collapsed(
+                    hintText: widget.placeholder,
+                    hintStyle: theme.textStyles.textMd.regular.copyWith(
+                      color: palette.textTertiary,
+                    ),
+                  ),
+                  cursorColor: palette.borderBrand,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

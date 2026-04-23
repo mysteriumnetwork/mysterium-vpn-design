@@ -76,7 +76,7 @@ class TooltipIcon extends StatelessWidget {
       message: effectiveRichMessage != null ? null : message,
       richMessage: effectiveRichMessage,
       verticalOffset: (size / 2) + 4,
-      child: Icon(icon, size: size, color: theme.palette.iconDisabled),
+      child: Icon(icon, size: size, color: theme.palette.textTertiary),
     );
   }
 }

@@ -167,7 +167,7 @@ sealed class DesignSystem {
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(color: palette.borderTabs, width: 2),
         ),
-        dividerHeight: 1,
+        dividerHeight: 2,
         dividerColor: palette.borderSecondary,
         indicatorColor: palette.borderTabs,
         labelColor: palette.textPrimarySelected,
