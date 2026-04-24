@@ -183,20 +183,20 @@ class ExpandableIpCardHeader extends StatelessWidget {
     final borderRadius = expanded
         ? const BorderRadius.only(topLeft: Radius.kS, topRight: Radius.kS)
         : const BorderRadius.all(Radius.kS);
+    final theme = Theme.of(context);
     final hasChevron = onChevronTap != null;
+    final showPlus = plusUpgrade && status != IpCardStatus.selected;
     return _IpCardShell(
       status: status,
       borderRadius: borderRadius,
-      rightPadding: hasChevron ? Theme.of(context).spacing.md : Theme.of(context).spacing.xl6,
       child: Row(
-        spacing: Theme.of(context).spacing.ms,
         children: [
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: onContentTap,
               child: Row(
-                spacing: Theme.of(context).spacing.ms,
+                spacing: theme.spacing.ms,
                 children: [
                   _CountryLeadingIcon(status: status, countryIcon: countryIcon),
                   Expanded(
@@ -206,30 +206,29 @@ class ExpandableIpCardHeader extends StatelessWidget {
                       disabled: status == IpCardStatus.disabled,
                     ),
                   ),
-                  if (plusUpgrade &&
-                      (status == IpCardStatus.idle ||
-                          status == IpCardStatus.connected ||
-                          status == IpCardStatus.connecting))
-                    const _PlusBadge(disabled: false),
-                  if (plusUpgrade && status == IpCardStatus.disabled)
-                    const _PlusBadge(disabled: true),
                 ],
               ),
             ),
           ),
+          if (showPlus) ...[
+            SizedBox(width: theme.spacing.ms),
+            _PlusBadge(disabled: status == IpCardStatus.disabled),
+          ],
           // Chevron is its own tap target per Figma spec.
           // Hidden when there are no child items to expand.
-          if (onChevronTap != null)
+          if (hasChevron) ...[
+            SizedBox(width: showPlus ? theme.spacing.xs : theme.spacing.ms),
             IconButton(
               onPressed: onChevronTap,
               icon: Icon(
                 expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
                 size: 24,
                 color: status == IpCardStatus.disabled
-                    ? Theme.of(context).palette.textDisabled
-                    : Theme.of(context).palette.textPrimary,
+                    ? theme.palette.textDisabled
+                    : theme.palette.textPrimary,
               ),
             ),
+          ],
         ],
       ),
     );
@@ -269,7 +268,6 @@ class IpCardListItem extends StatelessWidget {
       status: status,
       borderRadius: borderRadius,
       borderTop: true,
-      rightPadding: Theme.of(context).spacing.xl6,
       onTap: onTap,
       child: Row(
         spacing: Theme.of(context).spacing.ms,
@@ -297,17 +295,12 @@ class _IpCardShell extends StatefulWidget {
     required this.borderRadius,
     required this.child,
     this.borderTop = false,
-    this.rightPadding = 16,
     this.onTap,
   });
 
   final IpCardStatus status;
   final BorderRadius borderRadius;
   final bool borderTop;
-
-  /// Right padding. Defaults to 16 (header with trailing chevron).
-  /// Pass spacing.xl6 for rows without a trailing icon (reserved area).
-  final double rightPadding;
 
   final VoidCallback? onTap;
   final Widget child;
@@ -345,12 +338,7 @@ class _IpCardShellState extends State<_IpCardShell> {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(
-              theme.spacing.md,
-              theme.spacing.ms,
-              widget.rightPadding,
-              theme.spacing.ms,
-            ),
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md, vertical: theme.spacing.ms),
             child: widget.child,
           ),
         ),
