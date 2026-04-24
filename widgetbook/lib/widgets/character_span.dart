@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'CharacterSpan', type: CharacterSpan)

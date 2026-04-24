@@ -8,7 +8,6 @@ Widget buildModalPadding(BuildContext context) {
   final extra = context.knobs.double.slider(
     label: 'Extra top padding',
     initialValue: 16,
-    min: 0,
     max: 80,
   );
   return ModalPadding(
