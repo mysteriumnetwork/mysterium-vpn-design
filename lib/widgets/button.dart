@@ -97,6 +97,7 @@ class ButtonDecoration {
     this.decorationColor,
     this.foregroundColor,
     this.borderColor,
+    this.overlayColor,
     this.textStyle,
     this.minimumSize,
     this.padding,
@@ -112,6 +113,9 @@ class ButtonDecoration {
   /// [ButtonPrimary] or [ButtonTertiary].
   final Color? borderColor;
 
+  /// Hover/press overlay colour.
+  final Color? overlayColor;
+
   /// Overrides the default size-derived text style.
   final TextStyle? textStyle;
 
@@ -123,7 +127,7 @@ class ButtonDecoration {
 
   @override
   String toString() =>
-      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, borderColor: $borderColor, textStyle: $textStyle, minimumSize: $minimumSize, padding: $padding)';
+      'ButtonDecoration(decorationColor: $decorationColor, foregroundColor: $foregroundColor, borderColor: $borderColor, overlayColor: $overlayColor, textStyle: $textStyle, minimumSize: $minimumSize, padding: $padding)';
 
   @override
   bool operator ==(Object other) {
@@ -134,6 +138,7 @@ class ButtonDecoration {
         other.decorationColor == decorationColor &&
         other.foregroundColor == foregroundColor &&
         other.borderColor == borderColor &&
+        other.overlayColor == overlayColor &&
         other.textStyle == textStyle &&
         other.minimumSize == minimumSize &&
         other.padding == padding;
@@ -141,12 +146,13 @@ class ButtonDecoration {
 
   @override
   int get hashCode =>
-      Object.hash(decorationColor, foregroundColor, borderColor, textStyle, minimumSize, padding);
+      Object.hash(decorationColor, foregroundColor, borderColor, overlayColor, textStyle, minimumSize, padding);
 
   ButtonDecoration copyWith({
     Color? decorationColor,
     Color? foregroundColor,
     Color? borderColor,
+    Color? overlayColor,
     TextStyle? textStyle,
     Size? minimumSize,
     EdgeInsets? padding,
@@ -154,6 +160,7 @@ class ButtonDecoration {
     decorationColor: decorationColor ?? this.decorationColor,
     foregroundColor: foregroundColor ?? this.foregroundColor,
     borderColor: borderColor ?? this.borderColor,
+    overlayColor: overlayColor ?? this.overlayColor,
     textStyle: textStyle ?? this.textStyle,
     minimumSize: minimumSize ?? this.minimumSize,
     padding: padding ?? this.padding,
@@ -300,6 +307,10 @@ class ButtonTertiary extends Button {
               ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
               _ => null,
             },
+      ).copyWith(
+        overlayColor: decoration.overlayColor != null
+            ? WidgetStatePropertyAll(decoration.overlayColor)
+            : null,
       ),
       child: _Child(
         loading: loading,

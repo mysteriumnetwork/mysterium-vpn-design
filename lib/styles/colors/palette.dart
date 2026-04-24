@@ -232,7 +232,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgPrimary;
 
   /// Figma: bg-primary_hover — card background on pointer hover.
-  /// Light: GrayLight/50 (#FAFAFA). Dark: BrandPurple/700 (#4B2E7A).
+  /// Light: GrayLight/100 (#F5F5F5). Dark: BrandPurple/700 (#4B2E7A).
   abstract final Color bgPrimaryHover;
 
   abstract final Color bgSecondary;
@@ -696,7 +696,7 @@ class PaletteLight extends Palette {
   Color get bgPrimary => Palette.white;
 
   @override
-  Color get bgPrimaryHover => Palette.grayLight.shade50;
+  Color get bgPrimaryHover => Palette.grayLight.shade100;
 
   @override
   Color get bgSecondaryDisabled => Palette.grayLight.shade200;
