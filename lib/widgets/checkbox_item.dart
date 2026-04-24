@@ -41,7 +41,7 @@ class CheckboxItem extends StatelessWidget {
               child: IgnorePointer(
                 child: Checkbox(
                   value: value,
-                  onChanged: (_) {},
+                  onChanged: onChanged == null ? null : (_) {},
                   materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   visualDensity: VisualDensity.compact,
                 ),

@@ -47,5 +47,25 @@ void main() {
       // No callback to assert; absence of exceptions is the pass condition.
       expect(find.text('Read-only'), findsOneWidget);
     });
+
+    testWidgets('inner Checkbox is disabled when onChanged is null', (tester) async {
+      await pumpWidget(
+        tester,
+        const CheckboxItem(value: false, onChanged: null, label: Text('Read-only')),
+        wrapInScaffold: true,
+      );
+      final cb = tester.widget<Checkbox>(find.byType(Checkbox));
+      expect(cb.onChanged, isNull);
+    });
+
+    testWidgets('inner Checkbox is enabled when onChanged is provided', (tester) async {
+      await pumpWidget(
+        tester,
+        CheckboxItem(value: false, onChanged: () {}, label: const Text('Interactive')),
+        wrapInScaffold: true,
+      );
+      final cb = tester.widget<Checkbox>(find.byType(Checkbox));
+      expect(cb.onChanged, isNotNull);
+    });
   });
 }

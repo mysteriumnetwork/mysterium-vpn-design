@@ -21,7 +21,7 @@ const _kActiveSizeMobile = 33.0;
 const _kActiveSizeDesktop = 40.0;
 
 /// Sizes for the inactive (dot) pin state.
-/// Mobile: 11 px   |  Desktop: 12 px
+/// Mobile: 14 px   |  Desktop: 16 px
 const _kInactiveSizeMobile = 14.0;
 const _kInactiveSizeDesktop = 16.0;
 

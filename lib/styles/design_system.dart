@@ -62,8 +62,8 @@ sealed class DesignSystem {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style:
             OutlinedButton.styleFrom(
-              foregroundColor: palette.textSecondary,
-              iconColor: palette.textSecondary,
+              foregroundColor: Palette.grayLight.shade600,
+              iconColor: Palette.grayLight.shade600,
               disabledForegroundColor: Palette.grayLight.shade400,
               disabledIconColor: Palette.grayLight.shade400,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
