@@ -134,7 +134,7 @@ sealed class DesignSystem {
                 }
                 return palette.textBrandPrimary;
               }),
-              overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+              overlayColor: WidgetStatePropertyAll(palette.bgPrimaryHover),
             ),
       ),
       switchTheme: SwitchThemeData(
