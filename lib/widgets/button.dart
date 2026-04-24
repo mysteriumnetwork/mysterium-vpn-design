@@ -145,8 +145,15 @@ class ButtonDecoration {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(decorationColor, foregroundColor, borderColor, overlayColor, textStyle, minimumSize, padding);
+  int get hashCode => Object.hash(
+    decorationColor,
+    foregroundColor,
+    borderColor,
+    overlayColor,
+    textStyle,
+    minimumSize,
+    padding,
+  );
 
   ButtonDecoration copyWith({
     Color? decorationColor,
@@ -287,31 +294,32 @@ class ButtonTertiary extends Button {
     ignoring: loading != null,
     child: TextButton(
       onPressed: onPressed,
-      style: TextButton.styleFrom(
-        padding: EdgeInsets.zero,
-        visualDensity: VisualDensity.compact,
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-        backgroundColor: decoration.decorationColor,
-        foregroundColor: decoration.foregroundColor,
-        iconColor: decoration.foregroundColor,
-        minimumSize:
-            decoration.minimumSize ??
-            switch (size) {
-              ButtonSize.small => const Size(60, 36),
-              ButtonSize.medium => const Size(60, 40),
-              ButtonSize.large => const Size(60, 44),
-            },
-        textStyle:
-            decoration.textStyle ??
-            switch (size) {
-              ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
-              _ => null,
-            },
-      ).copyWith(
-        overlayColor: decoration.overlayColor != null
-            ? WidgetStatePropertyAll(decoration.overlayColor)
-            : null,
-      ),
+      style:
+          TextButton.styleFrom(
+            padding: EdgeInsets.zero,
+            visualDensity: VisualDensity.compact,
+            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            backgroundColor: decoration.decorationColor,
+            foregroundColor: decoration.foregroundColor,
+            iconColor: decoration.foregroundColor,
+            minimumSize:
+                decoration.minimumSize ??
+                switch (size) {
+                  ButtonSize.small => const Size(60, 36),
+                  ButtonSize.medium => const Size(60, 40),
+                  ButtonSize.large => const Size(60, 44),
+                },
+            textStyle:
+                decoration.textStyle ??
+                switch (size) {
+                  ButtonSize.small => Theme.of(context).textStyles.textSm.semibold,
+                  _ => null,
+                },
+          ).copyWith(
+            overlayColor: decoration.overlayColor != null
+                ? WidgetStatePropertyAll(decoration.overlayColor)
+                : null,
+          ),
       child: _Child(
         loading: loading,
         leading: leading,

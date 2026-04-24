@@ -5,11 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'ModalPadding', type: ModalPadding)
 Widget buildModalPadding(BuildContext context) {
-  final extra = context.knobs.double.slider(
-    label: 'Extra top padding',
-    initialValue: 16,
-    max: 80,
-  );
+  final extra = context.knobs.double.slider(label: 'Extra top padding', initialValue: 16, max: 80);
   return ModalPadding(
     add: EdgeInsets.only(top: extra),
     child: Container(
