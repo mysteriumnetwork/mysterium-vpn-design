@@ -5,6 +5,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// A full-screen modal [Scaffold] with the design-system background, an
+/// optional decorative gradient, and sensible defaults for modal routes.
+///
+/// Pair with [showModal] to push the modal. Use [ModalAppbar], [ModalHeader],
+/// and [ModalFooter] for consistent top/bottom chrome.
 class ModalScaffold extends StatelessWidget {
   const ModalScaffold({
     required this.body,
@@ -17,12 +22,28 @@ class ModalScaffold extends StatelessWidget {
     super.key,
   });
 
+  /// Optional custom app bar. Defaults to a [ModalAppbar] when null.
   final PreferredSizeWidget? appbar;
+
+  /// Main scrollable content.
   final Widget body;
+
+  /// Optional fixed footer (rendered as [Scaffold.bottomNavigationBar]).
   final Widget? footer;
+
+  /// When true, wraps [body] in a [ModalPadding] that honours safe-area
+  /// insets and the app-bar height. Disable when the body handles insets
+  /// itself.
   final bool autoApplyPadding;
+
+  /// Close handler used by the default app bar's × button. Falls back to
+  /// `Navigator.pop` when null.
   final VoidCallback? onModalClose;
+
+  /// Whether to render the decorative blurred background gradient.
   final bool showGradient;
+
+  /// Whether the default app bar shows a × close button.
   final bool showCloseButton;
 
   @override

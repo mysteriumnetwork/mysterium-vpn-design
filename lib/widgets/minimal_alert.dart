@@ -44,17 +44,18 @@ class MinimalAlert extends StatelessWidget {
   /// If null, no dismiss button is rendered.
   final VoidCallback? onDismiss;
 
-  TooltipIcon? _effectiveTooltip() =>
+  TooltipIcon? _effectiveTooltip(Color color) =>
       tooltip ??
       (tooltipTitle != null
-          ? TooltipIcon.titled(title: tooltipTitle!, body: tooltipBody!)
-          : (tooltipMsg != null ? TooltipIcon(message: tooltipMsg!) : null));
+          ? TooltipIcon.titled(title: tooltipTitle!, body: tooltipBody!, color: color)
+          : (tooltipMsg != null ? TooltipIcon(message: tooltipMsg!, color: color) : null));
 
   @override
   Widget build(BuildContext context) {
     final palette = Theme.of(context).palette;
     final theme = Theme.of(context);
-    final effectiveTooltip = _effectiveTooltip();
+    final textColor = palette.textTertiary;
+    final effectiveTooltip = _effectiveTooltip(textColor);
 
     return Stack(
       children: [
@@ -71,21 +72,24 @@ class MinimalAlert extends StatelessWidget {
             children: [
               Padding(
                 // 44px right reserves space for the 36px dismiss button at right: 7
-                padding: const EdgeInsets.fromLTRB(16, 16, 44, 16),
+                padding: EdgeInsets.fromLTRB(
+                  theme.spacing.md,
+                  theme.spacing.md,
+                  44,
+                  theme.spacing.md,
+                ),
                 child: Text.rich(
                   TextSpan(
                     children: [
                       TextSpan(
                         text: message,
-                        style: theme.textStyles.textSm.regular.copyWith(
-                          color: palette.textTertiary,
-                        ),
+                        style: theme.textStyles.textSm.regular.copyWith(color: textColor),
                       ),
                       if (effectiveTooltip != null)
                         WidgetSpan(
                           alignment: PlaceholderAlignment.middle,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 4),
+                            padding: EdgeInsets.only(left: theme.spacing.xs),
                             child: effectiveTooltip,
                           ),
                         ),

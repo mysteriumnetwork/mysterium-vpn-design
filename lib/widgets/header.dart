@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
-import 'package:mysterium_vpn_design/widgets/icon_button.dart';
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 
@@ -26,16 +25,24 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     this.backgroundColor,
     this.showBackButton,
     this.backLabel,
+    this.onBackPressed,
     super.key,
   });
 
-  factory Header.logo({List<Widget>? actions, Color? backgroundColor, bool? showBackButton}) =>
-      Header(
-        title: const Logo(height: 24),
-        actions: actions,
-        backgroundColor: backgroundColor,
-        showBackButton: showBackButton,
-      );
+  factory Header.logo({
+    bool centerTitle = false,
+    List<Widget>? actions,
+    Color? backgroundColor,
+    bool? showBackButton,
+    VoidCallback? onBackPressed,
+  }) => Header(
+    title: const Logo(height: 24),
+    centerTitle: centerTitle,
+    actions: actions,
+    backgroundColor: backgroundColor,
+    showBackButton: showBackButton,
+    onBackPressed: onBackPressed,
+  );
 
   factory Header.labeled({
     required String label,
@@ -43,12 +50,14 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     List<Widget>? actions,
     Color? backgroundColor,
     bool? showBackButton,
+    VoidCallback? onBackPressed,
   }) => Header(
     title: Text(label),
     actions: actions,
     centerTitle: centerTitle,
     backgroundColor: backgroundColor,
     showBackButton: showBackButton,
+    onBackPressed: onBackPressed,
   );
 
   final Widget? title;
@@ -60,6 +69,10 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   /// Label shown next to the back-arrow when [title] is null and the navigator
   /// can pop. Defaults to `'Back to home'`.
   final String? backLabel;
+
+  /// Called when the back button is tapped. Falls back to
+  /// `Navigator.of(context).maybePop()` when null.
+  final VoidCallback? onBackPressed;
 
   static const double _height = 64;
 
@@ -73,6 +86,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     final showBack = showBackButton ?? canGoBack;
 
+    final isBackLabel = showBack && title == null;
     var resolvedTitle = title;
     if (resolvedTitle == null && showBack) {
       resolvedTitle = Text(
@@ -82,6 +96,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         overflow: TextOverflow.ellipsis,
       );
     }
+    final backAction = onBackPressed ?? () => Navigator.of(context).maybePop();
 
     return ColoredBox(
       color: resolvedBg,
@@ -90,26 +105,30 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         child: SizedBox(
           height: _height,
           child: Row(
-            spacing: 8,
+            spacing: theme.spacing.s,
             children: [
               if (showBack)
                 CustomIconButton(
-                  onPressed: () => Navigator.of(context).maybePop(),
+                  onPressed: backAction,
                   minimumSize: const Size(32, 32),
                   icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
                 ),
               if (resolvedTitle != null)
                 Expanded(
-                  child: DefaultTextStyle(
-                    style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
-                    child: centerTitle
-                        ? Center(child: resolvedTitle)
-                        : Align(alignment: Alignment.centerLeft, child: resolvedTitle),
+                  child: GestureDetector(
+                    onTap: isBackLabel ? backAction : null,
+                    behavior: isBackLabel ? HitTestBehavior.opaque : HitTestBehavior.deferToChild,
+                    child: DefaultTextStyle(
+                      style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
+                      child: centerTitle
+                          ? Center(child: resolvedTitle)
+                          : Align(alignment: Alignment.centerLeft, child: resolvedTitle),
+                    ),
                   ),
                 )
               else
                 const Spacer(),
-              if (actions != null) Row(spacing: 16, children: actions!),
+              if (actions != null) Row(spacing: theme.spacing.md, children: actions!),
             ],
           ),
         ),

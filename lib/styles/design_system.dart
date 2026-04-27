@@ -30,43 +30,112 @@ sealed class DesignSystem {
         titleTextStyle: textStyles.textLg.medium.copyWith(color: palette.textPrimary),
       ),
       filledButtonTheme: FilledButtonThemeData(
-        style: FilledButton.styleFrom(
-          backgroundColor: palette.bgBrandPrimary,
-          surfaceTintColor: palette.bgBrandPrimaryHover,
-          overlayColor: palette.bgBrandPrimaryHover,
-          foregroundColor: palette.textWhite,
-          iconColor: palette.textWhite,
-          disabledBackgroundColor: Palette.grayLight.shade100,
-          disabledForegroundColor: Palette.grayLight.shade400,
-          disabledIconColor: Palette.grayLight.shade400,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
-          iconSize: 16,
-          textStyle: textStyles.textMd.semibold,
-        ),
+        style:
+            FilledButton.styleFrom(
+              foregroundColor: palette.textWhite,
+              iconColor: palette.textWhite,
+              disabledForegroundColor: Palette.grayLight.shade400,
+              disabledIconColor: Palette.grayLight.shade400,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              iconSize: 16,
+              textStyle: textStyles.textMd.semibold,
+            ).copyWith(
+              backgroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade100;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.brand.shade600;
+                }
+                return palette.bgBrandPrimary;
+              }),
+              side: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return BorderSide(color: Palette.grayPurple.shade200);
+                }
+                return BorderSide.none;
+              }),
+              overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+            ),
       ),
 
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: OutlinedButton.styleFrom(
-          backgroundColor: Palette.white,
-          foregroundColor: palette.textSecondary,
-          iconColor: palette.textSecondary,
-          side: BorderSide(color: palette.borderBrand),
-          disabledForegroundColor: Palette.grayLight.shade400,
-          disabledIconColor: Palette.grayLight.shade400,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
-          iconSize: 16,
-          textStyle: textStyles.textMd.semibold,
-        ),
+        style:
+            OutlinedButton.styleFrom(
+              foregroundColor: Palette.grayLight.shade600,
+              iconColor: Palette.grayLight.shade600,
+              disabledForegroundColor: Palette.grayLight.shade400,
+              disabledIconColor: Palette.grayLight.shade400,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              iconSize: 16,
+              textStyle: textStyles.textMd.semibold,
+            ).copyWith(
+              backgroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade100;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.grayLight.shade100;
+                }
+                return Palette.white;
+              }),
+              side: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return BorderSide(color: Palette.grayPurple.shade200);
+                }
+                return BorderSide(color: Palette.grayLight.shade300);
+              }),
+              foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade400;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.grayLight.shade900;
+                }
+                return Palette.grayLight.shade600;
+              }),
+              iconColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade400;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.grayLight.shade900;
+                }
+                return Palette.grayLight.shade600;
+              }),
+              overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+            ),
       ),
       textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-          foregroundColor: palette.textBrandPrimary,
-          disabledForegroundColor: Palette.grayLight.shade400,
-          textStyle: textStyles.textMd.semibold,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
-          iconSize: 16,
-          iconColor: palette.textBrandPrimary,
-        ),
+        style:
+            TextButton.styleFrom(
+              foregroundColor: palette.textBrandPrimary,
+              disabledForegroundColor: Palette.grayLight.shade400,
+              textStyle: textStyles.textMd.semibold,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              iconSize: 16,
+              iconColor: palette.textBrandPrimary,
+            ).copyWith(
+              foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade400;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.brand.shade700;
+                }
+                return palette.textBrandPrimary;
+              }),
+              iconColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade400;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.brand.shade700;
+                }
+                return palette.textBrandPrimary;
+              }),
+              overlayColor: WidgetStatePropertyAll(palette.bgPrimaryHover),
+            ),
       ),
       switchTheme: SwitchThemeData(
         thumbColor: WidgetStateProperty.resolveWith((states) {
@@ -95,7 +164,7 @@ sealed class DesignSystem {
         checkColor: WidgetStateProperty.all(palette.textWhite),
         fillColor: WidgetStateProperty.resolveWith((states) {
           if (states.contains(WidgetState.selected)) {
-            return palette.bgBrandPrimary;
+            return Palette.brand.shade400;
           }
           if (states.contains(WidgetState.disabled)) {
             return palette.iconDisabled;
@@ -167,7 +236,7 @@ sealed class DesignSystem {
         indicator: UnderlineTabIndicator(
           borderSide: BorderSide(color: palette.borderTabs, width: 2),
         ),
-        dividerHeight: 1,
+        dividerHeight: spacing.xxs,
         dividerColor: palette.borderSecondary,
         indicatorColor: palette.borderTabs,
         labelColor: palette.textPrimarySelected,

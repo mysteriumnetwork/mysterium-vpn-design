@@ -183,18 +183,20 @@ class ExpandableIpCardHeader extends StatelessWidget {
     final borderRadius = expanded
         ? const BorderRadius.only(topLeft: Radius.kS, topRight: Radius.kS)
         : const BorderRadius.all(Radius.kS);
+    final theme = Theme.of(context);
+    final hasChevron = onChevronTap != null;
+    final showPlus = plusUpgrade && status != IpCardStatus.selected;
     return _IpCardShell(
       status: status,
       borderRadius: borderRadius,
       child: Row(
-        spacing: 12,
         children: [
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
               onTap: onContentTap,
               child: Row(
-                spacing: 12,
+                spacing: theme.spacing.ms,
                 children: [
                   _CountryLeadingIcon(status: status, countryIcon: countryIcon),
                   Expanded(
@@ -204,30 +206,29 @@ class ExpandableIpCardHeader extends StatelessWidget {
                       disabled: status == IpCardStatus.disabled,
                     ),
                   ),
-                  if (plusUpgrade &&
-                      (status == IpCardStatus.idle ||
-                          status == IpCardStatus.connected ||
-                          status == IpCardStatus.connecting))
-                    const _PlusBadge(disabled: false),
-                  if (plusUpgrade && status == IpCardStatus.disabled)
-                    const _PlusBadge(disabled: true),
                 ],
               ),
             ),
           ),
+          if (showPlus) ...[
+            SizedBox(width: theme.spacing.ms),
+            _PlusBadge(disabled: status == IpCardStatus.disabled),
+          ],
           // Chevron is its own tap target per Figma spec.
           // Hidden when there are no child items to expand.
-          if (onChevronTap != null)
+          if (hasChevron) ...[
+            SizedBox(width: showPlus ? theme.spacing.xs : theme.spacing.ms),
             IconButton(
               onPressed: onChevronTap,
               icon: Icon(
                 expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
                 size: 24,
                 color: status == IpCardStatus.disabled
-                    ? Theme.of(context).palette.textDisabled
-                    : Theme.of(context).palette.textPrimary,
+                    ? theme.palette.textDisabled
+                    : theme.palette.textPrimary,
               ),
             ),
+          ],
         ],
       ),
     );
@@ -267,11 +268,9 @@ class IpCardListItem extends StatelessWidget {
       status: status,
       borderRadius: borderRadius,
       borderTop: true,
-      // 44px right reserved area (no trailing icon)
-      rightPadding: 60,
       onTap: onTap,
       child: Row(
-        spacing: 12,
+        spacing: Theme.of(context).spacing.ms,
         children: [
           _ListItemMarker(status: status),
           Expanded(
@@ -296,17 +295,12 @@ class _IpCardShell extends StatefulWidget {
     required this.borderRadius,
     required this.child,
     this.borderTop = false,
-    this.rightPadding = 16,
     this.onTap,
   });
 
   final IpCardStatus status;
   final BorderRadius borderRadius;
   final bool borderTop;
-
-  /// Right padding. Defaults to 16 (header with trailing chevron).
-  /// Pass 60 for rows without a trailing icon (16 + 44 reserved area).
-  final double rightPadding;
 
   final VoidCallback? onTap;
   final Widget child;
@@ -325,7 +319,8 @@ class _IpCardShellState extends State<_IpCardShell> {
 
   @override
   Widget build(BuildContext context) {
-    final palette = Theme.of(context).palette;
+    final theme = Theme.of(context);
+    final palette = theme.palette;
     return MouseRegion(
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
@@ -343,7 +338,7 @@ class _IpCardShellState extends State<_IpCardShell> {
             ],
           ),
           child: Padding(
-            padding: EdgeInsets.fromLTRB(16, 12, widget.rightPadding, 12),
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md, vertical: theme.spacing.ms),
             child: widget.child,
           ),
         ),
@@ -433,7 +428,7 @@ class _TextColumn extends StatelessWidget {
     final subtitleColor = disabled ? palette.textDisabled : palette.textTertiary;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 4,
+      spacing: theme.spacing.xs,
       children: [
         Text(name, style: theme.textStyles.textMd.semibold.copyWith(color: nameColor)),
         Text(subtitle, style: theme.textStyles.textXs.regular.copyWith(color: subtitleColor)),
@@ -455,7 +450,7 @@ class _PlusBadge extends StatelessWidget {
     final color = disabled ? palette.textDisabled : palette.textPrimarySelected;
     return Row(
       mainAxisSize: MainAxisSize.min,
-      spacing: 4,
+      spacing: Theme.of(context).spacing.xs,
       children: [
         Icon(UntitledUI.stars_02, size: 16, color: color),
         Text('Plus', style: Theme.of(context).textStyles.textXs.medium.copyWith(color: color)),

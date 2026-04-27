@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// Themed radio button that works either inside a [RadioGroup] ancestor or
+/// standalone via [selected] / [onPressed].
+///
+/// In group mode, tapping calls the enclosing [RadioGroup]'s onChanged with
+/// [value]. In standalone mode, pass [selected] to drive the visual state
+/// and [onPressed] to handle taps. When both are null the widget renders
+/// as a read-only indicator.
 class RadioButton<T> extends StatelessWidget {
   const RadioButton({
     this.value,
@@ -11,16 +18,26 @@ class RadioButton<T> extends StatelessWidget {
     super.key,
   });
 
+  /// Value identifying this option within a [RadioGroup].
   final T? value;
 
   /// Explicit selection state. When non-null, overrides the group-based
   /// selection so the widget can be used without a [RadioGroup] ancestor.
   final bool? selected;
 
+  /// Tap handler for standalone use. Bypasses the [RadioGroup] when set.
   final VoidCallback? onPressed;
+
+  /// When `false` the widget renders with a disabled palette.
   final bool enabled;
+
+  /// Outer circle diameter in logical pixels. Defaults to 20.
   final double radius;
 
+  /// Finds the nearest [RadioGroup] state of matching type [T], if any.
+  ///
+  /// Exposed so composite widgets (e.g. [PlanCard]) can read / toggle the
+  /// group themselves rather than embedding a tappable [RadioButton].
   static RadioGroupRegistry<T>? findGroupState<T>(BuildContext context) {
     final state = context.findAncestorStateOfType<State<RadioGroup<T>>>();
     if (state is RadioGroupRegistry<T>) {

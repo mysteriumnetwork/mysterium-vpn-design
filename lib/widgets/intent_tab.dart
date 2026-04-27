@@ -75,10 +75,10 @@ class _IntentTabState extends State<IntentTab> {
             ],
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+            padding: EdgeInsets.symmetric(horizontal: theme.spacing.md, vertical: theme.spacing.lg),
             child: Row(
               mainAxisSize: MainAxisSize.min,
-              spacing: 4,
+              spacing: theme.spacing.xs,
               children: [
                 Icon(widget.icon, size: 20, color: contentColor),
                 Text(

@@ -101,7 +101,8 @@ class SettingsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
-    final palette = Theme.of(context).palette;
+    final theme = Theme.of(context);
+    final palette = theme.palette;
     return Stack(
       fit: StackFit.passthrough,
       children: [
@@ -114,9 +115,11 @@ class SettingsCard extends StatelessWidget {
                 ? null
                 : [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
           ),
-          padding: isDesktop ? const EdgeInsets.symmetric(vertical: 16) : const EdgeInsets.all(16),
+          padding: isDesktop
+              ? EdgeInsets.symmetric(vertical: theme.spacing.md)
+              : EdgeInsets.all(theme.spacing.md),
           child: Row(
-            spacing: 16,
+            spacing: theme.spacing.md,
             children: [
               ?icon,
               Expanded(
@@ -158,7 +161,7 @@ class _TextColumn extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
-      spacing: 2,
+      spacing: theme.spacing.xxs,
       children: [
         Text(
           title,

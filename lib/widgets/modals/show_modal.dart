@@ -50,7 +50,7 @@ class _AdaptiveModal extends StatelessWidget {
     }
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
+        padding: EdgeInsets.all(theme.spacing.xl3),
         child: ConstrainedBox(
           constraints: desktopConstraints ?? const BoxConstraints(maxHeight: 640, maxWidth: 640),
           child: DecoratedBox(

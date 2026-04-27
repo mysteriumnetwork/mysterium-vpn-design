@@ -61,6 +61,31 @@ Widget buildExpandableIpCardControlled(BuildContext context) {
   );
 }
 
+// ─── IpCardListItem ───────────────────────────────────────────────────────────
+
+@UseCase(name: 'ListItem', type: IpCardListItem)
+Widget buildIpCardListItem(BuildContext context) {
+  final status = context.knobs.object.dropdown(
+    label: 'Status',
+    options: IpCardStatus.values,
+    initialOption: IpCardStatus.idle,
+    labelBuilder: (s) => s.name,
+  );
+  final plusUpgrade = context.knobs.boolean(label: 'Plus upgrade');
+  final lastInList = context.knobs.boolean(label: 'Last in list');
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: IpCardListItem(
+      name: context.knobs.string(label: 'Name', initialValue: 'New York'),
+      subtitle: context.knobs.string(label: 'Subtitle', initialValue: '89 IPs'),
+      status: status,
+      plusUpgrade: plusUpgrade,
+      lastInList: lastInList,
+      onTap: () {},
+    ),
+  );
+}
+
 // ─── Flag placeholder ─────────────────────────────────────────────────────────
 
 class _UsFlag extends StatelessWidget {

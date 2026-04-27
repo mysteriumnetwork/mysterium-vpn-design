@@ -1,11 +1,21 @@
 part of '../comparison_table.dart';
 
+/// One row of a [ComparisonTable].
+///
+/// [label] is rendered in the left column; [values] supplies one cell per
+/// column key. An optional [description] renders as a tooltip next to the
+/// label.
 @immutable
 class ComparisonFeature<K> {
   const ComparisonFeature({required this.values, required this.label, this.description});
 
+  /// Feature name displayed in the left column.
   final String label;
+
+  /// Extra context surfaced via a tooltip icon next to the label.
   final String? description;
+
+  /// Per-column values. Missing keys render as an empty cell.
   final Map<K, ComparisonValue<dynamic>> values;
 
   @override

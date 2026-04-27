@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart' hide Radius;
 
+/// An icon rendered inside a coloured, rounded container.
+///
+/// Used for feature glyphs on cards and list rows. Pass [decoration] to
+/// customise size, colours, padding, and corner radius.
 class DecoratedIcon extends StatelessWidget {
   const DecoratedIcon({required this.icon, this.decoration = const IconDecoration(), super.key});
 
+  /// Glyph to render inside the container.
   final IconData icon;
+
+  /// Visual overrides for the icon and its container.
   final IconDecoration decoration;
 
   @override
@@ -18,6 +25,7 @@ class DecoratedIcon extends StatelessWidget {
   );
 }
 
+/// Visual overrides for a [DecoratedIcon].
 @immutable
 class IconDecoration {
   const IconDecoration({
@@ -28,10 +36,19 @@ class IconDecoration {
     this.borderRadius = const BorderRadius.all(Radius.circular(10)),
   });
 
+  /// Glyph size in logical pixels.
   final double iconSize;
+
+  /// Glyph colour.
   final Color? iconColor;
+
+  /// Container fill colour.
   final Color? backgroundColor;
+
+  /// Inner padding around the glyph.
   final EdgeInsets? padding;
+
+  /// Container corner radius.
   final BorderRadius borderRadius;
 
   @override

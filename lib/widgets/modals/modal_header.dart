@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+/// Title block for a modal: an optional centred [emblem] above a [title]
+/// and optional [description].
+///
+/// Intended to sit at the top of a [ModalScaffold] body.
 class ModalHeader extends StatelessWidget {
   const ModalHeader({
     required this.title,
@@ -12,12 +16,22 @@ class ModalHeader extends StatelessWidget {
     super.key,
   });
 
+  /// Optional centred glyph / illustration above the title.
   final Widget? emblem;
+
+  /// Gap between [emblem] and [title]. Defaults to `theme.spacing.xl3`.
   final double? emblemSpacing;
 
+  /// Heading text. Capped at 2 lines.
   final String title;
+
+  /// Optional subtitle rendered under the title. Capped at 2 lines.
   final String? description;
+
+  /// Overrides the default display-xl / bold title style.
   final TextStyle? titleStyle;
+
+  /// Overrides the default text-md / regular description style.
   final TextStyle? descriptionStyle;
 
   @override

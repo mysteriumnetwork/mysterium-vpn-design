@@ -68,7 +68,7 @@ FutureOr<T?> showBottomSheetDialog<T>(
           context,
           Center(
             child: Padding(
-              padding: const EdgeInsets.all(32),
+              padding: EdgeInsets.all(dsTheme.spacing.xl3),
               child: ConstrainedBox(
                 constraints:
                     desktopConstraints ?? const BoxConstraints(maxWidth: 600, maxHeight: 700),
@@ -236,7 +236,7 @@ class _DesktopHeader extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: theme.spacing.xl2, vertical: theme.spacing.xl2),
       child: Row(
         children: [
-          const SizedBox(width: 40),
+          const SizedBox(width: 28), // to balance the close button and keep title centered
           Expanded(
             child: Text(title, style: theme.textStyles.textMd.medium, textAlign: TextAlign.center),
           ),
@@ -270,7 +270,7 @@ class _Buttons extends StatelessWidget {
         theme.spacing.xl2,
         theme.spacing.s,
         theme.spacing.xl2,
-        theme.spacing.s,
+        theme.spacing.md,
       ),
       child: isDesktop ? _DesktopButtons(this) : _MobileButtons(this),
     );
