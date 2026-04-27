@@ -23,5 +23,6 @@ export 'promo_bar.dart';
 export 'radio_button.dart';
 export 'search_field.dart';
 export 'settings_card.dart';
+export 'snackbar.dart';
 export 'spans/spans.dart';
 export 'tooltip_icon.dart';

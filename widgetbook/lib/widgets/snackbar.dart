@@ -15,20 +15,14 @@ Widget buildSnackbar(BuildContext context) {
     label: 'Message',
     initialValue: 'Promo code copied to the clipboard!',
   );
-  final showAction = context.knobs.boolean(
-    label: 'Show action',
-    initialValue: false,
-  );
+  final showAction = context.knobs.boolean(label: 'Show action', initialValue: false);
   return Padding(
     padding: const EdgeInsets.all(16),
     child: Snackbar(
       message: message,
       type: type,
       action: showAction
-          ? IconButton(
-              icon: const Icon(Icons.close, size: 16),
-              onPressed: () {},
-            )
+          ? IconButton(icon: const Icon(Icons.close, size: 16), onPressed: () {})
           : null,
     ),
   );

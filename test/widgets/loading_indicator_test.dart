@@ -36,5 +36,26 @@ void main() {
       );
       expect(indicator.color, Colors.red);
     });
+
+    testWidgets('.message renders text below indicator', (tester) async {
+      await pumpWidget(
+        tester,
+        const LoadingIndicator.message('Loading…'),
+        theme: DesignSystem.lightTheme.copyWith(platform: TargetPlatform.android),
+      );
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text('Loading…'), findsOneWidget);
+    });
+
+    testWidgets('.message applies custom style', (tester) async {
+      const customStyle = TextStyle(color: Colors.purple, fontSize: 20);
+      await pumpWidget(
+        tester,
+        const LoadingIndicator.message('Loading…', style: customStyle),
+        theme: DesignSystem.lightTheme.copyWith(platform: TargetPlatform.android),
+      );
+      final text = tester.widget<Text>(find.text('Loading…'));
+      expect(text.style, customStyle);
+    });
   });
 }

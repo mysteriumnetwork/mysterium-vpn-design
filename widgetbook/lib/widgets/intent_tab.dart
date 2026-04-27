@@ -21,6 +21,31 @@ Widget buildIntentTab(BuildContext context) {
   );
 }
 
+@UseCase(name: 'Placeholder', type: IntentTab)
+Widget buildIntentTabPlaceholder(BuildContext context) {
+  final width = context.knobs.double.slider(label: 'Width', initialValue: 147, min: 80, max: 240);
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: IntentTab.placeholder(width: width),
+  );
+}
+
+@UseCase(name: 'Placeholder carousel', type: IntentTab)
+Widget buildIntentTabPlaceholderCarousel(BuildContext context) => const Padding(
+  padding: EdgeInsets.all(16),
+  child: SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      spacing: 8,
+      children: [
+        IntentTab.placeholder(width: 147),
+        IntentTab.placeholder(width: 153),
+        IntentTab.placeholder(width: 187),
+      ],
+    ),
+  ),
+);
+
 @UseCase(name: 'Carousel', type: IntentTab)
 Widget buildIntentTabCarousel(BuildContext context) {
   final theme = Theme.of(context);

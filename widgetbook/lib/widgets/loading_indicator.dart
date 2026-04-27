@@ -13,3 +13,10 @@ Widget buildLoadingIndicator(BuildContext context) {
 @UseCase(name: 'Custom color', type: LoadingIndicator)
 Widget buildLoadingIndicatorCustomColor(BuildContext context) =>
     Center(child: LoadingIndicator(color: Theme.of(context).palette.textBrandPrimary));
+
+@UseCase(name: 'With message', type: LoadingIndicator)
+Widget buildLoadingIndicatorWithMessage(BuildContext context) {
+  final size = context.knobs.double.slider(label: 'Size', initialValue: 24, min: 8, max: 64);
+  final message = context.knobs.string(label: 'Message', initialValue: 'Loading…');
+  return Center(child: LoadingIndicator.message(message, size: size));
+}

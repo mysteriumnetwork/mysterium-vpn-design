@@ -25,19 +25,40 @@ enum LocationCardStatus {
 /// Hover state is managed internally via [MouseRegion].
 class LocationCard extends StatefulWidget {
   const LocationCard({
-    required this.icon,
-    required this.name,
-    required this.subtitle,
+    required Widget this.icon,
+    required String this.name,
+    required String this.subtitle,
     this.status = LocationCardStatus.idle,
     this.onTap,
     super.key,
-  });
+  }) : isPlaceholder = false,
+       width = 208;
 
-  final Widget icon;
-  final String name;
-  final String subtitle;
+  /// Empty disabled-style frame used as a loading or unavailable state.
+  ///
+  /// Renders only the card surface (background, radius, shadow) at the
+  /// same outer dimensions as a populated card. Defaults to the natural
+  /// 208 px placeholder width from the design.
+  const LocationCard.placeholder({this.width = 208, super.key})
+    : icon = null,
+      name = null,
+      subtitle = null,
+      status = LocationCardStatus.disabled,
+      onTap = null,
+      isPlaceholder = true;
+
+  final Widget? icon;
+  final String? name;
+  final String? subtitle;
   final LocationCardStatus status;
   final VoidCallback? onTap;
+
+  /// True when this is a [LocationCard.placeholder] instance.
+  final bool isPlaceholder;
+
+  /// Card width. Used by [LocationCard.placeholder] to size the empty
+  /// frame; populated cards sit between 208 and 258 via min/max constraints.
+  final double width;
 
   @override
   State<LocationCard> createState() => _LocationCardState();
@@ -56,22 +77,16 @@ class _LocationCardState extends State<LocationCard> {
     final theme = Theme.of(context);
     final palette = theme.palette;
     final isDisabled = widget.status == LocationCardStatus.disabled;
-    return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 208, maxWidth: 258),
-      child: MouseRegion(
-        onEnter: (_) => setState(() => _hovered = true),
-        onExit: (_) => setState(() => _hovered = false),
-        child: GestureDetector(
-          onTap: isDisabled ? null : widget.onTap,
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: _bgColor(palette),
-              borderRadius: const BorderRadius.all(Radius.kS),
-              boxShadow: [
-                BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1)),
-              ],
-            ),
-            child: Padding(
+
+    final surface = DecoratedBox(
+      decoration: BoxDecoration(
+        color: _bgColor(palette),
+        borderRadius: const BorderRadius.all(Radius.kS),
+        boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
+      ),
+      child: widget.isPlaceholder
+          ? const SizedBox(height: 60)
+          : Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: theme.spacing.md,
                 vertical: theme.spacing.ms,
@@ -80,19 +95,29 @@ class _LocationCardState extends State<LocationCard> {
                 mainAxisSize: MainAxisSize.min,
                 spacing: theme.spacing.ms,
                 children: [
-                  _LeadingIcon(status: widget.status, icon: widget.icon),
+                  _LeadingIcon(status: widget.status, icon: widget.icon!),
                   Flexible(
                     child: _TextColumn(
-                      name: widget.name,
-                      subtitle: widget.subtitle,
+                      name: widget.name!,
+                      subtitle: widget.subtitle!,
                       disabled: isDisabled,
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-        ),
+    );
+
+    if (widget.isPlaceholder) {
+      return SizedBox(width: widget.width, child: surface);
+    }
+
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 208, maxWidth: 258),
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _hovered = true),
+        onExit: (_) => setState(() => _hovered = false),
+        child: GestureDetector(onTap: isDisabled ? null : widget.onTap, child: surface),
       ),
     );
   }

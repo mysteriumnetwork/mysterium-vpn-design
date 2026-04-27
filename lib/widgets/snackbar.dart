@@ -49,9 +49,7 @@ class Snackbar extends StatelessWidget {
         color: palette.bgPrimary,
         borderRadius: const BorderRadius.all(Radius.kS),
         border: Border.all(color: palette.borderPrimary),
-        boxShadow: [
-          BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1)),
-        ],
+        boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
       ),
       child: Padding(
         padding: EdgeInsets.all(theme.spacing.ms),
@@ -72,7 +70,10 @@ class Snackbar extends StatelessWidget {
             ),
             if (action != null) ...[
               SizedBox(width: theme.spacing.s),
-              action!,
+              IconTheme(
+                data: IconThemeData(color: palette.iconSecondary, size: 16),
+                child: action!,
+              ),
             ],
           ],
         ),

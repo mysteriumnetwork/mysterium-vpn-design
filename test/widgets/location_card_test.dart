@@ -60,5 +60,19 @@ void main() {
         expect(find.text('Place'), findsOneWidget);
       }
     });
+
+    testWidgets('placeholder renders without icon or text', (tester) async {
+      await pumpWidget(tester, const LocationCard.placeholder());
+      expect(find.byIcon(Icons.flag), findsNothing);
+      expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets('placeholder honors custom width', (tester) async {
+      await pumpWidget(tester, const LocationCard.placeholder(width: 240));
+      final sizedBox = tester
+          .widgetList<SizedBox>(find.byType(SizedBox))
+          .firstWhere((s) => s.width == 240, orElse: () => const SizedBox());
+      expect(sizedBox.width, 240);
+    });
   });
 }
