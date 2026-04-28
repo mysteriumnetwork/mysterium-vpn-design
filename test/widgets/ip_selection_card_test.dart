@@ -66,6 +66,39 @@ void main() {
       await tester.tap(find.text('Germany'));
       expect(tapped, isTrue);
     });
+
+    testWidgets('shows LoadingIndicator and hides Plus when loading', (tester) async {
+      await pumpWidget(
+        tester,
+        const ExpandableIpCardHeader(
+          name: 'Germany',
+          subtitle: 'Frankfurt',
+          countryIcon: _flag,
+          status: IpCardStatus.loading,
+          plusUpgrade: true,
+        ),
+      );
+      expect(find.byType(LoadingIndicator), findsOneWidget);
+      expect(find.text('Plus'), findsNothing);
+    });
+
+    testWidgets('chevron is disabled when loading', (tester) async {
+      var chevronTapped = false;
+      await pumpWidget(
+        tester,
+        ExpandableIpCardHeader(
+          name: 'Germany',
+          subtitle: 'Frankfurt',
+          countryIcon: _flag,
+          status: IpCardStatus.loading,
+          onChevronTap: () => chevronTapped = true,
+        ),
+      );
+      await tester.tap(find.byType(IconButton));
+      expect(chevronTapped, isFalse);
+      final iconButton = tester.widget<IconButton>(find.byType(IconButton));
+      expect(iconButton.onPressed, isNull);
+    });
   });
 
   group('IpCardListItem', () {
@@ -97,6 +130,20 @@ void main() {
         ),
       );
       expect(find.text('Plus'), findsOneWidget);
+    });
+
+    testWidgets('shows LoadingIndicator and hides Plus when loading', (tester) async {
+      await pumpWidget(
+        tester,
+        const IpCardListItem(
+          name: 'IP',
+          subtitle: 'addr',
+          status: IpCardStatus.loading,
+          plusUpgrade: true,
+        ),
+      );
+      expect(find.byType(LoadingIndicator), findsOneWidget);
+      expect(find.text('Plus'), findsNothing);
     });
   });
 

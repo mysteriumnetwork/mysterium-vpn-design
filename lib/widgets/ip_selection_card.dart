@@ -19,6 +19,10 @@ enum IpCardStatus {
   /// The row is non-interactive (e.g. requires a Plus upgrade).
   disabled,
 
+  /// Data required to determine availability is still loading.
+  /// Renders normally but non-interactive, with a trailing loading indicator.
+  loading,
+
   /// This IP address is currently selected (used by [IpCardListItem] only).
   selected,
 }
@@ -185,7 +189,8 @@ class ExpandableIpCardHeader extends StatelessWidget {
         : const BorderRadius.all(Radius.kS);
     final theme = Theme.of(context);
     final hasChevron = onChevronTap != null;
-    final showPlus = plusUpgrade && status != IpCardStatus.selected;
+    final isLoading = status == IpCardStatus.loading;
+    final showPlus = plusUpgrade && status != IpCardStatus.selected && !isLoading;
     return _IpCardShell(
       status: status,
       borderRadius: borderRadius,
@@ -210,7 +215,10 @@ class ExpandableIpCardHeader extends StatelessWidget {
               ),
             ),
           ),
-          if (showPlus) ...[
+          if (isLoading) ...[
+            SizedBox(width: theme.spacing.ms),
+            LoadingIndicator(size: 20, color: theme.palette.iconSecondary),
+          ] else if (showPlus) ...[
             SizedBox(width: theme.spacing.ms),
             _PlusBadge(disabled: status == IpCardStatus.disabled),
           ],
@@ -219,7 +227,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
           if (hasChevron) ...[
             SizedBox(width: showPlus ? theme.spacing.xs : theme.spacing.ms),
             IconButton(
-              onPressed: onChevronTap,
+              onPressed: isLoading ? null : onChevronTap,
               icon: Icon(
                 expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
                 size: 24,
@@ -261,6 +269,8 @@ class IpCardListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isLoading = status == IpCardStatus.loading;
     final borderRadius = lastInList
         ? const BorderRadius.only(bottomLeft: Radius.kS, bottomRight: Radius.kS)
         : BorderRadius.zero;
@@ -270,7 +280,7 @@ class IpCardListItem extends StatelessWidget {
       borderTop: true,
       onTap: onTap,
       child: Row(
-        spacing: Theme.of(context).spacing.ms,
+        spacing: theme.spacing.ms,
         children: [
           _ListItemMarker(status: status),
           Expanded(
@@ -280,7 +290,10 @@ class IpCardListItem extends StatelessWidget {
               disabled: status == IpCardStatus.disabled,
             ),
           ),
-          if (plusUpgrade) _PlusBadge(disabled: status == IpCardStatus.disabled),
+          if (isLoading)
+            LoadingIndicator(size: 20, color: theme.palette.iconSecondary)
+          else if (plusUpgrade)
+            _PlusBadge(disabled: status == IpCardStatus.disabled),
         ],
       ),
     );
