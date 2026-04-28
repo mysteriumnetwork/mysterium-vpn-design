@@ -61,6 +61,22 @@ Widget buildExpandableIpCardControlled(BuildContext context) {
   );
 }
 
+@UseCase(name: 'Loading', type: ExpandableIpCard)
+Widget buildExpandableIpCardLoading(BuildContext context) => const Padding(
+  padding: EdgeInsets.all(16),
+  child: ExpandableIpCard(
+    name: 'United States',
+    subtitle: 'Checking availability…',
+    countryIcon: _UsFlag(),
+    status: IpCardStatus.loading,
+    initiallyExpanded: true,
+    items: [
+      IpCardItem(name: 'Illinois', subtitle: '4 IPs', status: IpCardStatus.loading),
+      IpCardItem(name: 'New York', subtitle: '89 IPs', status: IpCardStatus.loading),
+    ],
+  ),
+);
+
 // ─── IpCardListItem ───────────────────────────────────────────────────────────
 
 @UseCase(name: 'ListItem', type: IpCardListItem)
