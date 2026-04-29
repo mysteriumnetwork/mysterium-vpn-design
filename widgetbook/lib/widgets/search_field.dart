@@ -8,5 +8,6 @@ Widget buildSearchField(BuildContext context) => Padding(
   padding: const EdgeInsets.all(16),
   child: SearchField(
     placeholder: context.knobs.string(label: 'Placeholder', initialValue: 'Search locations'),
+    enabled: context.knobs.boolean(label: 'Enabled', initialValue: true),
   ),
 );
