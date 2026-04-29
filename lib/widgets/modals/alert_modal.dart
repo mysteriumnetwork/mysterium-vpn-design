@@ -276,9 +276,9 @@ class _DesktopActions extends StatelessWidget {
   Widget build(BuildContext context) => Row(
     mainAxisSize: MainAxisSize.min,
     children: [
-      ?secondaryButton,
+      if (secondaryButton != null) Flexible(child: secondaryButton!),
       if (secondaryButton != null && primaryButton != null) SizedBox(width: spacing),
-      ?primaryButton,
+      if (primaryButton != null) Flexible(child: primaryButton!),
     ],
   );
 }
