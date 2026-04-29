@@ -24,6 +24,10 @@ enum AlertModalType {
 /// supporting text, optional input field, and up to two optional action
 /// buttons.
 ///
+/// Surface uses [Palette.bgModals] with [Palette.borderPrimary] and the
+/// shadow-lg drop shadow. The leading badge pulls its background and icon
+/// colours from the theme (`bg{Type}` and `icon{Type}Primary`).
+///
 /// Layout adapts to screen size:
 /// - **Desktop** (`screenType >= tablet`): horizontal — icon left, content
 ///   on the right (title, supporting text, input, actions row). Close
@@ -87,9 +91,9 @@ class AlertModal extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: palette.bgPrimary,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: palette.borderPrimary),
+        color: palette.bgModals,
+        borderRadius: const BorderRadius.all(Radius.kS),
+        border: Border.all(color: palette.borderModals),
         boxShadow: [
           BoxShadow(
             color: palette.shadowLg03,
@@ -196,12 +200,15 @@ class _Badge extends StatelessWidget {
   final AlertModalType type;
 
   @override
-  Widget build(BuildContext context) => Container(
-    width: 32,
-    height: 32,
-    decoration: BoxDecoration(color: _bg(type), shape: BoxShape.circle),
-    child: Icon(_icon(type), size: 20, color: _fg(type)),
-  );
+  Widget build(BuildContext context) {
+    final palette = Theme.of(context).palette;
+    return Container(
+      width: 32,
+      height: 32,
+      decoration: BoxDecoration(color: _bg(palette, type), shape: BoxShape.circle),
+      child: Icon(_icon(type), size: 20, color: _fg(palette, type)),
+    );
+  }
 
   static IconData _icon(AlertModalType type) => switch (type) {
     AlertModalType.info => UntitledUI.info_circle,
@@ -211,20 +218,20 @@ class _Badge extends StatelessWidget {
     AlertModalType.success => UntitledUI.check_circle,
   };
 
-  static Color _bg(AlertModalType type) => switch (type) {
-    AlertModalType.info => Palette.grayLight.shade100,
-    AlertModalType.brand => Palette.brand.shade100,
-    AlertModalType.error => Palette.error.shade200,
-    AlertModalType.warning => Palette.warning.shade100,
-    AlertModalType.success => Palette.success.shade100,
+  static Color _bg(Palette palette, AlertModalType type) => switch (type) {
+    AlertModalType.info => palette.bgInfo,
+    AlertModalType.brand => palette.bgBrand,
+    AlertModalType.error => palette.bgError,
+    AlertModalType.warning => palette.bgWarning,
+    AlertModalType.success => palette.bgSuccess,
   };
 
-  static Color _fg(AlertModalType type) => switch (type) {
-    AlertModalType.info => Palette.grayLight.shade600,
-    AlertModalType.brand => Palette.brand.shade600,
-    AlertModalType.error => Palette.error.shade600,
-    AlertModalType.warning => Palette.warning.shade600,
-    AlertModalType.success => Palette.success.shade600,
+  static Color _fg(Palette palette, AlertModalType type) => switch (type) {
+    AlertModalType.info => palette.iconInfoPrimary,
+    AlertModalType.brand => palette.iconBrandPrimary,
+    AlertModalType.error => palette.iconErrorPrimary,
+    AlertModalType.warning => palette.iconWarningPrimary,
+    AlertModalType.success => palette.iconSuccessPrimary,
   };
 }
 
@@ -305,7 +312,7 @@ class _CloseButton extends StatelessWidget {
     icon: Icon(UntitledUI.x_close, size: 20, color: color),
     style: ButtonStyle(
       shape: WidgetStateProperty.all(
-        const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kS)),
+        const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kXs)),
       ),
       minimumSize: WidgetStateProperty.all(const Size(36, 36)),
       visualDensity: VisualDensity.compact,

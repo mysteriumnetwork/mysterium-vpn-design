@@ -5,8 +5,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 abstract class Palette extends ThemeExtension<Palette> {
   const Palette();
 
-  factory Palette.of(BuildContext context) =>
-      Theme.of(context).extension<Palette>()!;
+  factory Palette.of(BuildContext context) => Theme.of(context).extension<Palette>()!;
 
   static const white = Color(0xFFFFFFFF);
   static const black = Color(0xFF000000);
@@ -196,6 +195,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Border Colors
   ///
   abstract final Color borderPrimary;
+  abstract final Color borderModals;
   abstract final Color borderSecondary;
   abstract final Color borderTertiary;
   abstract final Color borderQuaternary;
@@ -215,8 +215,11 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color iconTertiary;
   abstract final Color iconWhite;
   abstract final Color iconDisabled;
+  abstract final Color iconBrandPrimary;
   abstract final Color iconBrandSecondary;
   abstract final Color iconErrorPrimary;
+  abstract final Color iconWarningPrimary;
+  abstract final Color iconInfoPrimary;
   abstract final Color iconBrandPrimaryHover;
   abstract final Color iconIpCard;
 
@@ -236,7 +239,12 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgBrandSecondary;
   abstract final Color bgBrandSecondaryInactive;
   abstract final Color bgInactive;
+  abstract final Color bgInfo;
+  abstract final Color bgBrand;
   abstract final Color bgError;
+  abstract final Color bgWarning;
+  abstract final Color bgSuccess;
+  abstract final Color bgModals;
   abstract final Color bgPopover;
   abstract final Color bgSuccessTertiary;
   abstract final Color tooltipBackground;
@@ -280,10 +288,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   ThemeExtension<Palette> copyWith() => this;
 
   @override
-  ThemeExtension<Palette> lerp(
-    covariant ThemeExtension<Palette>? other,
-    double t,
-  ) => this;
+  ThemeExtension<Palette> lerp(covariant ThemeExtension<Palette>? other, double t) => this;
 }
 
 class PaletteDark extends Palette {
@@ -341,6 +346,9 @@ class PaletteDark extends Palette {
   Color get borderPrimary => Palette.grayPurple.shade600;
 
   @override
+  Color get borderModals => Palette.grayDarkAlpha.shade700;
+
+  @override
   Color get borderSecondary => Palette.grayPurple.shade200;
 
   @override
@@ -395,6 +403,15 @@ class PaletteDark extends Palette {
   Color get iconErrorPrimary => Palette.error.shade600;
 
   @override
+  Color get iconWarningPrimary => Palette.warning.shade300;
+
+  @override
+  Color get iconInfoPrimary => Palette.grayLight.shade300;
+
+  @override
+  Color get iconBrandPrimary => Palette.brand.shade300;
+
+  @override
   Color get iconBrandPrimaryHover => Palette.brand.shade200;
 
   @override
@@ -446,7 +463,22 @@ class PaletteDark extends Palette {
   Color get bgInactive => Palette.brandPurple.shade900;
 
   @override
+  Color get bgInfo => Palette.grayDarkAlpha.shade800;
+
+  @override
+  Color get bgBrand => Palette.brand.shade900;
+
+  @override
   Color get bgError => Palette.error.shade900;
+
+  @override
+  Color get bgWarning => Palette.warning.shade900;
+
+  @override
+  Color get bgSuccess => Palette.success.shade900;
+
+  @override
+  Color get bgModals => Palette.grayDark.shade800;
 
   @override
   Color get bgPopover => Palette.brandPurple.shade900;
@@ -533,8 +565,7 @@ class PaletteDark extends Palette {
   Color get shadow3xl02 => Palette.transparent;
 
   @override
-  Color get shadowSkeuomorphicInner =>
-      Palette.grayDark.shade950.withValues(alpha: .05);
+  Color get shadowSkeuomorphicInner => Palette.grayDark.shade950.withValues(alpha: .05);
 
   @override
   Color get shadowSkeuomorphicOuter => Palette.grayDark.withValues(alpha: .18);
@@ -615,6 +646,9 @@ class PaletteLight extends Palette {
   Color get borderPrimary => gray.shade300;
 
   @override
+  Color get borderModals => gray.shade300;
+
+  @override
   Color get borderSecondary => Palette.grayPurple.shade200;
 
   @override
@@ -669,6 +703,15 @@ class PaletteLight extends Palette {
   Color get iconErrorPrimary => Palette.error.shade600;
 
   @override
+  Color get iconWarningPrimary => Palette.warning.shade600;
+
+  @override
+  Color get iconInfoPrimary => Palette.grayLight.shade600;
+
+  @override
+  Color get iconBrandPrimary => Palette.brand;
+
+  @override
   Color get iconBrandPrimaryHover => Palette.brand.shade700;
 
   @override
@@ -717,7 +760,22 @@ class PaletteLight extends Palette {
   Color get bgInactive => gray.shade100;
 
   @override
+  Color get bgInfo => Palette.grayLight.shade100;
+
+  @override
+  Color get bgBrand => Palette.brand.shade100;
+
+  @override
   Color get bgError => Palette.error.shade200;
+
+  @override
+  Color get bgWarning => Palette.warning.shade100;
+
+  @override
+  Color get bgSuccess => Palette.success.shade100;
+
+  @override
+  Color get bgModals => Palette.grayLight.shade25;
 
   @override
   Color get bgPopover => Palette.white;
@@ -804,12 +862,10 @@ class PaletteLight extends Palette {
   Color get shadow3xl02 => Palette.grayLight.shade950.withValues(alpha: 0.04);
 
   @override
-  Color get shadowSkeuomorphicInner =>
-      Palette.grayLight.shade950.withValues(alpha: 0.05);
+  Color get shadowSkeuomorphicInner => Palette.grayLight.shade950.withValues(alpha: 0.05);
 
   @override
-  Color get shadowSkeuomorphicOuter =>
-      Palette.grayLight.shade950.withValues(alpha: 0.18);
+  Color get shadowSkeuomorphicOuter => Palette.grayLight.shade950.withValues(alpha: 0.18);
 
   @override
   Color get barrierColor => Palette.grayLight.shade950.withValues(alpha: 0.5);

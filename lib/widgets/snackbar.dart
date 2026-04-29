@@ -23,9 +23,10 @@ enum SnackbarType {
 /// A toast-style status banner with a leading icon badge and a single line of
 /// supporting text.
 ///
-/// Uses the project's standard surface treatment (primary background, primary
-/// border, shadow-xs drop shadow). The leading icon and its circular badge
-/// change with [type].
+/// Uses an inverted modal surface so toasts stand out from the page — every
+/// colour (background, border, text, badge) is pulled from the *opposite*
+/// theme's palette ([Palette.bgModals], [Palette.borderModals], etc.). Drop
+/// shadow is shadow-xs.
 class Snackbar extends StatelessWidget {
   const Snackbar({required this.message, this.type = SnackbarType.brand, this.action, super.key});
 
@@ -43,12 +44,18 @@ class Snackbar extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
+    // The snackbar's surface is inverted from the page (dark in light mode,
+    // light in dark mode). Resolve every colour from the opposite theme's
+    // palette so they read correctly against the inverted surface.
+    final inverse = theme.brightness == Brightness.light
+        ? const PaletteDark()
+        : const PaletteLight();
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: palette.bgPrimary,
+        color: inverse.bgModals,
         borderRadius: const BorderRadius.all(Radius.kS),
-        border: Border.all(color: palette.borderPrimary),
+        border: Border.all(color: inverse.borderModals),
         boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
       ),
       child: Padding(
@@ -58,20 +65,20 @@ class Snackbar extends StatelessWidget {
             Container(
               width: 24,
               height: 24,
-              decoration: BoxDecoration(color: _badgeColor(type), shape: BoxShape.circle),
-              child: Icon(_icon(type), size: 16, color: _iconColor(type)),
+              decoration: BoxDecoration(color: _badgeColor(inverse, type), shape: BoxShape.circle),
+              child: Icon(_icon(type), size: 16, color: _iconColor(inverse, type)),
             ),
             SizedBox(width: theme.spacing.s),
             Expanded(
               child: Text(
                 message,
-                style: theme.textStyles.textSm.regular.copyWith(color: palette.textSecondary),
+                style: theme.textStyles.textSm.regular.copyWith(color: inverse.textSecondary),
               ),
             ),
             if (action != null) ...[
               SizedBox(width: theme.spacing.s),
               IconTheme(
-                data: IconThemeData(color: palette.iconSecondary, size: 16),
+                data: IconThemeData(color: inverse.iconSecondary, size: 16),
                 child: action!,
               ),
             ],
@@ -89,19 +96,19 @@ class Snackbar extends StatelessWidget {
     SnackbarType.success => UntitledUI.check_circle,
   };
 
-  static Color _badgeColor(SnackbarType type) => switch (type) {
-    SnackbarType.info => Palette.grayLight.shade100,
-    SnackbarType.brand => Palette.brand.shade100,
-    SnackbarType.error => Palette.error.shade200,
-    SnackbarType.warning => Palette.warning.shade100,
-    SnackbarType.success => Palette.success.shade100,
+  static Color _badgeColor(Palette palette, SnackbarType type) => switch (type) {
+    SnackbarType.info => palette.bgInfo,
+    SnackbarType.brand => palette.bgBrand,
+    SnackbarType.error => palette.bgError,
+    SnackbarType.warning => palette.bgWarning,
+    SnackbarType.success => palette.bgSuccess,
   };
 
-  static Color _iconColor(SnackbarType type) => switch (type) {
-    SnackbarType.info => Palette.grayLight.shade600,
-    SnackbarType.brand => Palette.brand.shade600,
-    SnackbarType.error => Palette.error.shade600,
-    SnackbarType.warning => Palette.warning.shade600,
-    SnackbarType.success => Palette.success.shade600,
+  static Color _iconColor(Palette palette, SnackbarType type) => switch (type) {
+    SnackbarType.info => palette.iconInfoPrimary,
+    SnackbarType.brand => palette.iconBrandPrimary,
+    SnackbarType.error => palette.iconErrorPrimary,
+    SnackbarType.warning => palette.iconWarningPrimary,
+    SnackbarType.success => palette.iconSuccessPrimary,
   };
 }
