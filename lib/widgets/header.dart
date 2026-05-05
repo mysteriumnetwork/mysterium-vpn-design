@@ -50,7 +50,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   /// `Navigator.of(context).maybePop()` when null.
   final VoidCallback? onBackPressed;
 
-  static const double _height = 64;
+  /// Visible header height in logical pixels (excluding any top safe-area inset).
+  static const double height = 64;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +65,6 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     final showBack = showBackButton ?? canGoBack;
 
-    final showBackLabel = showBack && title == null && backLabel != null;
     final backAction = onBackPressed ?? () => Navigator.of(context).maybePop();
 
     return Material(
@@ -76,19 +76,15 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
           right: hPad,
         ),
         child: SizedBox(
-          height: _height,
+          height: height,
           child: Row(
             spacing: theme.spacing.s,
             children: [
-              if (showBackLabel)
+              if (backLabel case final label? when showBack && title == null)
                 TextButton.icon(
                   onPressed: backAction,
                   icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
-                  label: Text(
-                    backLabel!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
                   style: TextButton.styleFrom(
                     foregroundColor: palette.textPrimary,
                     iconColor: palette.iconPrimary,
@@ -115,7 +111,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
                 )
               else
                 const Spacer(),
-              if (actions != null) Row(children: actions!),
+              if (actions != null) Row(spacing: theme.spacing.md, children: actions!),
             ],
           ),
         ),
@@ -124,5 +120,5 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(_height);
+  Size get preferredSize => const Size.fromHeight(height);
 }
