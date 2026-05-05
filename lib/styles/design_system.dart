@@ -36,7 +36,7 @@ sealed class DesignSystem {
               iconColor: palette.textWhite,
               disabledForegroundColor: Palette.grayLight.shade400,
               disabledIconColor: Palette.grayLight.shade400,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
             ).copyWith(
@@ -66,7 +66,7 @@ sealed class DesignSystem {
               iconColor: Palette.grayLight.shade600,
               disabledForegroundColor: Palette.grayLight.shade400,
               disabledIconColor: Palette.grayLight.shade400,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
             ).copyWith(
@@ -112,7 +112,7 @@ sealed class DesignSystem {
               foregroundColor: palette.textBrandPrimary,
               disabledForegroundColor: Palette.grayLight.shade400,
               textStyle: textStyles.textMd.semibold,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               iconColor: palette.textBrandPrimary,
             ).copyWith(

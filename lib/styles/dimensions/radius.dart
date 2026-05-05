@@ -19,6 +19,8 @@ class Radius extends material.ThemeExtension<Radius> {
 
   material.Radius get xxs => kXxs;
 
+  material.Radius get xs => kXs;
+
   material.Radius get s => kS;
 
   material.Radius get m => kM;
