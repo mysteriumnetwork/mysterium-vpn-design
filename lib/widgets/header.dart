@@ -75,32 +75,37 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             spacing: theme.spacing.s,
             children: [
               if (backLabel case final label? when showBack && title == null)
-                Flexible(
-                  child: TextButton.icon(
-                    onPressed: backAction,
-                    icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
-                    label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    style: TextButton.styleFrom(
-                      foregroundColor: palette.textPrimary,
-                      iconColor: palette.iconPrimary,
-                      textStyle: theme.textStyles.textMd.semibold,
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: TextButton.icon(
+                      onPressed: backAction,
+                      icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
+                      label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+                      style: TextButton.styleFrom(
+                        foregroundColor: palette.textPrimary,
+                        iconColor: palette.iconPrimary,
+                        textStyle: theme.textStyles.textMd.semibold,
+                      ),
                     ),
                   ),
                 )
-              else if (showBack)
-                IconButton(
-                  onPressed: backAction,
-                  icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
-                ),
-              if (title case final t?)
-                Expanded(
-                  child: DefaultTextStyle(
-                    style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
-                    child: Align(alignment: Alignment.centerLeft, child: t),
+              else ...[
+                if (showBack)
+                  IconButton(
+                    onPressed: backAction,
+                    icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
                   ),
-                )
-              else
-                const Spacer(),
+                if (title case final t?)
+                  Expanded(
+                    child: DefaultTextStyle(
+                      style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
+                      child: Align(alignment: Alignment.centerLeft, child: t),
+                    ),
+                  )
+                else
+                  const Spacer(),
+              ],
               if (actions != null) Row(spacing: theme.spacing.md, children: actions!),
             ],
           ),
@@ -110,5 +115,5 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(height);
+  Size get preferredSize => Size.fromHeight(height + ScreenType.topSafeAreaInset());
 }

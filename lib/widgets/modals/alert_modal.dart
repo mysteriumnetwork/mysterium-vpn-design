@@ -308,6 +308,7 @@ class _CloseButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) => IconButton(
     onPressed: onPressed,
+    tooltip: MaterialLocalizations.of(context).closeButtonTooltip,
     padding: EdgeInsets.zero,
     icon: Icon(UntitledUI.x_close, size: 20, color: color),
     style: ButtonStyle(

@@ -47,11 +47,7 @@ class ModalAppbar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize {
-    final view = ScreenType.flutterView();
-    final topPadding = view != null ? MediaQueryData.fromView(view).padding.top : 0;
-    return Size.fromHeight(kToolbarHeight + topPadding);
-  }
+  Size get preferredSize => Size.fromHeight(kToolbarHeight + ScreenType.topSafeAreaInset());
 }
 
 class _ModalCloseButton extends StatelessWidget {
