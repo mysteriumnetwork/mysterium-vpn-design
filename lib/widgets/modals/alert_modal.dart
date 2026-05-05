@@ -24,7 +24,7 @@ enum AlertModalType {
 /// supporting text, optional input field, and up to two optional action
 /// buttons.
 ///
-/// Surface uses [Palette.bgModals] with [Palette.borderPrimary] and the
+/// Surface uses [Palette.bgModals] with [Palette.borderModals] and the
 /// shadow-lg drop shadow. The leading badge pulls its background and icon
 /// colours from the theme (`bg{Type}` and `icon{Type}Primary`).
 ///

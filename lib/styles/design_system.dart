@@ -88,8 +88,24 @@ sealed class DesignSystem {
                 }
                 return BorderSide(color: Palette.grayLight.shade300);
               }),
-              foregroundColor: _disabledOr(Palette.grayLight.shade400, Palette.grayLight.shade600),
-              iconColor: _disabledOr(Palette.grayLight.shade400, Palette.grayLight.shade600),
+              foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade400;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.grayLight.shade900;
+                }
+                return Palette.grayLight.shade600;
+              }),
+              iconColor: WidgetStateProperty.resolveWith((states) {
+                if (states.contains(WidgetState.disabled)) {
+                  return Palette.grayLight.shade400;
+                }
+                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                  return Palette.grayLight.shade900;
+                }
+                return Palette.grayLight.shade600;
+              }),
               overlayColor: const WidgetStatePropertyAll(Colors.transparent),
             ),
       ),
@@ -282,8 +298,3 @@ extension ThemeExtensions on ThemeData {
   // A temporary util to check if the theme is from new design system or it is legacy.
   bool get isDesignSystem => extension<Spacing>() != null;
 }
-
-WidgetStateProperty<Color> _disabledOr(Color disabled, Color base) =>
-    WidgetStateProperty.resolveWith(
-      (states) => states.contains(WidgetState.disabled) ? disabled : base,
-    );

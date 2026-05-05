@@ -59,9 +59,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
     final palette = theme.palette;
-    final resolvedBg =
-        backgroundColor ??
-        (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
+    final resolvedBg = backgroundColor ?? (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
     final showBack = showBackButton ?? canGoBack;
 
@@ -70,42 +68,34 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     return Material(
       color: resolvedBg,
       child: Padding(
-        padding: EdgeInsets.only(
-          top: MediaQuery.paddingOf(context).top,
-          left: hPad,
-          right: hPad,
-        ),
+        padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top, left: hPad, right: hPad),
         child: SizedBox(
           height: height,
           child: Row(
             spacing: theme.spacing.s,
             children: [
               if (backLabel case final label? when showBack && title == null)
-                TextButton.icon(
-                  onPressed: backAction,
-                  icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
-                  label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
-                  style: TextButton.styleFrom(
-                    foregroundColor: palette.textPrimary,
-                    iconColor: palette.iconPrimary,
-                    textStyle: theme.textStyles.textMd.semibold,
+                Flexible(
+                  child: TextButton.icon(
+                    onPressed: backAction,
+                    icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
+                    label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+                    style: TextButton.styleFrom(
+                      foregroundColor: palette.textPrimary,
+                      iconColor: palette.iconPrimary,
+                      textStyle: theme.textStyles.textMd.semibold,
+                    ),
                   ),
                 )
               else if (showBack)
                 IconButton(
                   onPressed: backAction,
-                  icon: Icon(
-                    UntitledUI.arrow_narrow_left,
-                    size: 24,
-                    color: palette.iconPrimary,
-                  ),
+                  icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
                 ),
               if (title case final t?)
                 Expanded(
                   child: DefaultTextStyle(
-                    style: theme.textStyles.textLg.medium.copyWith(
-                      color: palette.textPrimary,
-                    ),
+                    style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
                     child: Align(alignment: Alignment.centerLeft, child: t),
                   ),
                 )

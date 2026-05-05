@@ -16,7 +16,7 @@ class LoadingIndicator extends StatelessWidget {
 
   /// Creates a loading indicator with a text [message] displayed below.
   ///
-  /// The `messageStyle` defaults to `textSm.semibold` with `textSecondary`
+  /// [style] defaults to `textSm.semibold` with `textSecondary`
   /// color from the current theme.
   const LoadingIndicator.message(
     String message, {
