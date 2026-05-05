@@ -5,7 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'AlertModal', type: AlertModal)
 Widget buildAlertModal(BuildContext context) {
-  final type = context.knobs.list<AlertModalType>(
+  final type = context.knobs.object.dropdown<AlertModalType>(
     label: 'Type',
     options: AlertModalType.values,
     initialOption: AlertModalType.brand,
@@ -21,7 +21,7 @@ Widget buildAlertModal(BuildContext context) {
   );
   final showIcon = context.knobs.boolean(label: 'Show icon', initialValue: true);
   final showClose = context.knobs.boolean(label: 'Show close button', initialValue: true);
-  final showInput = context.knobs.boolean(label: 'Show input', initialValue: false);
+  final showInput = context.knobs.boolean(label: 'Show input');
   final showPrimary = context.knobs.boolean(label: 'Show primary button', initialValue: true);
   final showSecondary = context.knobs.boolean(label: 'Show secondary button', initialValue: true);
 

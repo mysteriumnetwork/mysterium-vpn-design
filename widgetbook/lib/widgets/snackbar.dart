@@ -5,7 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'Snackbar', type: Snackbar)
 Widget buildSnackbar(BuildContext context) {
-  final type = context.knobs.list<SnackbarType>(
+  final type = context.knobs.object.dropdown<SnackbarType>(
     label: 'Type',
     options: SnackbarType.values,
     initialOption: SnackbarType.brand,
@@ -15,7 +15,7 @@ Widget buildSnackbar(BuildContext context) {
     label: 'Message',
     initialValue: 'Promo code copied to the clipboard!',
   );
-  final showAction = context.knobs.boolean(label: 'Show action', initialValue: false);
+  final showAction = context.knobs.boolean(label: 'Show action');
   return Padding(
     padding: const EdgeInsets.all(16),
     child: Snackbar(
