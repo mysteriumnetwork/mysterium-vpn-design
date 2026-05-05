@@ -5,7 +5,6 @@ export 'comparison_table.dart';
 export 'connection_bar.dart';
 export 'decorated_icon.dart';
 export 'header.dart';
-export 'icon_button.dart';
 export 'intent_tab.dart';
 export 'ip_selection_card.dart';
 export 'loading_indicator.dart';

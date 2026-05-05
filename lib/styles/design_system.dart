@@ -39,6 +39,9 @@ sealed class DesignSystem {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
+              elevation: 1,
+              shadowColor: const Color(0x0D0A0D12),
+              surfaceTintColor: Colors.transparent,
             ).copyWith(
               backgroundColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.disabled)) {
@@ -69,6 +72,9 @@ sealed class DesignSystem {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
+              elevation: 1,
+              shadowColor: const Color(0x0D0A0D12),
+              surfaceTintColor: Colors.transparent,
             ).copyWith(
               backgroundColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.disabled)) {
@@ -89,17 +95,11 @@ sealed class DesignSystem {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }
-                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
-                  return Palette.grayLight.shade900;
-                }
                 return Palette.grayLight.shade600;
               }),
               iconColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
-                }
-                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
-                  return Palette.grayLight.shade900;
                 }
                 return Palette.grayLight.shade600;
               }),

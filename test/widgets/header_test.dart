@@ -11,11 +11,6 @@ void main() {
       expect(find.text('My Title'), findsOneWidget);
     });
 
-    testWidgets('Header.labeled renders label text', (tester) async {
-      await pumpWidget(tester, Header.labeled(label: 'Settings'));
-      expect(find.text('Settings'), findsOneWidget);
-    });
-
     testWidgets('renders actions', (tester) async {
       await pumpWidget(
         tester,

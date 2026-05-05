@@ -709,7 +709,7 @@ class _IconTap extends StatelessWidget {
   final String? tooltip;
   final EdgeInsetsGeometry? padding;
   @override
-  Widget build(BuildContext context) => CustomIconButton(
+  Widget build(BuildContext context) => IconButton(
     onPressed: onPressed,
     icon: Icon(icon, size: 24, color: iconColor),
     tooltip: tooltip,
