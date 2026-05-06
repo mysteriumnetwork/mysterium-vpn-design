@@ -20,8 +20,8 @@ enum SnackbarType {
   success,
 }
 
-/// A toast-style status banner with a leading icon badge and a single line of
-/// supporting text.
+/// A toast-style status banner with a leading icon badge and a body of
+/// supporting text. Long messages wrap to multiple lines.
 ///
 /// Uses an inverted modal surface so toasts stand out from the page — every
 /// colour (background, border, text, badge) is pulled from the *opposite*

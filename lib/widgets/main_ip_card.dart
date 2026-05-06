@@ -726,8 +726,10 @@ class _IconTap extends StatelessWidget {
     onPressed: onPressed,
     icon: Icon(icon, size: 24, color: iconColor),
     tooltip: tooltip,
-    padding: padding,
+    padding: padding ?? EdgeInsets.zero,
     style: ButtonStyle(
+      minimumSize: const WidgetStatePropertyAll(Size(32, 32)),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       overlayColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.pressed)) {
           return iconColor.withValues(alpha: _overlayPressedAlpha);

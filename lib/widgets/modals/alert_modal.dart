@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+// Right-side breathing room reserved for the floating close button so title
+// and supporting text don't render underneath it. Derived from the close
+// button geometry (36 px wide + 7 px right inset = 43) minus the modal's
+// outer 16 px padding (= 27), rounded up to 32 for a small visual buffer.
+const double _closeButtonClearance = 32;
+
 /// Status conveyed by an [AlertModal] — selects the leading icon and the
 /// colour of its circular badge.
 enum AlertModalType {
@@ -147,7 +153,7 @@ class AlertModal extends StatelessWidget {
               _TextBlock(
                 title: title,
                 supportingText: supportingText,
-                titleRightPadding: onClose != null ? theme.spacing.xl3 : 0,
+                rightClearance: onClose != null ? _closeButtonClearance : 0,
               ),
               ?input,
               if (_hasButtons)
@@ -180,7 +186,7 @@ class AlertModal extends StatelessWidget {
           supportingText: supportingText,
           // Reserve room for the close button only when the icon isn't
           // already pushing the title down.
-          titleRightPadding: !showIcon && onClose != null ? theme.spacing.xl3 : 0,
+          rightClearance: !showIcon && onClose != null ? _closeButtonClearance : 0,
         ),
         ?input,
         if (_hasButtons)
@@ -236,31 +242,34 @@ class _Badge extends StatelessWidget {
 }
 
 class _TextBlock extends StatelessWidget {
-  const _TextBlock({required this.title, required this.titleRightPadding, this.supportingText});
+  const _TextBlock({required this.title, required this.rightClearance, this.supportingText});
 
   final String title;
   final String? supportingText;
-  final double titleRightPadding;
+
+  /// Right-side padding applied to both [title] and [supportingText] so they
+  /// don't render underneath the floating close button.
+  final double rightClearance;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      spacing: theme.spacing.xs,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(right: titleRightPadding),
-          child: Text(
+    return Padding(
+      padding: EdgeInsets.only(right: rightClearance),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        spacing: theme.spacing.xs,
+        children: [
+          Text(
             title,
             style: theme.textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
           ),
-        ),
-        if (supportingText case final s?)
-          Text(s, style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary)),
-      ],
+          if (supportingText case final s?)
+            Text(s, style: theme.textStyles.textSm.regular.copyWith(color: palette.textTertiary)),
+        ],
+      ),
     );
   }
 }
