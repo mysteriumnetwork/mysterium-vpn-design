@@ -5,19 +5,7 @@ import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'Logo', type: Header)
 Widget buildLogoHeader(BuildContext context) => _View(
-  header: Header.logo(
-    centerTitle: context.knobs.boolean(label: 'Center title'),
-    actions: _mockActions(context),
-  ),
-  canGoBack: context.knobs.boolean(label: 'Has back button'),
-);
-
-@UseCase(name: 'Labeled', type: Header)
-Widget buildLabeledHeader(BuildContext context) => _View(
-  header: Header.labeled(
-    label: context.knobs.string(label: 'Title', initialValue: 'Theme'),
-    actions: _mockActions(context),
-  ),
+  header: Header.logo(actions: _mockActions(context)),
   canGoBack: context.knobs.boolean(label: 'Has back button'),
 );
 

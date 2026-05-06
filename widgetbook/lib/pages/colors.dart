@@ -8,7 +8,7 @@ class Colors extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      appBar: Header.labeled(label: 'Colors'),
+      appBar: const Header(title: Text('Colors')),
       body: CustomScrollView(
         slivers: [
           SliverList.list(

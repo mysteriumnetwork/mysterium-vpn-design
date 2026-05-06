@@ -195,6 +195,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Border Colors
   ///
   abstract final Color borderPrimary;
+  abstract final Color borderModals;
   abstract final Color borderSecondary;
   abstract final Color borderTertiary;
   abstract final Color borderQuaternary;
@@ -214,31 +215,20 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color iconTertiary;
   abstract final Color iconWhite;
   abstract final Color iconDisabled;
+  abstract final Color iconBrandPrimary;
   abstract final Color iconBrandSecondary;
-
-  /// Figma: icon-brand-primary-hover — refresh icon on single-IP cards.
-  /// Light: Brand/700 (#8B1AB1), Dark: Brand/200 (#F2D0FE).
+  abstract final Color iconErrorPrimary;
+  abstract final Color iconWarningPrimary;
+  abstract final Color iconInfoPrimary;
   abstract final Color iconBrandPrimaryHover;
-
-  /// Figma: icon-IP-card — refresh icon on multi-IP cards.
-  /// Light: white 80%, Dark: GrayLight/600 (#535862).
-  /// Currently identical to [textIpCardSubtitle]; kept as a separate token
-  /// so icon and text colours can diverge independently in Figma.
   abstract final Color iconIpCard;
 
   ///
   /// Background Colors
   ///
   abstract final Color bgPrimary;
-
-  /// Figma: bg-primary_hover — card background on pointer hover.
-  /// Light: GrayLight/100 (#F5F5F5). Dark: BrandPurple/700 (#4B2E7A).
   abstract final Color bgPrimaryHover;
-
   abstract final Color bgSecondary;
-
-  /// Figma: bg-secondary_disabled — card background in disabled state.
-  /// Light: GrayLight/200 (#E9EAEB). Dark: GrayPurple/800 (#37304F).
   abstract final Color bgSecondaryDisabled;
   abstract final Color bgSecondarySelected;
   abstract final Color bgTertiary;
@@ -249,32 +239,22 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgBrandSecondary;
   abstract final Color bgBrandSecondaryInactive;
   abstract final Color bgInactive;
+  abstract final Color bgInfo;
+  abstract final Color bgBrand;
+  abstract final Color bgError;
+  abstract final Color bgWarning;
+  abstract final Color bgSuccess;
+  abstract final Color bgModals;
   abstract final Color bgPopover;
   abstract final Color bgSuccessTertiary;
   abstract final Color tooltipBackground;
   abstract final Color bgSidePanel;
   abstract final Color bgMapCountries;
   abstract final Color bgMapBackground;
-
-  /// Figma: Colors/Background/bg-main-ip-card — the background of the main IP
-  /// card. Light: Brand/900 (#5F1877), Dark: Brand/100 (#F9E8FF).
   abstract final Color bgMainIpCard;
-
-  /// Figma: Colors/Background/bg-main-ip-preview — the background of the
-  /// new-IP preview bar. Light: BrandPurple/200 (#DDD3EE), Dark: BrandPurple/300 (#C1AEE0).
   abstract final Color bgMainIpPreview;
-
-  /// Figma: Colors/Background/bg-transparent — circle background for
-  /// informational icons on the IP card (best-server, not-signed-in, etc.).
-  /// Light: 16 % white, Dark: 8 % black.
   abstract final Color bgInfoIcon;
-
-  /// Figma: Colors/Text/text-ip-card-title — primary text inside the IP card.
-  /// Light: white (#FFFFFF), Dark: GrayLight/800 (#252B37).
   abstract final Color textIpCardTitle;
-
-  /// Figma: Colors/Text/text-ip-card-subtitle — secondary text inside the IP card.
-  /// Light: white 80%, Dark: GrayLight/600 (#535862).
   abstract final Color textIpCardSubtitle;
 
   abstract final Color bgMapPinIdle;
@@ -366,6 +346,9 @@ class PaletteDark extends Palette {
   Color get borderPrimary => Palette.grayPurple.shade600;
 
   @override
+  Color get borderModals => Palette.grayDarkAlpha.shade700;
+
+  @override
   Color get borderSecondary => Palette.grayPurple.shade200;
 
   @override
@@ -417,6 +400,18 @@ class PaletteDark extends Palette {
   Color get iconBrandSecondary => Palette.brand.shade400;
 
   @override
+  Color get iconErrorPrimary => Palette.error.shade600;
+
+  @override
+  Color get iconWarningPrimary => Palette.warning.shade300;
+
+  @override
+  Color get iconInfoPrimary => Palette.grayLight.shade300;
+
+  @override
+  Color get iconBrandPrimary => Palette.brand.shade300;
+
+  @override
   Color get iconBrandPrimaryHover => Palette.brand.shade200;
 
   @override
@@ -466,6 +461,24 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgInactive => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgInfo => Palette.grayDarkAlpha.shade800;
+
+  @override
+  Color get bgBrand => Palette.brand.shade900;
+
+  @override
+  Color get bgError => Palette.error.shade900;
+
+  @override
+  Color get bgWarning => Palette.warning.shade900;
+
+  @override
+  Color get bgSuccess => Palette.success.shade900;
+
+  @override
+  Color get bgModals => Palette.grayDark.shade800;
 
   @override
   Color get bgPopover => Palette.brandPurple.shade900;
@@ -633,6 +646,9 @@ class PaletteLight extends Palette {
   Color get borderPrimary => gray.shade300;
 
   @override
+  Color get borderModals => gray.shade300;
+
+  @override
   Color get borderSecondary => Palette.grayPurple.shade200;
 
   @override
@@ -684,6 +700,18 @@ class PaletteLight extends Palette {
   Color get iconBrandSecondary => Palette.brand.shade500;
 
   @override
+  Color get iconErrorPrimary => Palette.error.shade600;
+
+  @override
+  Color get iconWarningPrimary => Palette.warning.shade600;
+
+  @override
+  Color get iconInfoPrimary => Palette.grayLight.shade600;
+
+  @override
+  Color get iconBrandPrimary => Palette.brand;
+
+  @override
   Color get iconBrandPrimaryHover => Palette.brand.shade700;
 
   @override
@@ -730,6 +758,24 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgInactive => gray.shade100;
+
+  @override
+  Color get bgInfo => Palette.grayLight.shade100;
+
+  @override
+  Color get bgBrand => Palette.brand.shade100;
+
+  @override
+  Color get bgError => Palette.error.shade200;
+
+  @override
+  Color get bgWarning => Palette.warning.shade100;
+
+  @override
+  Color get bgSuccess => Palette.success.shade100;
+
+  @override
+  Color get bgModals => Palette.grayLight.shade25;
 
   @override
   Color get bgPopover => Palette.white;

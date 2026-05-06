@@ -22,6 +22,31 @@ Widget buildLocationCard(BuildContext context) {
   );
 }
 
+@UseCase(name: 'Placeholder', type: LocationCard)
+Widget buildLocationCardPlaceholder(BuildContext context) {
+  final width = context.knobs.double.slider(label: 'Width', initialValue: 208, min: 160, max: 280);
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: LocationCard.placeholder(width: width),
+  );
+}
+
+@UseCase(name: 'Placeholder carousel', type: LocationCard)
+Widget buildLocationCardPlaceholderCarousel(BuildContext context) => const Padding(
+  padding: EdgeInsets.all(16),
+  child: SingleChildScrollView(
+    scrollDirection: Axis.horizontal,
+    child: Row(
+      spacing: 8,
+      children: [
+        LocationCard.placeholder(),
+        LocationCard.placeholder(),
+        LocationCard.placeholder(),
+      ],
+    ),
+  ),
+);
+
 @UseCase(name: 'Carousel', type: LocationCard)
 Widget buildLocationCardCarousel(BuildContext context) => const Padding(
   padding: EdgeInsets.all(16),

@@ -58,6 +58,15 @@ enum ScreenType implements Comparable<ScreenType> {
     return dispatcher.views.firstOrNull;
   }
 
+  /// Top safe-area inset for the current view (status bar / notch).
+  ///
+  /// Useful from `PreferredSizeWidget.preferredSize` getters that have no
+  /// `BuildContext` and so cannot use `MediaQuery.paddingOf`.
+  static double topSafeAreaInset([BuildContext? context]) {
+    final view = flutterView(context);
+    return view != null ? MediaQueryData.fromView(view).padding.top : 0;
+  }
+
   final double breakpoint;
 
   @override

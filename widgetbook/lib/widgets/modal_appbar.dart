@@ -13,7 +13,7 @@ Widget buildModalAppbar(BuildContext context) {
       title: title,
       showCloseButton: showCloseButton,
       actions: showActions
-          ? [CustomIconButton(onPressed: () {}, icon: const Icon(UntitledUI.dots_vertical))]
+          ? [IconButton(onPressed: () {}, icon: const Icon(UntitledUI.dots_vertical))]
           : null,
     ),
     body: const Center(child: Text('Body content')),

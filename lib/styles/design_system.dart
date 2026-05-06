@@ -36,9 +36,12 @@ sealed class DesignSystem {
               iconColor: palette.textWhite,
               disabledForegroundColor: Palette.grayLight.shade400,
               disabledIconColor: Palette.grayLight.shade400,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
+              elevation: 1,
+              shadowColor: palette.shadowXs,
+              surfaceTintColor: Colors.transparent,
             ).copyWith(
               backgroundColor: WidgetStateProperty.resolveWith((states) {
                 if (states.contains(WidgetState.disabled)) {
@@ -62,19 +65,19 @@ sealed class DesignSystem {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style:
             OutlinedButton.styleFrom(
-              foregroundColor: Palette.grayLight.shade600,
-              iconColor: Palette.grayLight.shade600,
               disabledForegroundColor: Palette.grayLight.shade400,
               disabledIconColor: Palette.grayLight.shade400,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
+              elevation: 1,
+              shadowColor: palette.shadowXs,
+              surfaceTintColor: Colors.transparent,
             ).copyWith(
               backgroundColor: WidgetStateProperty.resolveWith((states) {
-                if (states.contains(WidgetState.disabled)) {
-                  return Palette.grayLight.shade100;
-                }
-                if (states.contains(WidgetState.hovered) || states.contains(WidgetState.pressed)) {
+                if (states.contains(WidgetState.disabled) ||
+                    states.contains(WidgetState.hovered) ||
+                    states.contains(WidgetState.pressed)) {
                   return Palette.grayLight.shade100;
                 }
                 return Palette.white;
@@ -112,7 +115,7 @@ sealed class DesignSystem {
               foregroundColor: palette.textBrandPrimary,
               disabledForegroundColor: Palette.grayLight.shade400,
               textStyle: textStyles.textMd.semibold,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.s)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               iconColor: palette.textBrandPrimary,
             ).copyWith(

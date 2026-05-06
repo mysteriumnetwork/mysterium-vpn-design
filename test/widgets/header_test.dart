@@ -11,11 +11,6 @@ void main() {
       expect(find.text('My Title'), findsOneWidget);
     });
 
-    testWidgets('Header.labeled renders label text', (tester) async {
-      await pumpWidget(tester, Header.labeled(label: 'Settings'));
-      expect(find.text('Settings'), findsOneWidget);
-    });
-
     testWidgets('renders actions', (tester) async {
       await pumpWidget(
         tester,
@@ -57,6 +52,35 @@ void main() {
     testWidgets('renders on desktop screenType', (tester) async {
       await pumpWidget(tester, const Header(title: Text('Title')), screenType: ScreenType.desktop);
       expect(find.text('Title'), findsOneWidget);
+    });
+
+    testWidgets('renders back label as TextButton.icon when backLabel is set and title is null', (
+      tester,
+    ) async {
+      var pressed = false;
+      await pumpWidget(
+        tester,
+        Header(
+          backLabel: 'Back to home',
+          showBackButton: true,
+          onBackPressed: () => pressed = true,
+        ),
+      );
+      expect(find.text('Back to home'), findsOneWidget);
+      expect(find.byType(TextButton), findsOneWidget);
+      await tester.tap(find.byType(TextButton));
+      expect(pressed, isTrue);
+    });
+
+    testWidgets('renders arrow-only IconButton when backLabel is null and showBack is true', (
+      tester,
+    ) async {
+      var pressed = false;
+      await pumpWidget(tester, Header(showBackButton: true, onBackPressed: () => pressed = true));
+      expect(find.byType(TextButton), findsNothing);
+      expect(find.byType(IconButton), findsOneWidget);
+      await tester.tap(find.byType(IconButton));
+      expect(pressed, isTrue);
     });
   });
 }

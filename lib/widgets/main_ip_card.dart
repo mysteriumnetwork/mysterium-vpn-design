@@ -274,6 +274,13 @@ const _cardMaxWidthDesktop = 343.0;
 const _previewBarHeight = 80.0;
 const _previewBarContentOffset = 64.0;
 
+// State-layer overlay opacities applied to `_IconTap`'s overlay color
+// (the icon's own color), tuned to read correctly on the brand-themed card
+// surfaces in both light and dark themes.
+const _overlayPressedAlpha = 0.16;
+const _overlayHoveredAlpha = 0.10;
+const _overlayFocusedAlpha = 0.12;
+
 // ─── Card shell ───────────────────────────────────────────────────────────────
 
 class _CardShell extends StatelessWidget {
@@ -282,14 +289,21 @@ class _CardShell extends StatelessWidget {
   final Widget child;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: BoxDecoration(
-      color: Theme.of(context).palette.bgMainIpCard,
-      borderRadius: const BorderRadius.all(Radius.kM),
-      boxShadow: const [BoxShadow(color: Color(0x0D0A0D12), blurRadius: 2, offset: Offset(0, 1))],
-    ),
-    child: Padding(padding: EdgeInsets.all(Theme.of(context).spacing.md), child: child),
-  );
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return DecoratedBox(
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.kM),
+        boxShadow: [BoxShadow(color: Color(0x0D0A0D12), blurRadius: 2, offset: Offset(0, 1))],
+      ),
+      child: Material(
+        color: theme.palette.bgMainIpCard,
+        borderRadius: const BorderRadius.all(Radius.kM),
+        clipBehavior: Clip.antiAlias,
+        child: Padding(padding: EdgeInsets.all(theme.spacing.md), child: child),
+      ),
+    );
+  }
 }
 
 // ─── Content variants ─────────────────────────────────────────────────────────
@@ -654,11 +668,10 @@ class _PreviewBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        color: Theme.of(context).palette.bgMainIpPreview,
-        borderRadius: const BorderRadius.only(topLeft: Radius.kM, topRight: Radius.kM),
-      ),
+    return Material(
+      color: theme.palette.bgMainIpPreview,
+      borderRadius: const BorderRadius.only(topLeft: Radius.kM, topRight: Radius.kM),
+      clipBehavior: Clip.antiAlias,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
         child: Align(
@@ -709,10 +722,26 @@ class _IconTap extends StatelessWidget {
   final String? tooltip;
   final EdgeInsetsGeometry? padding;
   @override
-  Widget build(BuildContext context) => CustomIconButton(
+  Widget build(BuildContext context) => IconButton(
     onPressed: onPressed,
     icon: Icon(icon, size: 24, color: iconColor),
     tooltip: tooltip,
-    padding: padding,
+    padding: padding ?? EdgeInsets.zero,
+    style: ButtonStyle(
+      minimumSize: const WidgetStatePropertyAll(Size(32, 32)),
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      overlayColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.pressed)) {
+          return iconColor.withValues(alpha: _overlayPressedAlpha);
+        }
+        if (states.contains(WidgetState.hovered)) {
+          return iconColor.withValues(alpha: _overlayHoveredAlpha);
+        }
+        if (states.contains(WidgetState.focused)) {
+          return iconColor.withValues(alpha: _overlayFocusedAlpha);
+        }
+        return null;
+      }),
+    ),
   );
 }

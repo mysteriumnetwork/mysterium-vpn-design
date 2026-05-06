@@ -43,5 +43,19 @@ void main() {
         expect(find.text(status.name), findsOneWidget);
       }
     });
+
+    testWidgets('placeholder renders without icon or label', (tester) async {
+      await pumpWidget(tester, const IntentTab.placeholder(width: 147));
+      expect(find.byType(Icon), findsNothing);
+      expect(find.byType(Text), findsNothing);
+    });
+
+    testWidgets('placeholder honors width', (tester) async {
+      await pumpWidget(tester, const IntentTab.placeholder(width: 200));
+      final sizedBox = tester
+          .widgetList<SizedBox>(find.byType(SizedBox))
+          .firstWhere((s) => s.width == 200, orElse: () => const SizedBox());
+      expect(sizedBox.width, 200);
+    });
   });
 }
