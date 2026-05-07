@@ -9,17 +9,17 @@ void main() {
     testWidgets('renders the icon and message', (tester) async {
       await pumpWidget(
         tester,
-        const StateCard(icon: UntitledUI.log_in_02, message: 'Your are not signed in'),
+        const StateCard(icon: UntitledUI.log_in_02, message: 'You are not signed in'),
       );
 
-      expect(find.text('Your are not signed in'), findsOneWidget);
+      expect(find.text('You are not signed in'), findsOneWidget);
       expect(find.byIcon(UntitledUI.log_in_02), findsOneWidget);
     });
 
     testWidgets('omits the action when actionLabel is null', (tester) async {
       await pumpWidget(
         tester,
-        const StateCard(icon: UntitledUI.log_in_02, message: 'Your are not signed in'),
+        const StateCard(icon: UntitledUI.log_in_02, message: 'You are not signed in'),
       );
 
       expect(find.byType(ButtonTertiary), findsNothing);
@@ -30,7 +30,7 @@ void main() {
         tester,
         StateCard(
           icon: UntitledUI.log_in_02,
-          message: 'Your are not signed in',
+          message: 'You are not signed in',
           actionLabel: 'Sign in',
           onActionPressed: () {},
         ),
@@ -45,7 +45,7 @@ void main() {
         tester,
         StateCard(
           icon: UntitledUI.log_in_02,
-          message: 'Your are not signed in',
+          message: 'You are not signed in',
           actionLabel: 'Sign in',
           onActionPressed: () => taps++,
         ),
@@ -59,7 +59,7 @@ void main() {
       expect(
         () => StateCard(
           icon: UntitledUI.log_in_02,
-          message: 'Your are not signed in',
+          message: 'You are not signed in',
           actionLabel: 'Sign in',
         ),
         throwsAssertionError,
@@ -67,7 +67,7 @@ void main() {
       expect(
         () => StateCard(
           icon: UntitledUI.log_in_02,
-          message: 'Your are not signed in',
+          message: 'You are not signed in',
           onActionPressed: () {},
         ),
         throwsAssertionError,
@@ -77,7 +77,7 @@ void main() {
     testWidgets('uses palette.bgModals as the card background in light theme', (tester) async {
       await pumpWidget(
         tester,
-        const StateCard(icon: UntitledUI.log_in_02, message: 'Your are not signed in'),
+        const StateCard(icon: UntitledUI.log_in_02, message: 'You are not signed in'),
         theme: DesignSystem.lightTheme,
       );
 
@@ -89,7 +89,7 @@ void main() {
     testWidgets('uses palette.bgModals as the card background in dark theme', (tester) async {
       await pumpWidget(
         tester,
-        const StateCard(icon: UntitledUI.log_in_02, message: 'Your are not signed in'),
+        const StateCard(icon: UntitledUI.log_in_02, message: 'You are not signed in'),
         theme: DesignSystem.darkTheme,
       );
 

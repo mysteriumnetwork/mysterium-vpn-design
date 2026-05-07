@@ -64,6 +64,7 @@ class OnboardingItem extends StatelessWidget {
                       child: Text(
                         l,
                         style: theme.textStyles.textXs.medium.copyWith(color: palette.textTertiary),
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -85,6 +86,7 @@ class OnboardingItem extends StatelessWidget {
                             style: theme.textStyles.textSm.medium.copyWith(
                               color: palette.textPrimary,
                             ),
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),

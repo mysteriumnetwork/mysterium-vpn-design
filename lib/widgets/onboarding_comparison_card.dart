@@ -312,43 +312,43 @@ class _CardBody extends StatelessWidget {
   final double? itemMaxWidth;
 
   @override
-  Widget build(BuildContext context) => DecoratedBox(
-    decoration: tokens.bodyDecoration,
-    child: Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _ImageBadge(image: image),
-              const SizedBox(height: 12),
-              Text(
-                title,
-                style: TextStyle(
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  height: 16.25 / 16,
-                  letterSpacing: -0.176,
-                  color: tokens.titleColor,
+  Widget build(BuildContext context) {
+    final textStyles = Theme.of(context).textStyles;
+    return DecoratedBox(
+      decoration: tokens.bodyDecoration,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _ImageBadge(image: image),
+                const SizedBox(height: 12),
+                Text(
+                  title,
+                  style: textStyles.textMd.bold.copyWith(
+                    height: 16.25 / 16,
+                    letterSpacing: -0.176,
+                    color: tokens.titleColor,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-              _ItemList(items: items, tokens: tokens, itemMaxWidth: itemMaxWidth),
-            ],
+                const SizedBox(height: 24),
+                _ItemList(items: items, tokens: tokens, itemMaxWidth: itemMaxWidth),
+              ],
+            ),
           ),
-        ),
-        Positioned(
-          top: 8,
-          right: 8,
-          child: _Pill(label: pillLabel, tokens: tokens, maxWidth: pillMaxWidth),
-        ),
-      ],
-    ),
-  );
+          Positioned(
+            top: 8,
+            right: 8,
+            child: _Pill(label: pillLabel, tokens: tokens, maxWidth: pillMaxWidth),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 // ─── Image badge ──────────────────────────────────────────────────────────────
@@ -375,9 +375,7 @@ class _Pill extends StatelessWidget {
   Widget build(BuildContext context) {
     final text = Text(
       label,
-      style: TextStyle(
-        fontFamily: 'Roboto',
-        fontWeight: FontWeight.w700,
+      style: Theme.of(context).textStyles.textXs.bold.copyWith(
         fontSize: 8,
         height: 15 / 8,
         letterSpacing: 0.5,
@@ -434,9 +432,7 @@ class _Item extends StatelessWidget {
   Widget build(BuildContext context) {
     final text = Text(
       this.text,
-      style: TextStyle(
-        fontFamily: 'Roboto',
-        fontWeight: FontWeight.w400,
+      style: Theme.of(context).textStyles.textXs.regular.copyWith(
         fontSize: tokens.itemTextSize,
         height: 18 / tokens.itemTextSize,
         letterSpacing: -0.176,
