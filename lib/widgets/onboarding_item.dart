@@ -47,37 +47,57 @@ class OnboardingItem extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+        // Left cluster (Expanded) absorbs remaining width so the right cluster
+        // is pinned to the right edge by spaceBetween. Wrapping the label in
+        // Flexible inside the left cluster lets it ellipsize before pushing
+        // the right cluster off-screen.
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (leading != null) ...[leading!, SizedBox(width: spacing.ms)],
-            if (label case final l?)
-              Text(
-                l,
-                style: theme.textStyles.textXs.medium.copyWith(color: palette.textTertiary),
-                overflow: TextOverflow.ellipsis,
-              ),
             Expanded(
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  if (value case final v?)
+                  if (leading != null) ...[leading!, SizedBox(width: spacing.ms)],
+                  if (label case final l?)
                     Flexible(
-                      child: Padding(
-                        padding: EdgeInsets.only(left: spacing.s),
-                        child: Text(
-                          v,
-                          textAlign: TextAlign.right,
-                          style: theme.textStyles.textSm.medium.copyWith(
-                            color: palette.textPrimary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
+                      child: Text(
+                        l,
+                        style: theme.textStyles.textXs.medium.copyWith(
+                          color: palette.textTertiary,
                         ),
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  if (trailing case final t?) ...[if (value != null) SizedBox(width: spacing.s), t],
                 ],
               ),
             ),
+            if (value != null || trailing != null)
+              Flexible(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (value case final v?)
+                      Flexible(
+                        child: Padding(
+                          padding: EdgeInsets.only(left: spacing.s),
+                          child: Text(
+                            v,
+                            textAlign: TextAlign.right,
+                            style: theme.textStyles.textSm.medium.copyWith(
+                              color: palette.textPrimary,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                    if (trailing case final t?) ...[
+                      if (value != null) SizedBox(width: spacing.s),
+                      t,
+                    ],
+                  ],
+                ),
+              ),
           ],
         ),
       ),
