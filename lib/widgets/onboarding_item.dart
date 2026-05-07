@@ -63,9 +63,7 @@ class OnboardingItem extends StatelessWidget {
                     Flexible(
                       child: Text(
                         l,
-                        style: theme.textStyles.textXs.medium.copyWith(
-                          color: palette.textTertiary,
-                        ),
+                        style: theme.textStyles.textXs.medium.copyWith(color: palette.textTertiary),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
