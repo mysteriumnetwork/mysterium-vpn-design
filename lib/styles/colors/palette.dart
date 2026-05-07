@@ -205,6 +205,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color borderBrandPrimary;
   abstract final Color borderBrandSecondary;
   abstract final Color borderSuccessTertiary;
+  abstract final Color borderInfoCard;
 
   ///
   /// Icon Colors
@@ -254,6 +255,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgMainIpCard;
   abstract final Color bgMainIpPreview;
   abstract final Color bgInfoIcon;
+  abstract final Color bgInfoCard;
   abstract final Color textIpCardTitle;
   abstract final Color textIpCardSubtitle;
 
@@ -374,6 +376,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get borderSuccessTertiary => Palette.success.shade300;
+
+  @override
+  Color get borderInfoCard => Palette.grayDarkAlpha.shade700;
 
   ///
   /// Icon Colors
@@ -497,6 +502,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgInfoIcon => const Color(0x14000000);
+
+  @override
+  Color get bgInfoCard => const Color(0xFF251E31);
 
   @override
   Color get textIpCardTitle => Palette.grayLight.shade800;
@@ -675,6 +683,9 @@ class PaletteLight extends Palette {
   @override
   Color get borderSuccessTertiary => Palette.success.shade700;
 
+  @override
+  Color get borderInfoCard => Palette.grayLight.shade200.withValues(alpha: 0.7);
+
   ///
   /// Icon Colors
   ///
@@ -794,6 +805,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgInfoIcon => Palette.grayDarkAlpha.shade700;
+
+  @override
+  Color get bgInfoCard => Palette.white;
 
   @override
   Color get textIpCardTitle => Palette.white;
