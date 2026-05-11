@@ -220,7 +220,11 @@ class ExpandableIpCardHeader extends StatelessWidget {
             LoadingIndicator(size: 20, color: theme.palette.iconSecondary),
           ] else if (showPlus) ...[
             SizedBox(width: theme.spacing.ms),
-            _PlusBadge(disabled: status == IpCardStatus.disabled),
+            GestureDetector(
+              behavior: HitTestBehavior.opaque,
+              onTap: onContentTap,
+              child: _PlusBadge(disabled: status == IpCardStatus.disabled),
+            ),
           ],
           // Chevron is its own tap target per Figma spec.
           // Hidden when there are no child items to expand.
