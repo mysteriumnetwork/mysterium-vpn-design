@@ -254,7 +254,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgMapBackground;
   abstract final Color bgMainIpCard;
   abstract final Color bgMainIpPreview;
-  abstract final Color bgInfoIcon;
+  abstract final Color bgTransparent;
   abstract final Color bgInfoCard;
   abstract final Color textIpCardTitle;
   abstract final Color textIpCardSubtitle;
@@ -501,7 +501,7 @@ class PaletteDark extends Palette {
   Color get bgMainIpPreview => Palette.brandPurple.shade300;
 
   @override
-  Color get bgInfoIcon => const Color(0x14000000);
+  Color get bgTransparent => Palette.grayDarkAlpha.shade500;
 
   @override
   Color get bgInfoCard => const Color(0xFF251E31);
@@ -804,7 +804,7 @@ class PaletteLight extends Palette {
   Color get bgMainIpPreview => Palette.brandPurple.shade200;
 
   @override
-  Color get bgInfoIcon => Palette.grayDarkAlpha.shade700;
+  Color get bgTransparent => Palette.grayDarkAlpha.shade700;
 
   @override
   Color get bgInfoCard => Palette.white;
