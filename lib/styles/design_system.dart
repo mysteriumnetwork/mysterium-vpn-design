@@ -65,8 +65,12 @@ sealed class DesignSystem {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style:
             OutlinedButton.styleFrom(
-              disabledForegroundColor: Palette.grayLight.shade400,
-              disabledIconColor: Palette.grayLight.shade400,
+              disabledForegroundColor: brightness == Brightness.dark
+                  ? Palette.grayDarkAlpha.shade600
+                  : Palette.grayLight.shade400,
+              disabledIconColor: brightness == Brightness.dark
+                  ? Palette.grayDarkAlpha.shade600
+                  : Palette.grayLight.shade400,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(radius.xs)),
               iconSize: 16,
               textStyle: textStyles.textMd.semibold,
@@ -75,6 +79,16 @@ sealed class DesignSystem {
               surfaceTintColor: Colors.transparent,
             ).copyWith(
               backgroundColor: WidgetStateProperty.resolveWith((states) {
+                if (brightness == Brightness.dark) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return Palette.grayDarkAlpha.shade800;
+                  }
+                  if (states.contains(WidgetState.hovered) ||
+                      states.contains(WidgetState.pressed)) {
+                    return Palette.grayDarkAlpha.shade600;
+                  }
+                  return Palette.grayDarkAlpha.shade700;
+                }
                 if (states.contains(WidgetState.disabled) ||
                     states.contains(WidgetState.hovered) ||
                     states.contains(WidgetState.pressed)) {
@@ -83,12 +97,24 @@ sealed class DesignSystem {
                 return Palette.white;
               }),
               side: WidgetStateProperty.resolveWith((states) {
+                if (brightness == Brightness.dark) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return BorderSide(color: Palette.grayDarkAlpha.shade800);
+                  }
+                  return BorderSide(color: Palette.grayDarkAlpha.shade700);
+                }
                 if (states.contains(WidgetState.disabled)) {
                   return BorderSide(color: Palette.grayPurple.shade200);
                 }
                 return BorderSide(color: Palette.grayLight.shade300);
               }),
               foregroundColor: WidgetStateProperty.resolveWith((states) {
+                if (brightness == Brightness.dark) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return Palette.grayDarkAlpha.shade600;
+                  }
+                  return Palette.white;
+                }
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }
@@ -98,6 +124,12 @@ sealed class DesignSystem {
                 return Palette.grayLight.shade600;
               }),
               iconColor: WidgetStateProperty.resolveWith((states) {
+                if (brightness == Brightness.dark) {
+                  if (states.contains(WidgetState.disabled)) {
+                    return Palette.grayDarkAlpha.shade600;
+                  }
+                  return Palette.white;
+                }
                 if (states.contains(WidgetState.disabled)) {
                   return Palette.grayLight.shade400;
                 }

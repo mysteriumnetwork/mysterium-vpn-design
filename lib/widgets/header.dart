@@ -20,6 +20,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     this.showBackButton,
     this.backLabel,
     this.onBackPressed,
+    this.centerTitle = false,
     super.key,
   });
 
@@ -28,18 +29,25 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
     Color? backgroundColor,
     bool? showBackButton,
     VoidCallback? onBackPressed,
+    bool centerTitle = false,
   }) => Header(
     title: const Logo(height: 24),
     actions: actions,
     backgroundColor: backgroundColor,
     showBackButton: showBackButton,
     onBackPressed: onBackPressed,
+    centerTitle: centerTitle,
   );
 
   final Widget? title;
   final List<Widget>? actions;
   final Color? backgroundColor;
   final bool? showBackButton;
+
+  /// When true, [title] is horizontally centred within the header rather than
+  /// left-aligned. Use for logo/brand headers where the title should sit
+  /// dead-centre regardless of leading/trailing widgets.
+  final bool centerTitle;
 
   /// Label shown next to the back-arrow when [title] is null. When `null`,
   /// only the back arrow is rendered (no label). Callers are responsible for
@@ -71,44 +79,83 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         padding: EdgeInsets.only(top: MediaQuery.paddingOf(context).top, left: hPad, right: hPad),
         child: SizedBox(
           height: height,
-          child: Row(
-            spacing: theme.spacing.s,
-            children: [
-              if (backLabel case final label? when showBack && title == null)
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: TextButton.icon(
-                      onPressed: backAction,
-                      icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
-                      label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
-                      style: TextButton.styleFrom(
-                        foregroundColor: palette.textPrimary,
-                        iconColor: palette.iconPrimary,
-                        textStyle: theme.textStyles.textMd.semibold,
+          child: centerTitle && title != null
+              ? Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: showBack
+                          ? IconButton(
+                              onPressed: backAction,
+                              icon: Icon(
+                                UntitledUI.arrow_narrow_left,
+                                size: 24,
+                                color: palette.iconPrimary,
+                              ),
+                            )
+                          : null,
+                    ),
+                    Center(
+                      child: DefaultTextStyle(
+                        style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
+                        child: title!,
                       ),
                     ),
-                  ),
+                    if (actions != null)
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          spacing: theme.spacing.md,
+                          children: actions!,
+                        ),
+                      ),
+                  ],
                 )
-              else ...[
-                if (showBack)
-                  IconButton(
-                    onPressed: backAction,
-                    icon: Icon(UntitledUI.arrow_narrow_left, size: 24, color: palette.iconPrimary),
-                  ),
-                if (title case final t?)
-                  Expanded(
-                    child: DefaultTextStyle(
-                      style: theme.textStyles.textLg.medium.copyWith(color: palette.textPrimary),
-                      child: Align(alignment: Alignment.centerLeft, child: t),
-                    ),
-                  )
-                else
-                  const Spacer(),
-              ],
-              if (actions != null) Row(spacing: theme.spacing.md, children: actions!),
-            ],
-          ),
+              : Row(
+                  spacing: theme.spacing.s,
+                  children: [
+                    if (backLabel case final label? when showBack && title == null)
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: TextButton.icon(
+                            onPressed: backAction,
+                            icon: const Icon(UntitledUI.arrow_narrow_left, size: 24),
+                            label: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
+                            style: TextButton.styleFrom(
+                              foregroundColor: palette.textPrimary,
+                              iconColor: palette.iconPrimary,
+                              textStyle: theme.textStyles.textMd.semibold,
+                            ),
+                          ),
+                        ),
+                      )
+                    else ...[
+                      if (showBack)
+                        IconButton(
+                          onPressed: backAction,
+                          icon: Icon(
+                            UntitledUI.arrow_narrow_left,
+                            size: 24,
+                            color: palette.iconPrimary,
+                          ),
+                        ),
+                      if (title case final t?)
+                        Expanded(
+                          child: DefaultTextStyle(
+                            style: theme.textStyles.textLg.medium.copyWith(
+                              color: palette.textPrimary,
+                            ),
+                            child: Align(alignment: Alignment.centerLeft, child: t),
+                          ),
+                        )
+                      else
+                        const Spacer(),
+                    ],
+                    if (actions != null) Row(spacing: theme.spacing.md, children: actions!),
+                  ],
+                ),
         ),
       ),
     );
