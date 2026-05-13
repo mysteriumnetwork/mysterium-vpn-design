@@ -31,16 +31,18 @@ class OnboardingComparisonCard extends StatelessWidget {
     required this.image,
     this.width,
     this.pillMaxWidth,
-    this.itemMaxWidth,
+    this.contentTrailingPadding,
     super.key,
   });
 
   final OnboardingComparisonCardVariant variant;
 
-  /// Pill text shown in the top-right of the card body. e.g. "DATA CENTRE IPS".
+  /// Pill text rendered on its own line between the title and the items
+  /// list. Caps at [pillMaxWidth] (when set) and wraps to a second line if
+  /// exceeded.
   final String pillLabel;
 
-  /// Card heading shown below the badge. e.g. "Most VPNs".
+  /// Card heading shown below the illustration. e.g. "Most VPNs".
   final String title;
 
   /// Bullet rows shown in the list. Each entry is rendered with a leading
@@ -53,13 +55,16 @@ class OnboardingComparisonCard extends StatelessWidget {
   /// Optional fixed width. The card sizes to its content when null.
   final double? width;
 
-  /// Optional max width of the [pillLabel] text. Beyond this width the label
-  /// wraps to a second line. When null the label fits on a single line.
+  /// Optional max width of the pill label. When the natural text width
+  /// exceeds this the label wraps to a second line.
   final double? pillMaxWidth;
 
-  /// Optional max width of each item's text. Beyond this width an item wraps
-  /// to a second line. When null items fit on a single line.
-  final double? itemMaxWidth;
+  /// Optional extra padding on the trailing side of the body. Use when this
+  /// card is the "back" card of an overlapping comparison to reserve space
+  /// for the front card on the right — the body content stays inside the
+  /// remaining visible area instead of being hidden behind the front card.
+  /// When null defaults to the standard body padding.
+  final double? contentTrailingPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -86,7 +91,7 @@ class OnboardingComparisonCard extends StatelessWidget {
               items: items,
               image: image,
               pillMaxWidth: pillMaxWidth,
-              itemMaxWidth: itemMaxWidth,
+              contentTrailingPadding: contentTrailingPadding,
             ),
           ],
         ),
@@ -290,6 +295,8 @@ class _TrafficDot extends StatelessWidget {
 
 // ─── Card body ────────────────────────────────────────────────────────────────
 
+const double _kCardBodyPadding = 16;
+
 class _CardBody extends StatelessWidget {
   const _CardBody({
     required this.tokens,
@@ -299,7 +306,7 @@ class _CardBody extends StatelessWidget {
     required this.items,
     required this.image,
     required this.pillMaxWidth,
-    required this.itemMaxWidth,
+    required this.contentTrailingPadding,
   });
 
   final _CardTokens tokens;
@@ -309,43 +316,43 @@ class _CardBody extends StatelessWidget {
   final List<String> items;
   final ImageProvider image;
   final double? pillMaxWidth;
-  final double? itemMaxWidth;
+  final double? contentTrailingPadding;
 
   @override
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textStyles;
+    final padding = contentTrailingPadding == null
+        ? const EdgeInsetsDirectional.all(_kCardBodyPadding)
+        : EdgeInsetsDirectional.fromSTEB(
+            _kCardBodyPadding,
+            _kCardBodyPadding,
+            contentTrailingPadding!,
+            _kCardBodyPadding,
+          );
     return DecoratedBox(
       decoration: tokens.bodyDecoration,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _ImageBadge(image: image),
-                const SizedBox(height: 12),
-                Text(
-                  title,
-                  style: textStyles.textMd.bold.copyWith(
-                    height: 16.25 / 16,
-                    letterSpacing: -0.176,
-                    color: tokens.titleColor,
-                  ),
-                ),
-                const SizedBox(height: 24),
-                _ItemList(items: items, tokens: tokens, itemMaxWidth: itemMaxWidth),
-              ],
+      child: Padding(
+        padding: padding,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _ImageBadge(image: image),
+            const SizedBox(height: 8),
+            Text(
+              title,
+              style: textStyles.textMd.bold.copyWith(
+                height: 16.25 / 16,
+                letterSpacing: -0.176,
+                color: tokens.titleColor,
+              ),
             ),
-          ),
-          Positioned(
-            top: 8,
-            right: 8,
-            child: _Pill(label: pillLabel, tokens: tokens, maxWidth: pillMaxWidth),
-          ),
-        ],
+            const SizedBox(height: 8),
+            _Pill(label: pillLabel, tokens: tokens, maxWidth: pillMaxWidth),
+            const SizedBox(height: 16),
+            _ItemList(items: items, tokens: tokens),
+          ],
+        ),
       ),
     );
   }
@@ -362,7 +369,7 @@ class _ImageBadge extends StatelessWidget {
   Widget build(BuildContext context) => Image(image: image, width: 56, height: 56);
 }
 
-// ─── Pill (top-right of body) ─────────────────────────────────────────────────
+// ─── Pill (own line between title and items, wraps when wider than maxWidth) ─
 
 class _Pill extends StatelessWidget {
   const _Pill({required this.label, required this.tokens, this.maxWidth});
@@ -402,11 +409,10 @@ class _Pill extends StatelessWidget {
 // ─── Item list ────────────────────────────────────────────────────────────────
 
 class _ItemList extends StatelessWidget {
-  const _ItemList({required this.items, required this.tokens, this.itemMaxWidth});
+  const _ItemList({required this.items, required this.tokens});
 
   final List<String> items;
   final _CardTokens tokens;
-  final double? itemMaxWidth;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -415,45 +421,36 @@ class _ItemList extends StatelessWidget {
     children: [
       for (var i = 0; i < items.length; i++) ...[
         if (i > 0) SizedBox(height: tokens.listGap),
-        _Item(text: items[i], tokens: tokens, maxWidth: itemMaxWidth),
+        _Item(text: items[i], tokens: tokens),
       ],
     ],
   );
 }
 
 class _Item extends StatelessWidget {
-  const _Item({required this.text, required this.tokens, this.maxWidth});
+  const _Item({required this.text, required this.tokens});
 
   final String text;
   final _CardTokens tokens;
-  final double? maxWidth;
 
   @override
-  Widget build(BuildContext context) {
-    final text = Text(
-      this.text,
-      style: Theme.of(context).textStyles.textXs.regular.copyWith(
-        fontSize: tokens.itemTextSize,
-        height: 18 / tokens.itemTextSize,
-        letterSpacing: -0.176,
-        color: tokens.itemTextColor,
-      ),
-    );
-    return Row(
-      children: [
-        _StatusIndicator(tokens: tokens),
-        const SizedBox(width: 10),
-        Expanded(
-          child: maxWidth == null
-              ? text
-              : ConstrainedBox(
-                  constraints: BoxConstraints(maxWidth: maxWidth!),
-                  child: text,
-                ),
+  Widget build(BuildContext context) => Row(
+    children: [
+      _StatusIndicator(tokens: tokens),
+      const SizedBox(width: 8),
+      Expanded(
+        child: Text(
+          text,
+          style: Theme.of(context).textStyles.textXs.regular.copyWith(
+            fontSize: tokens.itemTextSize,
+            height: 18 / tokens.itemTextSize,
+            letterSpacing: -0.176,
+            color: tokens.itemTextColor,
+          ),
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
 }
 
 // ─── Status indicator (round colored badge with x/check) ──────────────────────

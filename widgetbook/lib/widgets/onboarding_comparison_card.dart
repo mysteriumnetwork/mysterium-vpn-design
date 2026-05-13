@@ -59,6 +59,29 @@ Widget buildOnboardingComparisonCardResidential(BuildContext context) => Padding
   ),
 );
 
+@UseCase(name: 'Back card with trailing reserve', type: OnboardingComparisonCard)
+Widget buildOnboardingComparisonCardWithTrailingReserve(BuildContext context) => Padding(
+  padding: const EdgeInsets.all(24),
+  child: Center(
+    child: OnboardingComparisonCard(
+      variant: OnboardingComparisonCardVariant.dataCentre,
+      pillLabel: context.knobs.string(label: 'Pill label', initialValue: 'DATA CENTRE IPS'),
+      title: context.knobs.string(label: 'Title', initialValue: 'Most VPNs'),
+      items: [
+        context.knobs.string(label: 'Item 1', initialValue: 'Easily detectable'),
+        context.knobs.string(label: 'Item 2', initialValue: 'Often blocked by websites'),
+        context.knobs.string(label: 'Item 3', initialValue: 'Less private'),
+      ],
+      image: _placeholderImage,
+      width: context.knobs.double.input(label: 'Width', initialValue: 188),
+      contentTrailingPadding: context.knobs.double.input(
+        label: 'Trailing padding',
+        initialValue: 80,
+      ),
+    ),
+  ),
+);
+
 @UseCase(name: 'Comparison (stacked)', type: OnboardingComparisonCard)
 Widget buildOnboardingComparisonCardStacked(BuildContext context) => Padding(
   padding: const EdgeInsets.all(24),
