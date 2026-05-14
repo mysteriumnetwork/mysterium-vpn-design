@@ -21,21 +21,6 @@ Widget buildConnectionBar(BuildContext context) {
       BarStatus.connecting => 'Connecting',
     },
   );
-  final killSwitchLabel = context.knobs.string(
-    label: 'Kill switch label',
-    initialValue: 'Kill switch:',
-  );
-  final killSwitchDescription = context.knobs.string(
-    label: 'Kill switch description',
-    initialValue:
-        'Blocks internet traffic when connection to a vpn server is lost. '
-        'Kill-switch is always on when you connect to MysteriumVPN.',
-  );
 
-  return ConnectionBar(
-    label: label,
-    status: status,
-    killSwitchLabel: killSwitchLabel,
-    killSwitchDescription: killSwitchDescription,
-  );
+  return ConnectionBar(label: label, status: status);
 }
