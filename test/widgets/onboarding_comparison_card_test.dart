@@ -114,6 +114,53 @@ void main() {
       expect(imageWidget.image, customImage);
     });
 
+    testWidgets('contentTrailingPadding overrides the body trailing padding', (tester) async {
+      const trailingPadding = 80.0;
+      await pumpWidget(
+        tester,
+        OnboardingComparisonCard(
+          variant: OnboardingComparisonCardVariant.dataCentre,
+          pillLabel: 'DATA CENTRE IPS',
+          title: 'Most VPNs',
+          items: const ['Easily detectable'],
+          image: placeholderImage,
+          contentTrailingPadding: trailingPadding,
+        ),
+      );
+
+      final bodyPadding = tester.widget<Padding>(
+        find.descendant(
+          of: find.byType(OnboardingComparisonCard),
+          matching: find.byWidgetPredicate(
+            (w) => w is Padding && w.padding is EdgeInsetsDirectional,
+          ),
+        ),
+      );
+      final resolved = bodyPadding.padding.resolve(TextDirection.ltr);
+      expect(resolved.right, trailingPadding);
+      expect(resolved.left, 16);
+      expect(resolved.top, 16);
+      expect(resolved.bottom, 16);
+    });
+
+    testWidgets('defaults to standard body padding on all sides when not set', (tester) async {
+      await pumpWidget(tester, dataCentre);
+
+      final bodyPadding = tester.widget<Padding>(
+        find.descendant(
+          of: find.byType(OnboardingComparisonCard),
+          matching: find.byWidgetPredicate(
+            (w) => w is Padding && w.padding is EdgeInsetsDirectional,
+          ),
+        ),
+      );
+      final resolved = bodyPadding.padding.resolve(TextDirection.ltr);
+      expect(resolved.left, 16);
+      expect(resolved.right, 16);
+      expect(resolved.top, 16);
+      expect(resolved.bottom, 16);
+    });
+
     testWidgets('respects fixed width when supplied', (tester) async {
       await pumpWidget(
         tester,

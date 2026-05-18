@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+// Cap on the label's natural width — labels like "Location", "IP address",
+// "Connection" stay well below this in practice; the cap only kicks in for
+// pathologically long translations so they ellipsize instead of pushing the
+// value text off-screen.
+const _kLabelMaxWidth = 130.0;
+
 /// A flexible card row used in onboarding screens.
 ///
 /// Holds up to four optional slots: [leading] and [label] on the left,
@@ -47,57 +53,37 @@ class OnboardingItem extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-        // Left cluster (Expanded) absorbs remaining width so the right cluster
-        // is pinned to the right edge by spaceBetween. Wrapping the label in
-        // Flexible inside the left cluster lets it ellipsize before pushing
-        // the right cluster off-screen.
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  if (leading != null) ...[leading!, SizedBox(width: spacing.ms)],
-                  if (label case final l?)
-                    Flexible(
-                      child: Text(
-                        l,
-                        style: theme.textStyles.textXs.medium.copyWith(color: palette.textTertiary),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                ],
-              ),
-            ),
-            if (value != null || trailing != null)
-              Flexible(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    if (value case final v?)
-                      Flexible(
-                        child: Padding(
-                          padding: EdgeInsets.only(left: spacing.s),
-                          child: Text(
-                            v,
-                            textAlign: TextAlign.right,
-                            style: theme.textStyles.textSm.medium.copyWith(
-                              color: palette.textPrimary,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    if (trailing case final t?) ...[
-                      if (value != null) SizedBox(width: spacing.s),
-                      t,
-                    ],
-                  ],
+            if (leading != null) ...[leading!, SizedBox(width: spacing.ms)],
+            if (label case final l?)
+              ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: _kLabelMaxWidth),
+                child: Text(
+                  l,
+                  style: theme.textStyles.textXs.medium.copyWith(color: palette.textTertiary),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
+            if (value != null || trailing != null) ...[
+              if (value case final v?)
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: spacing.s),
+                    child: Text(
+                      v,
+                      textAlign: TextAlign.right,
+                      style: theme.textStyles.textSm.medium.copyWith(color: palette.textPrimary),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                )
+              else
+                const Spacer(),
+              if (trailing case final t?) ...[if (value != null) SizedBox(width: spacing.s), t],
+            ],
           ],
         ),
       ),
