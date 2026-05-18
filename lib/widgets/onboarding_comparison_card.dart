@@ -38,8 +38,8 @@ class OnboardingComparisonCard extends StatelessWidget {
   final OnboardingComparisonCardVariant variant;
 
   /// Pill text rendered on its own line between the title and the items
-  /// list. Caps at [pillMaxWidth] (when set) and wraps to a second line if
-  /// exceeded.
+  /// list. Caps at [pillMaxWidth] (when set) and wraps onto additional
+  /// lines if exceeded.
   final String pillLabel;
 
   /// Card heading shown below the illustration. e.g. "Most VPNs".
@@ -59,11 +59,11 @@ class OnboardingComparisonCard extends StatelessWidget {
   /// exceeds this the label wraps to a second line.
   final double? pillMaxWidth;
 
-  /// Optional extra padding on the trailing side of the body. Use when this
-  /// card is the "back" card of an overlapping comparison to reserve space
-  /// for the front card on the right — the body content stays inside the
-  /// remaining visible area instead of being hidden behind the front card.
-  /// When null defaults to the standard body padding.
+  /// Overrides the trailing padding of the body. Use when this card is the
+  /// "back" card of an overlapping comparison to reserve space for the
+  /// front card on the right — the body content stays inside the remaining
+  /// visible area instead of being hidden behind the front card. When null
+  /// the standard body padding is applied on all sides.
   final double? contentTrailingPadding;
 
   @override
@@ -85,7 +85,6 @@ class OnboardingComparisonCard extends StatelessWidget {
             _TrafficLightBar(tokens: tokens),
             _CardBody(
               tokens: tokens,
-              variant: variant,
               pillLabel: pillLabel,
               title: title,
               items: items,
@@ -300,7 +299,6 @@ const double _kCardBodyPadding = 16;
 class _CardBody extends StatelessWidget {
   const _CardBody({
     required this.tokens,
-    required this.variant,
     required this.pillLabel,
     required this.title,
     required this.items,
@@ -310,7 +308,6 @@ class _CardBody extends StatelessWidget {
   });
 
   final _CardTokens tokens;
-  final OnboardingComparisonCardVariant variant;
   final String pillLabel;
   final String title;
   final List<String> items;

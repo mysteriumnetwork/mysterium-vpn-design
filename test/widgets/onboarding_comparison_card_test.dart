@@ -114,31 +114,51 @@ void main() {
       expect(imageWidget.image, customImage);
     });
 
-    testWidgets('contentTrailingPadding pushes body content away from the trailing edge', (
-      tester,
-    ) async {
+    testWidgets('contentTrailingPadding overrides the body trailing padding', (tester) async {
       const trailingPadding = 80.0;
       await pumpWidget(
         tester,
-        Align(
-          alignment: Alignment.topLeft,
-          child: OnboardingComparisonCard(
-            variant: OnboardingComparisonCardVariant.dataCentre,
-            pillLabel: 'DATA CENTRE IPS',
-            title: 'Most VPNs',
-            items: const ['Easily detectable'],
-            image: placeholderImage,
-            width: 300,
-            contentTrailingPadding: trailingPadding,
-          ),
+        OnboardingComparisonCard(
+          variant: OnboardingComparisonCardVariant.dataCentre,
+          pillLabel: 'DATA CENTRE IPS',
+          title: 'Most VPNs',
+          items: const ['Easily detectable'],
+          image: placeholderImage,
+          contentTrailingPadding: trailingPadding,
         ),
       );
 
-      final card = tester.getRect(find.byType(OnboardingComparisonCard));
-      final title = tester.getRect(find.text('Most VPNs'));
-      // Title's right edge sits inside the reserved trailing area: leaves at
-      // least the trailing padding clear of the card's right edge.
-      expect(card.right - title.right, greaterThanOrEqualTo(trailingPadding));
+      final bodyPadding = tester.widget<Padding>(
+        find.descendant(
+          of: find.byType(OnboardingComparisonCard),
+          matching: find.byWidgetPredicate(
+            (w) => w is Padding && w.padding is EdgeInsetsDirectional,
+          ),
+        ),
+      );
+      final resolved = bodyPadding.padding.resolve(TextDirection.ltr);
+      expect(resolved.right, trailingPadding);
+      expect(resolved.left, 16);
+      expect(resolved.top, 16);
+      expect(resolved.bottom, 16);
+    });
+
+    testWidgets('defaults to standard body padding on all sides when not set', (tester) async {
+      await pumpWidget(tester, dataCentre);
+
+      final bodyPadding = tester.widget<Padding>(
+        find.descendant(
+          of: find.byType(OnboardingComparisonCard),
+          matching: find.byWidgetPredicate(
+            (w) => w is Padding && w.padding is EdgeInsetsDirectional,
+          ),
+        ),
+      );
+      final resolved = bodyPadding.padding.resolve(TextDirection.ltr);
+      expect(resolved.left, 16);
+      expect(resolved.right, 16);
+      expect(resolved.top, 16);
+      expect(resolved.bottom, 16);
     });
 
     testWidgets('respects fixed width when supplied', (tester) async {
