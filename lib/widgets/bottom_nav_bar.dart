@@ -113,13 +113,21 @@ class _BottomNavBarCell extends StatefulWidget {
 }
 
 class _BottomNavBarCellState extends State<_BottomNavBarCell> {
-  bool _highlighted = false;
+  bool _hovered = false;
+  bool _focused = false;
 
-  void _setHighlighted(bool value) {
-    if (value == _highlighted) {
+  void _setHovered(bool value) {
+    if (value == _hovered) {
       return;
     }
-    setState(() => _highlighted = value);
+    setState(() => _hovered = value);
+  }
+
+  void _setFocused(bool value) {
+    if (value == _focused) {
+      return;
+    }
+    setState(() => _focused = value);
   }
 
   @override
@@ -128,7 +136,7 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
     final palette = theme.palette;
     final color = widget.selected ? palette.textPrimarySelected : palette.textTertiary;
     final interactive = widget.onTap != null;
-    final showHighlight = interactive && !widget.selected && _highlighted;
+    final showHighlight = interactive && !widget.selected && (_hovered || _focused);
 
     return Semantics(
       selected: widget.selected,
@@ -138,8 +146,8 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
       child: FocusableActionDetector(
         enabled: interactive,
         mouseCursor: interactive ? SystemMouseCursors.click : MouseCursor.defer,
-        onShowHoverHighlight: _setHighlighted,
-        onShowFocusHighlight: _setHighlighted,
+        onShowHoverHighlight: _setHovered,
+        onShowFocusHighlight: _setFocused,
         actions: <Type, Action<Intent>>{
           ActivateIntent: CallbackAction<ActivateIntent>(
             onInvoke: (_) {

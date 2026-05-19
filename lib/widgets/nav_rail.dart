@@ -115,13 +115,21 @@ class _NavRailButton extends StatefulWidget {
 }
 
 class _NavRailButtonState extends State<_NavRailButton> {
-  bool _highlighted = false;
+  bool _hovered = false;
+  bool _focused = false;
 
-  void _setHighlighted(bool value) {
-    if (value == _highlighted) {
+  void _setHovered(bool value) {
+    if (value == _hovered) {
       return;
     }
-    setState(() => _highlighted = value);
+    setState(() => _hovered = value);
+  }
+
+  void _setFocused(bool value) {
+    if (value == _focused) {
+      return;
+    }
+    setState(() => _focused = value);
   }
 
   @override
@@ -133,7 +141,7 @@ class _NavRailButtonState extends State<_NavRailButton> {
     final Color? bg;
     if (widget.selected) {
       bg = palette.bgSecondarySelected;
-    } else if (interactive && _highlighted) {
+    } else if (interactive && (_hovered || _focused)) {
       bg = palette.bgPrimaryHover;
     } else {
       bg = null;
@@ -142,8 +150,8 @@ class _NavRailButtonState extends State<_NavRailButton> {
     return FocusableActionDetector(
       enabled: interactive,
       mouseCursor: interactive ? SystemMouseCursors.click : MouseCursor.defer,
-      onShowHoverHighlight: _setHighlighted,
-      onShowFocusHighlight: _setHighlighted,
+      onShowHoverHighlight: _setHovered,
+      onShowFocusHighlight: _setFocused,
       actions: <Type, Action<Intent>>{
         ActivateIntent: CallbackAction<ActivateIntent>(
           onInvoke: (_) {

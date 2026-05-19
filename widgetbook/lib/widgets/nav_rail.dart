@@ -14,11 +14,7 @@ Widget buildNavRail(BuildContext context) {
     initialOption: 0,
     labelBuilder: (i) => _labels[i],
   );
-  final topPadding = context.knobs.double.slider(
-    label: 'Top padding',
-    initialValue: 86,
-    max: 200,
-  );
+  final topPadding = context.knobs.double.slider(label: 'Top padding', initialValue: 86, max: 200);
 
   return Align(
     alignment: Alignment.centerLeft,

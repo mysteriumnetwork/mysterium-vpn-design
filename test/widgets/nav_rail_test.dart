@@ -166,6 +166,42 @@ void main() {
       expect(_bgFor(tester, UntitledUI.star_06), palette.bgPrimaryHover);
     });
 
+    testWidgets('hover-leave while focused keeps the highlight', (tester) async {
+      await _pumpRail(
+        tester,
+        NavRail(
+          currentIndex: 0,
+          items: [
+            const NavRailItem(icon: UntitledUI.map_01),
+            NavRailItem(icon: UntitledUI.star_06, onTap: () {}),
+            NavRailItem(icon: UntitledUI.settings_01, onTap: () {}),
+          ],
+        ),
+      );
+      final palette = DesignSystem.lightTheme.palette;
+      final fad = tester.widget<FocusableActionDetector>(
+        find.ancestor(
+          of: find.byIcon(UntitledUI.star_06),
+          matching: find.byType(FocusableActionDetector),
+        ),
+      );
+
+      fad.onShowFocusHighlight!(true);
+      fad.onShowHoverHighlight!(true);
+      await tester.pump();
+      expect(_bgFor(tester, UntitledUI.star_06), palette.bgPrimaryHover);
+
+      // Mouse leaves but focus is still on the item — highlight must stay.
+      fad.onShowHoverHighlight!(false);
+      await tester.pump();
+      expect(_bgFor(tester, UntitledUI.star_06), palette.bgPrimaryHover);
+
+      // Focus also leaves — highlight clears.
+      fad.onShowFocusHighlight!(false);
+      await tester.pump();
+      expect(_bgFor(tester, UntitledUI.star_06), isNull);
+    });
+
     testWidgets('items without onTap have FocusableActionDetector disabled', (tester) async {
       await _pumpRail(tester, const NavRail(items: _items, currentIndex: 0));
 

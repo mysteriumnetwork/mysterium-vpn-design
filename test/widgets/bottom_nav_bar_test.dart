@@ -184,6 +184,30 @@ void main() {
       handle.dispose();
     });
 
+    testWidgets('hover-leave while focused keeps the highlight', (tester) async {
+      await pumpWidget(
+        tester,
+        BottomNavBar(items: _items, selectedIndex: 0, onDestinationSelected: (_) {}),
+      );
+      final palette = DesignSystem.lightTheme.palette;
+      final fad = tester.widget<FocusableActionDetector>(_cellFad('Locations'));
+
+      fad.onShowFocusHighlight!(true);
+      fad.onShowHoverHighlight!(true);
+      await tester.pump();
+      expect(_cellDecoration(tester, 'Locations').color, palette.bgSidePanelHover);
+
+      // Mouse leaves but focus is still on the cell — highlight must stay.
+      fad.onShowHoverHighlight!(false);
+      await tester.pump();
+      expect(_cellDecoration(tester, 'Locations').color, palette.bgSidePanelHover);
+
+      // Focus also leaves — highlight clears.
+      fad.onShowFocusHighlight!(false);
+      await tester.pump();
+      expect(_cellDecoration(tester, 'Locations').color, isNull);
+    });
+
     testWidgets('asserts when items count is below 2', (tester) async {
       await pumpWidget(
         tester,
