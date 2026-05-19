@@ -208,7 +208,7 @@ void main() {
         ),
       );
 
-      // Three Plus labels are rendered (header + child) and their right edges
+      // Two Plus labels are rendered (header + child) and their right edges
       // should sit on the same x — the child item reserves the chevron column
       // so the visual alignment matches the Figma "Plus sign placement logic"
       // reference.

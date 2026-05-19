@@ -17,7 +17,6 @@ Widget buildNavRail(BuildContext context) {
   final topPadding = context.knobs.double.slider(
     label: 'Top padding',
     initialValue: 86,
-    min: 0,
     max: 200,
   );
 
