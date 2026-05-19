@@ -250,6 +250,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgSuccessTertiary;
   abstract final Color tooltipBackground;
   abstract final Color bgSidePanel;
+  abstract final Color bgSidePanelHover;
   abstract final Color bgMapCountries;
   abstract final Color bgMapBackground;
   abstract final Color bgMainIpCard;
@@ -295,6 +296,11 @@ abstract class Palette extends ThemeExtension<Palette> {
 
 class PaletteDark extends Palette {
   const PaletteDark();
+
+  static final Color _bgSidePanelHover = Color.alphaBlend(
+    Palette.grayDarkAlpha.shade800, // 8% white, matching bgPrimaryHover's lift pattern
+    Palette.brandPurple.shade900,
+  );
 
   @override
   PaletteColor get gray => Palette.grayDark;
@@ -351,7 +357,7 @@ class PaletteDark extends Palette {
   Color get borderModals => Palette.grayDarkAlpha.shade700;
 
   @override
-  Color get borderSecondary => Palette.grayPurple.shade200;
+  Color get borderSecondary => Palette.grayPurple.shade600;
 
   @override
   Color get borderTertiary => Palette.grayPurple.shade400;
@@ -514,6 +520,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgSidePanel => Palette.brandPurple.shade900;
+
+  @override
+  Color get bgSidePanelHover => _bgSidePanelHover;
 
   @override
   Color get bgMapCountries => Palette.brandPurple.shade800;
@@ -817,6 +826,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSidePanel => Palette.grayPurple.shade50;
+
+  @override
+  Color get bgSidePanelHover => Palette.grayPurple.shade100;
 
   @override
   Color get bgMapCountries => Palette.grayPurple.shade300;
