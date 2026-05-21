@@ -10,8 +10,8 @@ class NavRailItem {
   /// 24 px icon. Tint is driven by selection state.
   final IconData icon;
 
-  /// Accessibility label announced by screen readers. Not rendered visually
-  /// — the rail is icon-only.
+  /// Shown as a Material tooltip on hover / long-press, and announced by
+  /// screen readers via the rail's [Semantics].
   final String label;
 
   /// Called when the item is tapped. Item is non-interactive when `null`.
@@ -174,11 +174,17 @@ class _NavRailButtonState extends State<_NavRailButton> {
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: widget.item.onTap,
-          child: DecoratedBox(
-            decoration: BoxDecoration(color: bg, borderRadius: const BorderRadius.all(Radius.kXxs)),
-            child: SizedBox.square(
-              dimension: 32,
-              child: Center(child: Icon(widget.item.icon, size: 24, color: color)),
+          child: Tooltip(
+            message: widget.item.label,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: bg,
+                borderRadius: const BorderRadius.all(Radius.kXxs),
+              ),
+              child: SizedBox.square(
+                dimension: 32,
+                child: Center(child: Icon(widget.item.icon, size: 24, color: color)),
+              ),
             ),
           ),
         ),
