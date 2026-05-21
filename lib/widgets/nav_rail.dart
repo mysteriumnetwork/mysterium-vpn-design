@@ -176,6 +176,7 @@ class _NavRailButtonState extends State<_NavRailButton> {
           onTap: widget.item.onTap,
           child: Tooltip(
             message: widget.item.label,
+            triggerMode: TooltipTriggerMode.longPress,
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: bg,
