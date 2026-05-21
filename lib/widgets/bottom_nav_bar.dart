@@ -28,6 +28,10 @@ class BottomNavBarItem {
 /// The item at [selectedIndex] renders with [Palette.textPrimarySelected];
 /// the rest use [Palette.textTertiary].
 ///
+/// Content is wrapped in a [SafeArea] (top disabled) so cells clear the iOS
+/// home indicator and Android gesture/system navigation. The background
+/// still paints behind the inset.
+///
 /// ```dart
 /// BottomNavBar(
 ///   selectedIndex: 0,
@@ -74,25 +78,28 @@ class BottomNavBar extends StatelessWidget {
         color: palette.bgSidePanel,
         border: Border(top: BorderSide(color: palette.borderSecondary)),
       ),
-      child: Padding(
-        padding: EdgeInsets.only(
-          top: theme.spacing.s,
-          bottom: theme.spacing.md,
-          left: theme.spacing.s,
-          right: theme.spacing.s,
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            for (var i = 0; i < items.length; i++)
-              Expanded(
-                child: _BottomNavBarCell(
-                  item: items[i],
-                  selected: i == selectedIndex,
-                  onTap: onDestinationSelected == null ? null : () => onDestinationSelected!(i),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: theme.spacing.s,
+            bottom: theme.spacing.md,
+            left: theme.spacing.s,
+            right: theme.spacing.s,
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (var i = 0; i < items.length; i++)
+                Expanded(
+                  child: _BottomNavBarCell(
+                    item: items[i],
+                    selected: i == selectedIndex,
+                    onTap: onDestinationSelected == null ? null : () => onDestinationSelected!(i),
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
