@@ -1,4 +1,5 @@
 export 'app_badge.dart';
+export 'background_gradient.dart';
 export 'bottom_nav_bar.dart';
 export 'button.dart';
 export 'checkbox_item.dart';
