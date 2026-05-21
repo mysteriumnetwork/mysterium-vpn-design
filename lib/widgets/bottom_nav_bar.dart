@@ -140,8 +140,10 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
 
     return Semantics(
       selected: widget.selected,
-      button: true,
+      button: interactive,
+      enabled: interactive,
       label: widget.item.label,
+      onTap: widget.onTap,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: interactive,

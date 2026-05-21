@@ -5,10 +5,14 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// A single icon-only entry rendered inside [NavRail].
 class NavRailItem {
-  const NavRailItem({required this.icon, this.onTap});
+  const NavRailItem({required this.icon, required this.label, this.onTap});
 
   /// 24 px icon. Tint is driven by selection state.
   final IconData icon;
+
+  /// Accessibility label announced by screen readers. Not rendered visually
+  /// — the rail is icon-only.
+  final String label;
 
   /// Called when the item is tapped. Item is non-interactive when `null`.
   final VoidCallback? onTap;
@@ -35,9 +39,9 @@ class NavRailItem {
 /// NavRail(
 ///   currentIndex: 0,
 ///   items: [
-///     NavRailItem(icon: UntitledUI.map_01,      onTap: () {}),
-///     NavRailItem(icon: UntitledUI.star_06,     onTap: () {}),
-///     NavRailItem(icon: UntitledUI.settings_01, onTap: () {}),
+///     NavRailItem(icon: UntitledUI.map_01,      label: 'Map',      onTap: () {}),
+///     NavRailItem(icon: UntitledUI.star_06,     label: 'Products', onTap: () {}),
+///     NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
 ///   ],
 /// )
 /// ```
@@ -147,27 +151,35 @@ class _NavRailButtonState extends State<_NavRailButton> {
       bg = null;
     }
 
-    return FocusableActionDetector(
+    return Semantics(
+      selected: widget.selected,
+      button: interactive,
       enabled: interactive,
-      mouseCursor: interactive ? SystemMouseCursors.click : MouseCursor.defer,
-      onShowHoverHighlight: _setHovered,
-      onShowFocusHighlight: _setFocused,
-      actions: <Type, Action<Intent>>{
-        ActivateIntent: CallbackAction<ActivateIntent>(
-          onInvoke: (_) {
-            widget.item.onTap?.call();
-            return null;
-          },
-        ),
-      },
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: widget.item.onTap,
-        child: DecoratedBox(
-          decoration: BoxDecoration(color: bg, borderRadius: const BorderRadius.all(Radius.kXxs)),
-          child: SizedBox.square(
-            dimension: 32,
-            child: Center(child: Icon(widget.item.icon, size: 24, color: color)),
+      label: widget.item.label,
+      onTap: widget.item.onTap,
+      excludeSemantics: true,
+      child: FocusableActionDetector(
+        enabled: interactive,
+        mouseCursor: interactive ? SystemMouseCursors.click : MouseCursor.defer,
+        onShowHoverHighlight: _setHovered,
+        onShowFocusHighlight: _setFocused,
+        actions: <Type, Action<Intent>>{
+          ActivateIntent: CallbackAction<ActivateIntent>(
+            onInvoke: (_) {
+              widget.item.onTap?.call();
+              return null;
+            },
+          ),
+        },
+        child: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: widget.item.onTap,
+          child: DecoratedBox(
+            decoration: BoxDecoration(color: bg, borderRadius: const BorderRadius.all(Radius.kXxs)),
+            child: SizedBox.square(
+              dimension: 32,
+              child: Center(child: Icon(widget.item.icon, size: 24, color: color)),
+            ),
           ),
         ),
       ),

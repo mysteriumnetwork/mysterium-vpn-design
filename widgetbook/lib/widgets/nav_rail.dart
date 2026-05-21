@@ -23,7 +23,10 @@ Widget buildNavRail(BuildContext context) {
       child: NavRail(
         currentIndex: selected,
         padding: EdgeInsets.only(top: topPadding),
-        items: [for (final icon in _icons) NavRailItem(icon: icon, onTap: () {})],
+        items: [
+          for (var i = 0; i < _icons.length; i++)
+            NavRailItem(icon: _icons[i], label: _labels[i], onTap: () {}),
+        ],
       ),
     ),
   );

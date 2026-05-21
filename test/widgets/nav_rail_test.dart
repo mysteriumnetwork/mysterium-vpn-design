@@ -5,9 +5,9 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import '../helpers/pump_widget.dart';
 
 const _items = <NavRailItem>[
-  NavRailItem(icon: UntitledUI.map_01),
-  NavRailItem(icon: UntitledUI.star_06),
-  NavRailItem(icon: UntitledUI.settings_01),
+  NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+  NavRailItem(icon: UntitledUI.star_06, label: 'Products'),
+  NavRailItem(icon: UntitledUI.settings_01, label: 'Settings'),
 ];
 
 /// Pumps [child] inside an [Align] (loose width) + [SizedBox] (bounded
@@ -70,8 +70,8 @@ void main() {
     testWidgets('calls onTap when an item is tapped', (tester) async {
       var tapped = 0;
       final items = [
-        const NavRailItem(icon: UntitledUI.map_01),
-        NavRailItem(icon: UntitledUI.star_06, onTap: () => tapped++),
+        const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+        NavRailItem(icon: UntitledUI.star_06, label: 'Products', onTap: () => tapped++),
       ];
 
       await _pumpRail(tester, NavRail(items: items, currentIndex: 0));
@@ -91,9 +91,9 @@ void main() {
         NavRail(
           currentIndex: 0,
           items: [
-            const NavRailItem(icon: UntitledUI.map_01),
-            NavRailItem(icon: UntitledUI.star_06, onTap: () {}),
-            NavRailItem(icon: UntitledUI.settings_01, onTap: () {}),
+            const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+            NavRailItem(icon: UntitledUI.star_06, label: 'Products', onTap: () {}),
+            NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
           ],
         ),
       );
@@ -119,9 +119,9 @@ void main() {
         NavRail(
           currentIndex: 1,
           items: [
-            const NavRailItem(icon: UntitledUI.map_01),
-            NavRailItem(icon: UntitledUI.star_06, onTap: () {}),
-            NavRailItem(icon: UntitledUI.settings_01, onTap: () {}),
+            const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+            NavRailItem(icon: UntitledUI.star_06, label: 'Products', onTap: () {}),
+            NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
           ],
         ),
       );
@@ -146,9 +146,9 @@ void main() {
         NavRail(
           currentIndex: 0,
           items: [
-            const NavRailItem(icon: UntitledUI.map_01),
-            NavRailItem(icon: UntitledUI.star_06, onTap: () {}),
-            NavRailItem(icon: UntitledUI.settings_01, onTap: () {}),
+            const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+            NavRailItem(icon: UntitledUI.star_06, label: 'Products', onTap: () {}),
+            NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
           ],
         ),
       );
@@ -172,9 +172,9 @@ void main() {
         NavRail(
           currentIndex: 0,
           items: [
-            const NavRailItem(icon: UntitledUI.map_01),
-            NavRailItem(icon: UntitledUI.star_06, onTap: () {}),
-            NavRailItem(icon: UntitledUI.settings_01, onTap: () {}),
+            const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+            NavRailItem(icon: UntitledUI.star_06, label: 'Products', onTap: () {}),
+            NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
           ],
         ),
       );
@@ -240,7 +240,10 @@ void main() {
     testWidgets('asserts when items count is below 2', (tester) async {
       await _pumpRail(
         tester,
-        const NavRail(items: [NavRailItem(icon: UntitledUI.map_01)], currentIndex: 0),
+        const NavRail(
+          items: [NavRailItem(icon: UntitledUI.map_01, label: 'Map')],
+          currentIndex: 0,
+        ),
       );
       expect(tester.takeException(), isAssertionError);
     });

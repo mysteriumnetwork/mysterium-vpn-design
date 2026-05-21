@@ -168,7 +168,14 @@ void main() {
       // Locations cell: not selected, button.
       expect(
         tester.getSemantics(find.text('Locations')),
-        matchesSemantics(label: 'Locations', isButton: true, hasSelectedState: true),
+        matchesSemantics(
+          label: 'Locations',
+          isButton: true,
+          hasSelectedState: true,
+          hasEnabledState: true,
+          isEnabled: true,
+          hasTapAction: true,
+        ),
       );
       // Products cell: selected.
       expect(
@@ -178,6 +185,9 @@ void main() {
           isButton: true,
           hasSelectedState: true,
           isSelected: true,
+          hasEnabledState: true,
+          isEnabled: true,
+          hasTapAction: true,
         ),
       );
 

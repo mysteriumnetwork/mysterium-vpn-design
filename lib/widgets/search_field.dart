@@ -153,16 +153,13 @@ class _ClearButton extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) => Semantics(
-    button: true,
-    label: MaterialLocalizations.of(context).deleteButtonTooltip,
-    child: MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onPressed,
-        child: Icon(UntitledUI.x_close, size: 20, color: color),
-      ),
-    ),
+  Widget build(BuildContext context) => IconButton(
+    onPressed: onPressed,
+    icon: Icon(UntitledUI.x_close, size: 20, color: color),
+    tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+    padding: EdgeInsets.zero,
+    constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+    visualDensity: VisualDensity.compact,
+    splashRadius: 16,
   );
 }
