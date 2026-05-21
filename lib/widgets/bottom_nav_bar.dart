@@ -81,12 +81,7 @@ class BottomNavBar extends StatelessWidget {
       child: SafeArea(
         top: false,
         child: Padding(
-          padding: EdgeInsets.only(
-            top: theme.spacing.s,
-            bottom: theme.spacing.md,
-            left: theme.spacing.s,
-            right: theme.spacing.s,
-          ),
+          padding: EdgeInsets.all(theme.spacing.s),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
