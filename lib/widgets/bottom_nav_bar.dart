@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material show Radius;
+import 'package:flutter/material.dart' hide Radius;
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
+
+const _cellRadius = material.Radius.circular(14);
 
 // ─── BottomNavBarItem ─────────────────────────────────────────────────────────
 
@@ -30,7 +33,12 @@ class BottomNavBarItem {
 ///
 /// Content is wrapped in a [SafeArea] (top disabled) so cells clear the iOS
 /// home indicator and Android gesture/system navigation. The background
-/// still paints behind the inset.
+/// still paints behind the inset. A 16 px minimum bottom inset is enforced
+/// — on devices without a system inset the bar matches the Figma spec; on
+/// devices with one the inset alone provides the gap (no doubling).
+///
+/// The item row is capped at 448 px wide and centered, so on tablets and
+/// desktop the cells don't stretch across the entire screen.
 ///
 /// ```dart
 /// BottomNavBar(
@@ -80,20 +88,28 @@ class BottomNavBar extends StatelessWidget {
       ),
       child: SafeArea(
         top: false,
+        minimum: EdgeInsets.fromLTRB(theme.spacing.s, 0, theme.spacing.s, theme.spacing.md),
         child: Padding(
-          padding: EdgeInsets.all(theme.spacing.s),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              for (var i = 0; i < items.length; i++)
-                Expanded(
-                  child: _BottomNavBarCell(
-                    item: items[i],
-                    selected: i == selectedIndex,
-                    onTap: onDestinationSelected == null ? null : () => onDestinationSelected!(i),
-                  ),
-                ),
-            ],
+          padding: EdgeInsets.only(top: theme.spacing.s),
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 448),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  for (var i = 0; i < items.length; i++)
+                    Expanded(
+                      child: _BottomNavBarCell(
+                        item: items[i],
+                        selected: i == selectedIndex,
+                        onTap: onDestinationSelected == null
+                            ? null
+                            : () => onDestinationSelected!(i),
+                      ),
+                    ),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -166,7 +182,7 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: showHighlight ? palette.bgSidePanelHover : null,
-              borderRadius: const BorderRadius.all(Radius.kS),
+              borderRadius: const BorderRadius.all(_cellRadius),
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(
