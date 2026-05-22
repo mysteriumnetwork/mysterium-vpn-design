@@ -14,6 +14,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 class MinimalAlert extends StatelessWidget {
   const MinimalAlert({
     required this.message,
+    this.leadingIcon,
     this.tooltipMsg,
     this.tooltipTitle,
     this.tooltipBody,
@@ -26,6 +27,10 @@ class MinimalAlert extends StatelessWidget {
        );
 
   final String message;
+
+  /// Optional glyph rendered in a circular informational badge before the
+  /// message. Matches the "Minimal alert/Default" component in Figma.
+  final IconData? leadingIcon;
 
   /// Convenience: plain-text tooltip. Ignored when [tooltip] is set.
   final String? tooltipMsg;
@@ -57,67 +62,82 @@ class MinimalAlert extends StatelessWidget {
     final textColor = palette.textTertiary;
     final effectiveTooltip = _effectiveTooltip(textColor);
 
-    return Stack(
-      children: [
-        DecoratedBox(
-          decoration: BoxDecoration(
-            color: palette.bgPrimary,
-            borderRadius: const BorderRadius.all(Radius.kS),
-            border: Border.all(color: palette.borderPrimary),
-            boxShadow: [
-              BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1)),
-            ],
+    // 44px right reserves space for the 36px dismiss button at right: 7.
+    final rightPad = onDismiss != null ? 44.0 : theme.spacing.md;
+
+    final messageRich = Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(
+            text: message,
+            style: theme.textStyles.textSm.regular.copyWith(color: textColor),
           ),
-          child: Stack(
-            children: [
-              Padding(
-                // 44px right reserves space for the 36px dismiss button at right: 7
-                padding: EdgeInsets.fromLTRB(
-                  theme.spacing.md,
-                  theme.spacing.md,
-                  44,
-                  theme.spacing.md,
-                ),
-                child: Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: message,
-                        style: theme.textStyles.textSm.regular.copyWith(color: textColor),
-                      ),
-                      if (effectiveTooltip != null)
-                        WidgetSpan(
-                          alignment: PlaceholderAlignment.middle,
-                          child: Padding(
-                            padding: EdgeInsets.only(left: theme.spacing.xs),
-                            child: effectiveTooltip,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
+          if (effectiveTooltip != null)
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: Padding(
+                padding: EdgeInsets.only(left: theme.spacing.xs),
+                child: effectiveTooltip,
               ),
-              if (onDismiss != null)
-                Positioned(
-                  top: 7,
-                  right: 7,
-                  child: IconButton(
-                    onPressed: onDismiss,
-                    padding: EdgeInsets.zero,
-                    icon: Icon(UntitledUI.x_close, size: 20, color: palette.iconTertiary),
-                    style: ButtonStyle(
-                      shape: WidgetStateProperty.all(
-                        const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kS)),
-                      ),
-                      visualDensity: VisualDensity.compact,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
+        ],
+      ),
+    );
+
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: palette.bgPrimary,
+        borderRadius: const BorderRadius.all(Radius.kS),
+        border: Border.all(color: palette.borderPrimary),
+        boxShadow: [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
+      ),
+      child: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+              theme.spacing.md,
+              theme.spacing.md,
+              rightPad,
+              theme.spacing.md,
+            ),
+            child: Row(
+              children: [
+                if (leadingIcon != null) ...[
+                  DecoratedIcon(
+                    icon: leadingIcon!,
+                    decoration: IconDecoration(
+                      backgroundColor: palette.bgSecondary,
+                      iconColor: palette.iconTertiary,
+                      iconSize: 20,
+                      padding: const EdgeInsets.all(6),
+                      borderRadius: const BorderRadius.all(Radius.kFull),
                     ),
                   ),
-                ),
-            ],
+                  SizedBox(width: theme.spacing.s),
+                ],
+                Expanded(child: messageRich),
+              ],
+            ),
           ),
-        ),
-      ],
+          if (onDismiss != null)
+            Positioned(
+              top: 7,
+              right: 7,
+              child: IconButton(
+                onPressed: onDismiss,
+                padding: EdgeInsets.zero,
+                icon: Icon(UntitledUI.x_close, size: 20, color: palette.iconTertiary),
+                style: ButtonStyle(
+                  shape: WidgetStateProperty.all(
+                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kS)),
+                  ),
+                  visualDensity: VisualDensity.compact,
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

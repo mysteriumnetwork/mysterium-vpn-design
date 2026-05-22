@@ -194,5 +194,29 @@ void main() {
       await tester.pump();
       expect(find.text('Child A'), findsOneWidget);
     });
+
+    testWidgets('Plus on child items aligns with Plus on header', (tester) async {
+      await pumpWidget(
+        tester,
+        const ExpandableIpCard(
+          name: 'Germany',
+          subtitle: 'Frankfurt',
+          countryIcon: _flag,
+          plusUpgrade: true,
+          initiallyExpanded: true,
+          items: [IpCardItem(name: 'IP #1', subtitle: '1.1.1.1', plusUpgrade: true)],
+        ),
+      );
+
+      // Two Plus labels are rendered (header + child) and their right edges
+      // should sit on the same x — the child item reserves the chevron column
+      // so the visual alignment matches the Figma "Plus sign placement logic"
+      // reference.
+      final pluses = find.text('Plus');
+      expect(pluses, findsNWidgets(2));
+      final headerRight = tester.getTopRight(pluses.at(0)).dx;
+      final childRight = tester.getTopRight(pluses.at(1)).dx;
+      expect(childRight, closeTo(headerRight, 0.5));
+    });
   });
 }

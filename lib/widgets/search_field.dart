@@ -14,6 +14,7 @@ class SearchField extends StatefulWidget {
     this.onChanged,
     this.onSubmitted,
     this.controller,
+    this.focusNode,
     this.autocorrect = false,
     this.enabled = true,
     super.key,
@@ -29,34 +30,74 @@ class SearchField extends StatefulWidget {
   final ValueChanged<String>? onSubmitted;
   final TextEditingController? controller;
 
+  /// Optional external focus node. When provided, the caller owns and
+  /// disposes it; otherwise the field creates and manages an internal one.
+  final FocusNode? focusNode;
+
   @override
   State<SearchField> createState() => _SearchFieldState();
 }
 
 class _SearchFieldState extends State<SearchField> {
-  late final FocusNode _focus;
+  FocusNode? _internalFocus;
+  TextEditingController? _internalController;
   bool _focused = false;
+  bool _hasText = false;
+
+  FocusNode get _focus => widget.focusNode ?? (_internalFocus ??= FocusNode());
+  TextEditingController get _controller =>
+      widget.controller ?? (_internalController ??= TextEditingController());
 
   @override
   void initState() {
     super.initState();
-    _focus = FocusNode()..addListener(_onFocusChange);
+    _focus.addListener(_onFocusChange);
+    _controller.addListener(_onTextChange);
+    _hasText = _controller.text.isNotEmpty;
   }
 
   void _onFocusChange() => setState(() => _focused = _focus.hasFocus);
 
+  void _onTextChange() {
+    final hasText = _controller.text.isNotEmpty;
+    if (hasText != _hasText) {
+      setState(() => _hasText = hasText);
+    }
+  }
+
+  void _handleClear() {
+    _controller.clear();
+    widget.onChanged?.call('');
+  }
+
+  @override
+  void didUpdateWidget(SearchField oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.focusNode != widget.focusNode) {
+      (oldWidget.focusNode ?? _internalFocus)?.removeListener(_onFocusChange);
+      _focus.addListener(_onFocusChange);
+      _focused = _focus.hasFocus;
+    }
+    if (oldWidget.controller != widget.controller) {
+      (oldWidget.controller ?? _internalController)?.removeListener(_onTextChange);
+      _controller.addListener(_onTextChange);
+      _hasText = _controller.text.isNotEmpty;
+    }
+  }
+
   @override
   void dispose() {
-    _focus
-      ..removeListener(_onFocusChange)
-      ..dispose();
+    _focus.removeListener(_onFocusChange);
+    _controller.removeListener(_onTextChange);
+    _internalFocus?.dispose();
+    _internalController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final palette = Theme.of(context).palette;
     final theme = Theme.of(context);
+    final palette = theme.palette;
 
     final mutedColor = palette.textDisabled;
     final iconColor = widget.enabled ? palette.textTertiary : mutedColor;
@@ -83,7 +124,7 @@ class _SearchFieldState extends State<SearchField> {
               Expanded(
                 child: TextField(
                   focusNode: _focus,
-                  controller: widget.controller,
+                  controller: _controller,
                   onChanged: widget.onChanged,
                   onSubmitted: widget.onSubmitted,
                   autocorrect: widget.autocorrect,
@@ -96,10 +137,30 @@ class _SearchFieldState extends State<SearchField> {
                   cursorColor: palette.borderBrand,
                 ),
               ),
+              if (widget.enabled && _hasText)
+                _ClearButton(onPressed: _handleClear, color: iconColor),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+class _ClearButton extends StatelessWidget {
+  const _ClearButton({required this.onPressed, required this.color});
+
+  final VoidCallback onPressed;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) => IconButton(
+    onPressed: onPressed,
+    icon: Icon(UntitledUI.x_close, size: 20, color: color),
+    tooltip: MaterialLocalizations.of(context).deleteButtonTooltip,
+    padding: EdgeInsets.zero,
+    constraints: const BoxConstraints(minWidth: 24, minHeight: 24),
+    visualDensity: VisualDensity.compact,
+    splashRadius: 16,
+  );
 }
