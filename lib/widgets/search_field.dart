@@ -76,6 +76,7 @@ class _SearchFieldState extends State<SearchField> {
     if (oldWidget.focusNode != widget.focusNode) {
       (oldWidget.focusNode ?? _internalFocus)?.removeListener(_onFocusChange);
       _focus.addListener(_onFocusChange);
+      _focused = _focus.hasFocus;
     }
     if (oldWidget.controller != widget.controller) {
       (oldWidget.controller ?? _internalController)?.removeListener(_onTextChange);

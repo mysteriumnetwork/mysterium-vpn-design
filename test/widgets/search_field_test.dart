@@ -98,5 +98,40 @@ void main() {
       final decoration = box.decoration as BoxDecoration;
       expect(decoration.color, DesignSystem.lightTheme.palette.bgInactive);
     });
+
+    testWidgets('re-syncs focus border when focusNode is swapped', (tester) async {
+      final nodeA = FocusNode();
+      final nodeB = FocusNode();
+      addTearDown(nodeA.dispose);
+      addTearDown(nodeB.dispose);
+
+      Border borderOf() =>
+          (tester.widget<DecoratedBox>(find.byType(DecoratedBox).first).decoration as BoxDecoration)
+                  .border!
+              as Border;
+
+      final palette = DesignSystem.lightTheme.palette;
+
+      // Mount with nodeA and focus it — border becomes brand.
+      await pumpWidget(
+        tester,
+        Material(
+          child: SearchField(placeholder: 'Search', focusNode: nodeA),
+        ),
+      );
+      nodeA.requestFocus();
+      await tester.pump();
+      expect(borderOf().top.color, palette.borderBrand);
+
+      // Swap to nodeB (not focused). Bug: border stays brand because
+      // _focused was never re-synced. Expected: border resets to primary.
+      await pumpWidget(
+        tester,
+        Material(
+          child: SearchField(placeholder: 'Search', focusNode: nodeB),
+        ),
+      );
+      expect(borderOf().top.color, palette.borderPrimary);
+    });
   });
 }
