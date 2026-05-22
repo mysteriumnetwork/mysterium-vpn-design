@@ -31,6 +31,7 @@ class PlanCard<T> extends StatelessWidget {
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
+    this.currentPlanLabel,
     super.key,
   });
 
@@ -43,6 +44,7 @@ class PlanCard<T> extends StatelessWidget {
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
+    this.currentPlanLabel,
     super.key,
   }) : footer = _PlanCardFeatures(
          features: features,
@@ -60,6 +62,7 @@ class PlanCard<T> extends StatelessWidget {
     this.radioGroup,
     this.value,
     this.mode = PlanCardMode.selectable,
+    this.currentPlanLabel,
     super.key,
   }) : footer = _PlanCardAction(onPressed: onPressed, text: text, icon: actionIcon);
 
@@ -79,11 +82,37 @@ class PlanCard<T> extends StatelessWidget {
   /// Value registered with the radio group for this card.
   final T? value;
 
+  /// Marks this card as the user's currently-active plan.
+  ///
+  /// When non-null, the string is rendered as a small [AppBadge] in the
+  /// card's header row — in the same slot a [PlanData.promoBadge] would
+  /// occupy, taking priority over it. Typical values: `"Current plan"`,
+  /// `"Your plan"`, `"Active"`.
+  ///
+  /// Side-effects when set:
+  ///
+  /// * **Header badge replaces both** the radio control and any
+  ///   [PlanData.promoBadge] for non-offer cards.
+  /// * In [PlanCardMode.selectable], the card becomes non-interactive — the
+  ///   radio is hidden and tapping the card does not update the surrounding
+  ///   [RadioGroup].
+  /// * In [PlanCardMode.selectable], the brand-coloured "selected" border
+  ///   is suppressed even when [value] matches the group's current value,
+  ///   so the active plan never looks like a pending selection.
+  /// * [PlanCardMode.highlight] keeps its highlight; the highlight mode is
+  ///   independent of selection state and intentionally not overridden.
+  /// * Offer cards ([PlanData.isOffer] = `true`) omit the header row
+  ///   entirely, so the badge is **not** rendered on offer layouts; this
+  ///   is by design — offers are mutually exclusive with the "current
+  ///   plan" treatment.
+  final String? currentPlanLabel;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final radioGroup = this.radioGroup ?? RadioButton.findGroupState<T>(context);
     final isSelected = _isSelected(radioGroup);
+    final isCurrentPlan = currentPlanLabel != null;
 
     void handleSelect() {
       radioGroup?.onChanged(value);
@@ -92,12 +121,12 @@ class PlanCard<T> extends StatelessWidget {
     return _PlanContainer(
       isHighlighted: switch (mode) {
         PlanCardMode.highlight => true,
-        PlanCardMode.selectable => isSelected,
+        PlanCardMode.selectable => !isCurrentPlan && isSelected,
         PlanCardMode.normal => false,
       },
       data: data,
       onTap: switch (mode) {
-        PlanCardMode.selectable => handleSelect,
+        PlanCardMode.selectable => isCurrentPlan ? null : handleSelect,
         _ => null,
       },
       child: Column(
@@ -113,7 +142,12 @@ class PlanCard<T> extends StatelessWidget {
                 ),
               ],
             ),
-          _PlanPricing(data: data, showRadio: mode == PlanCardMode.selectable, radioValue: value),
+          _PlanPricing(
+            data: data,
+            showRadio: mode == PlanCardMode.selectable && !isCurrentPlan,
+            radioValue: value,
+            currentPlanLabel: currentPlanLabel,
+          ),
           if (footer != null) ...[SizedBox(height: theme.spacing.s), footer!],
         ],
       ),
@@ -129,11 +163,17 @@ class PlanCard<T> extends StatelessWidget {
 }
 
 class _PlanPricing extends StatelessWidget {
-  const _PlanPricing({required this.data, this.showRadio = false, this.radioValue});
+  const _PlanPricing({
+    required this.data,
+    this.showRadio = false,
+    this.radioValue,
+    this.currentPlanLabel,
+  });
 
   final PlanData data;
   final bool showRadio;
   final dynamic radioValue;
+  final String? currentPlanLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +212,9 @@ class _PlanPricing extends StatelessWidget {
                   ],
                 ),
               ),
-              if (data.promoBadge != null && !data.isOffer)
+              if (currentPlanLabel != null)
+                AppBadge(text: currentPlanLabel!, size: BadgeSize.small)
+              else if (data.promoBadge != null && !data.isOffer)
                 AppBadge(
                   text: data.promoBadge!,
                   size: BadgeSize.small,
