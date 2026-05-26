@@ -36,5 +36,18 @@ void main() {
       );
       expect(find.byType(TooltipIcon), findsOneWidget);
     });
+
+    testWidgets('renders leading icon when provided', (tester) async {
+      await pumpWidget(
+        tester,
+        const MinimalAlert(message: 'Alert', leadingIcon: UntitledUI.info_circle),
+      );
+      expect(find.byIcon(UntitledUI.info_circle), findsOneWidget);
+    });
+
+    testWidgets('omits leading icon when null', (tester) async {
+      await pumpWidget(tester, const MinimalAlert(message: 'Alert'));
+      expect(find.byIcon(UntitledUI.info_circle), findsNothing);
+    });
   });
 }

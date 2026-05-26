@@ -117,6 +117,7 @@ class MainIpCard extends StatelessWidget {
     required this.connectionRatingLabel,
     required this.refreshIpTooltip,
     this.connectionRating = ConnectionRating.none,
+    this.showConnectionRating = true,
     this.onConnect,
     this.onDisconnect,
     this.onRefreshIp,
@@ -137,6 +138,11 @@ class MainIpCard extends StatelessWidget {
   final String connectionRatingLabel;
   final String refreshIpTooltip;
   final ConnectionRating connectionRating;
+
+  /// When `false`, the thumbs-up / thumbs-down rating row is omitted from the
+  /// connected and new-IP-preview states. Defaults to `true`.
+  final bool showConnectionRating;
+
   final VoidCallback? onConnect;
   final VoidCallback? onDisconnect;
   final VoidCallback? onRefreshIp;
@@ -193,6 +199,7 @@ class MainIpCard extends StatelessWidget {
             buttonLabel: disconnectLabel,
             connectionRatingLabel: connectionRatingLabel,
             connectionRating: connectionRating,
+            showConnectionRating: showConnectionRating,
             onButton: onDisconnect,
             onRefreshIp: onRefreshIp,
             onThumbsUp: onThumbsUp,
@@ -496,6 +503,7 @@ class _ConnectedContent extends StatelessWidget {
     required this.connectionRatingLabel,
     required this.refreshIpTooltip,
     this.connectionRating = ConnectionRating.none,
+    this.showConnectionRating = true,
     this.onButton,
     this.onRefreshIp,
     this.onThumbsUp,
@@ -511,6 +519,7 @@ class _ConnectedContent extends StatelessWidget {
   final String buttonLabel;
   final String connectionRatingLabel;
   final ConnectionRating connectionRating;
+  final bool showConnectionRating;
   final VoidCallback? onButton;
   final VoidCallback? onRefreshIp;
   final VoidCallback? onThumbsUp;
@@ -618,39 +627,39 @@ class _ConnectedContent extends StatelessWidget {
           ),
           child: Text(buttonLabel),
         ),
-        // Connection rating row
-        Row(
-          spacing: theme.spacing.md,
-          children: [
-            Expanded(
-              child: Text(
-                connectionRatingLabel,
-                style: theme.textStyles.textSm.medium.copyWith(color: palette.textIpCardSubtitle),
+        if (showConnectionRating)
+          Row(
+            spacing: theme.spacing.md,
+            children: [
+              Expanded(
+                child: Text(
+                  connectionRatingLabel,
+                  style: theme.textStyles.textSm.medium.copyWith(color: palette.textIpCardSubtitle),
+                ),
               ),
-            ),
-            Row(
-              spacing: theme.spacing.s,
-              children: [
-                _IconTap(
-                  icon: UntitledUI.thumbs_down,
-                  iconColor: connectionRating == ConnectionRating.thumbsDown
-                      ? Palette.error
-                      : palette.textIpCardSubtitle,
-                  onPressed: onThumbsDown,
-                  padding: EdgeInsets.all(theme.spacing.xs),
-                ),
-                _IconTap(
-                  icon: UntitledUI.thumbs_up,
-                  iconColor: connectionRating == ConnectionRating.thumbsUp
-                      ? Palette.success
-                      : palette.textIpCardSubtitle,
-                  onPressed: onThumbsUp,
-                  padding: EdgeInsets.all(theme.spacing.xs),
-                ),
-              ],
-            ),
-          ],
-        ),
+              Row(
+                spacing: theme.spacing.s,
+                children: [
+                  _IconTap(
+                    icon: UntitledUI.thumbs_down,
+                    iconColor: connectionRating == ConnectionRating.thumbsDown
+                        ? Palette.error
+                        : palette.textIpCardSubtitle,
+                    onPressed: onThumbsDown,
+                    padding: EdgeInsets.all(theme.spacing.xs),
+                  ),
+                  _IconTap(
+                    icon: UntitledUI.thumbs_up,
+                    iconColor: connectionRating == ConnectionRating.thumbsUp
+                        ? Palette.success
+                        : palette.textIpCardSubtitle,
+                    onPressed: onThumbsUp,
+                    padding: EdgeInsets.all(theme.spacing.xs),
+                  ),
+                ],
+              ),
+            ],
+          ),
       ],
     );
   }

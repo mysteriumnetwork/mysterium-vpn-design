@@ -23,6 +23,24 @@ Widget buildMinimalAlert(BuildContext context) {
   );
 }
 
+// ─── Leading icon ─────────────────────────────────────────────────────────────
+
+@UseCase(name: 'Leading icon', type: MinimalAlert)
+Widget buildMinimalAlertLeadingIcon(BuildContext context) {
+  final showDismiss = context.knobs.boolean(label: 'Show dismiss button', initialValue: true);
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: MinimalAlert(
+      leadingIcon: UntitledUI.info_circle,
+      message: context.knobs.string(
+        label: 'Message',
+        initialValue: 'Your IP is currently visible. Connect to a server to hide it.',
+      ),
+      onDismiss: showDismiss ? () {} : null,
+    ),
+  );
+}
+
 // ─── Titled tooltip ───────────────────────────────────────────────────────────
 
 @UseCase(name: 'Titled tooltip', type: MinimalAlert)
