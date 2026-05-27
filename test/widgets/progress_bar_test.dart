@@ -85,42 +85,49 @@ void main() {
     });
 
     testWidgets('uses default palette colors in light theme', (tester) async {
+      final theme = DesignSystem.lightTheme.copyWith(platform: TargetPlatform.android);
       await pumpWidget(
         tester,
         const ProgressBar(type: ProgressBarType.linear, value: 0.5, width: 100),
-        theme: DesignSystem.lightTheme.copyWith(platform: TargetPlatform.android),
+        theme: theme,
       );
 
       final indicator = tester.widget<LinearProgressIndicator>(
         find.byType(LinearProgressIndicator),
       );
-      expect(indicator.color, Palette.brand.shade400);
+      expect(indicator.color, theme.palette.iconBrandSecondary);
       expect(indicator.backgroundColor, Palette.grayPurple.shade700);
     });
 
     testWidgets('uses default palette colors in dark theme', (tester) async {
+      final theme = DesignSystem.darkTheme.copyWith(platform: TargetPlatform.android);
       await pumpWidget(
         tester,
         const ProgressBar(type: ProgressBarType.linear, value: 0.5, width: 100),
-        theme: DesignSystem.darkTheme.copyWith(platform: TargetPlatform.android),
+        theme: theme,
       );
 
       final indicator = tester.widget<LinearProgressIndicator>(
         find.byType(LinearProgressIndicator),
       );
-      expect(indicator.color, Palette.brand.shade400);
-      expect(indicator.backgroundColor, Palette.brand.shade400);
+      expect(indicator.color, theme.palette.iconBrandSecondary);
+      expect(indicator.backgroundColor, theme.palette.bgTertiary);
     });
 
     testWidgets('indeterminate on iOS renders CupertinoActivityIndicator', (tester) async {
+      final theme = DesignSystem.lightTheme.copyWith(platform: TargetPlatform.iOS);
       await pumpWidget(
         tester,
         const ProgressBar(type: ProgressBarType.circular, width: 24, height: 24),
-        theme: DesignSystem.lightTheme.copyWith(platform: TargetPlatform.iOS),
+        theme: theme,
       );
 
       expect(find.byType(CupertinoActivityIndicator), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsNothing);
+      final indicator = tester.widget<CupertinoActivityIndicator>(
+        find.byType(CupertinoActivityIndicator),
+      );
+      expect(indicator.color, theme.palette.iconPrimary);
     });
 
     testWidgets('indeterminate on Android renders Material circular indicator', (tester) async {

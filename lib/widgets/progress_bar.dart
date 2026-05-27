@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:mysterium_vpn_design/styles/colors/palette.dart';
+import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// Visual shape of a [ProgressBar].
 enum ProgressBarType {
@@ -13,8 +13,11 @@ enum ProgressBarType {
 
 /// A themed progress indicator that supports linear and circular layouts.
 ///
+/// For a simple loading spinner without progress, use [LoadingIndicator] instead.
+///
 /// Use [ProgressBar.linear] or [ProgressBar.circular] when the shape is fixed,
-/// or pass [type] directly for a single configurable widget.
+/// or pass [type] directly for a single configurable widget. Indeterminate
+/// mode (`value: null`) is only available on the main constructor.
 ///
 /// [value] is a fraction between `0` and `1`. When `null`, the indicator is
 /// indeterminate. On iOS and macOS an indeterminate bar renders a
@@ -25,7 +28,8 @@ enum ProgressBarType {
 /// indeterminate indicators on Apple platforms, the Cupertino radius is derived
 /// from `width ?? height` (default radius `10`).
 ///
-/// [backgroundColor] and [color] override theme defaults.
+/// [backgroundColor] and [color] override theme defaults. When omitted, colors
+/// are taken from the current [Palette].
 ///
 /// ```dart
 /// ProgressBar.linear(value: 0.6, width: 200)
@@ -42,7 +46,7 @@ class ProgressBar extends StatelessWidget {
     super.key,
   });
 
-  /// Creates a linear [ProgressBar].
+  /// Creates a linear [ProgressBar] with a determinate [value].
   factory ProgressBar.linear({
     required double value,
     double? width,
@@ -58,7 +62,7 @@ class ProgressBar extends StatelessWidget {
     color: color,
   );
 
-  /// Creates a circular [ProgressBar].
+  /// Creates a circular [ProgressBar] with a determinate [value].
   factory ProgressBar.circular({
     required double value,
     double? width,
@@ -89,23 +93,23 @@ class ProgressBar extends StatelessWidget {
   /// Track/background fill. Falls back to theme-derived palette colors.
   final Color? backgroundColor;
 
-  /// Foreground/progress fill.
+  /// Foreground/progress fill. Defaults to [Palette.iconBrandSecondary].
   final Color? color;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final palette = theme.palette;
 
     final platform = theme.platform;
     if (value == null && (platform == TargetPlatform.iOS || platform == TargetPlatform.macOS)) {
       final size = width ?? height;
       return CupertinoActivityIndicator(
         radius: size != null ? size / 2 : 10,
-        color: color ?? theme.colorScheme.primary,
+        color: color ?? palette.iconPrimary,
       );
     }
 
-    final palette = Palette.of(context);
     final bgColor = _getBackgroundColor(theme: theme, palette: palette);
     final fgColor = _getForegroundColor(palette: palette);
 
@@ -117,7 +121,7 @@ class ProgressBar extends StatelessWidget {
               value: value,
               backgroundColor: bgColor,
               color: fgColor,
-              borderRadius: BorderRadius.circular(4),
+              borderRadius: const BorderRadius.all(Radius.kXxxs),
             )
           : CircularProgressIndicator(value: value, backgroundColor: bgColor, color: fgColor),
     );
@@ -129,7 +133,7 @@ class ProgressBar extends StatelessWidget {
     }
 
     return theme.brightness == Brightness.dark
-        ? Palette.brand.shade400
+        ? palette.bgTertiary
         : Palette.grayPurple.shade700;
   }
 
@@ -138,6 +142,6 @@ class ProgressBar extends StatelessWidget {
       return color!;
     }
 
-    return Palette.brand.shade400;
+    return palette.iconBrandSecondary;
   }
 }

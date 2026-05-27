@@ -4,18 +4,22 @@ import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
 @UseCase(name: 'ProgressBar', type: ProgressBar)
-Widget buildProgressIndicator(BuildContext context) {
+Widget buildProgressBar(BuildContext context) {
   final type = context.knobs.object.dropdown(
     label: 'Type',
     options: ProgressBarType.values,
     initialOption: ProgressBarType.circular,
+    labelBuilder: (value) => value.name,
   );
 
   final value = context.knobs.double.slider(label: 'Value', initialValue: 0.5, min: 0, max: 1);
   final width = context.knobs.double.input(label: 'Width', initialValue: 100);
   final height = context.knobs.double.input(label: 'Height', initialValue: 100);
-  final backgroundColor = context.knobs.color(label: 'Background color', initialValue: Colors.grey);
-  final color = context.knobs.color(label: 'Color', initialValue: Colors.blue);
+  final backgroundColor = context.knobs.color(
+    label: 'Background color',
+    initialValue: Palette.grayPurple.shade700,
+  );
+  final color = context.knobs.color(label: 'Color', initialValue: Palette.brand.shade400);
 
   return ProgressBar(
     type: type,
