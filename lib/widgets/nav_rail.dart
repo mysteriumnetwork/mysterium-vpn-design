@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+typedef NavRailItemWrapper =
+    Widget Function({
+      required BuildContext context,
+      required int index,
+      required NavRailItem item,
+      required Widget child,
+    });
+
 // ─── NavRailItem ──────────────────────────────────────────────────────────────
 
 /// A single icon-only entry rendered inside [NavRail].
@@ -50,6 +58,7 @@ class NavRail extends StatelessWidget {
     required this.items,
     required this.currentIndex,
     this.padding = const EdgeInsets.only(top: 86),
+    this.itemWrapper,
     super.key,
   });
 
@@ -62,6 +71,9 @@ class NavRail extends StatelessWidget {
   /// Inner padding wrapping the item column. Defaults to 86 px of top
   /// padding so items sit below a typical app header.
   final EdgeInsetsGeometry padding;
+
+  /// A function that wraps each item in the rail.
+  final NavRailItemWrapper? itemWrapper;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +109,13 @@ class NavRail extends StatelessWidget {
             spacing: theme.spacing.xl4,
             children: [
               for (var i = 0; i < items.length; i++)
-                _NavRailButton(item: items[i], selected: i == currentIndex),
+                itemWrapper?.call(
+                      context: context,
+                      index: i,
+                      item: items[i],
+                      child: _NavRailButton(item: items[i], selected: i == currentIndex),
+                    ) ??
+                    _NavRailButton(item: items[i], selected: i == currentIndex),
             ],
           ),
         ),
