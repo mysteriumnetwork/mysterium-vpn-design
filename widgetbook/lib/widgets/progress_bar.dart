@@ -15,18 +15,7 @@ Widget buildProgressBar(BuildContext context) {
   final value = context.knobs.double.slider(label: 'Value', initialValue: 0.5, min: 0, max: 1);
   final width = context.knobs.double.input(label: 'Width', initialValue: 100);
   final height = context.knobs.double.input(label: 'Height', initialValue: 100);
-  final backgroundColor = context.knobs.color(
-    label: 'Background color',
-    initialValue: Palette.grayPurple.shade700,
-  );
   final color = context.knobs.color(label: 'Color', initialValue: Palette.brand.shade400);
 
-  return ProgressBar(
-    type: type,
-    value: value,
-    width: width,
-    height: height,
-    backgroundColor: backgroundColor,
-    color: color,
-  );
+  return ProgressBar(type: type, value: value, width: width, height: height, color: color);
 }

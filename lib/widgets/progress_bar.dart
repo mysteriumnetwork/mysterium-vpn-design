@@ -133,8 +133,8 @@ class ProgressBar extends StatelessWidget {
     }
 
     return theme.brightness == Brightness.dark
-        ? palette.bgTertiary
-        : Palette.grayPurple.shade700;
+        ? Palette.grayPurple.shade700
+        : Palette.grayPurple.shade200;
   }
 
   Color _getForegroundColor({required Palette palette}) {
