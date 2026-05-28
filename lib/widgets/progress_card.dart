@@ -11,8 +11,6 @@ class ProgressCard extends StatelessWidget {
     required this.actionlabel,
     required this.onActionPressed,
     this.icon,
-    this.iconColor,
-    this.backgroundColor,
     this.progressValue,
     this.progressLabel,
     this.title,
@@ -31,9 +29,6 @@ class ProgressCard extends StatelessWidget {
   /// Optional trailing progress text (for example: `3 / 6`).
   final String? progressLabel;
 
-  /// Optional override for the icon foreground color.
-  final Color? iconColor;
-
   /// Optional title shown under the progress row.
   final String? title;
 
@@ -46,11 +41,6 @@ class ProgressCard extends StatelessWidget {
   /// Callback invoked when the trailing action is tapped.
   final VoidCallback onActionPressed;
 
-  /// Optional background override for both light and dark themes.
-  ///
-  /// When null, [Palette.bgInfoCard] from the active theme is used.
-  final Color? backgroundColor;
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -58,16 +48,48 @@ class ProgressCard extends StatelessWidget {
 
     final bgColor = _getBackgroundColor(theme);
 
-    final progressHeader = Row(
+    return Container(
+      decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.kM), color: bgColor),
+      padding: EdgeInsets.all(spacing.md),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _Header(icon: icon, progressValue: progressValue, progressLabel: progressLabel),
+          _Content(
+            title: title,
+            description: description,
+            actionLabel: actionlabel,
+            onActionPressed: onActionPressed,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Color _getBackgroundColor(ThemeData theme) =>
+      theme.brightness == Brightness.dark ? Palette.grayLight.shade800 : Palette.grayLight.shade25;
+}
+
+class _Header extends StatelessWidget {
+  const _Header({required this.icon, required this.progressValue, required this.progressLabel});
+
+  final IconData? icon;
+  final double? progressValue;
+  final String? progressLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = Theme.of(context).spacing;
+    final iconColor = _getIconColor(theme);
+    final iconBadgeColor = _getIconBadgeColor(theme);
+    final progressLabelColor = _getProgressLabelColor(theme);
+    return Row(
       children: [
         if (icon != null)
           Padding(
             padding: EdgeInsets.only(right: spacing.md),
-            child: _IconBadge(
-              icon: icon!,
-              iconColor: _getIconColor(theme),
-              backgroundColor: _getIconBadgeColor(theme),
-            ),
+            child: _IconBadge(icon: icon!, iconColor: iconColor, backgroundColor: iconBadgeColor),
           ),
         if (progressValue != null) Expanded(child: ProgressBar.linear(value: progressValue!)),
         if (progressLabel != null)
@@ -79,22 +101,52 @@ class ProgressCard extends StatelessWidget {
                 fit: BoxFit.scaleDown,
                 child: Text(
                   progressLabel!,
-                  style: TextStyles(color: _getProgressLabelColor(theme)).textXs.regular,
+                  style: TextStyles(color: progressLabelColor).textXs.regular,
                 ),
               ),
             ),
           ),
       ],
     );
+  }
 
-    return Container(
-      decoration: BoxDecoration(borderRadius: const BorderRadius.all(Radius.kM), color: bgColor),
-      padding: EdgeInsets.all(spacing.md),
+  Color _getIconBadgeColor(ThemeData theme) =>
+      theme.brightness == Brightness.dark ? Palette.brand.shade900 : Palette.brand.shade100;
+
+  Color _getIconColor(ThemeData theme) =>
+      theme.brightness == Brightness.dark ? Palette.brand.shade400 : Palette.brand;
+
+  Color _getProgressLabelColor(ThemeData theme) => theme.brightness == Brightness.dark
+      ? Palette.grayPurple.shade300
+      : Palette.grayLight.shade400;
+}
+
+class _Content extends StatelessWidget {
+  const _Content({
+    required this.title,
+    required this.description,
+    required this.actionLabel,
+    required this.onActionPressed,
+  });
+
+  final String? title;
+  final String? description;
+  final String actionLabel;
+  final VoidCallback onActionPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final spacing = theme.spacing;
+    final titleColor = _getTitleColor(theme);
+    final descriptionColor = _getDescriptionColor(theme);
+    final actionColor = _getActionColor(theme);
+
+    return Padding(
+      padding: EdgeInsets.only(top: spacing.ms),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          progressHeader,
-          if (progressHeader.children.isNotEmpty) SizedBox(height: spacing.ms),
           if (title != null)
             Padding(
               padding: EdgeInsets.only(top: spacing.ms),
@@ -103,9 +155,7 @@ class ProgressCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       title!,
-                      style: theme.textStyles.textMd.semibold.copyWith(
-                        color: _getTitleColor(theme),
-                      ),
+                      style: theme.textStyles.textMd.semibold.copyWith(color: titleColor),
                     ),
                   ),
                 ],
@@ -119,9 +169,7 @@ class ProgressCard extends StatelessWidget {
                   Expanded(
                     child: Text(
                       description!,
-                      style: theme.textStyles.textXs.regular.copyWith(
-                        color: _getDescriptionColor(theme),
-                      ),
+                      style: theme.textStyles.textXs.regular.copyWith(color: descriptionColor),
                     ),
                   ),
                 ],
@@ -135,11 +183,11 @@ class ProgressCard extends StatelessWidget {
                 ButtonTertiary(
                   onPressed: onActionPressed,
                   decoration: ButtonDecoration(
-                    foregroundColor: _getActionColor(theme),
+                    foregroundColor: actionColor,
                     textStyle: theme.textStyles.textSm.semibold,
                     padding: EdgeInsets.symmetric(horizontal: spacing.none),
                   ),
-                  child: Text(actionlabel),
+                  child: Text(actionLabel),
                 ),
               ],
             ),
@@ -149,18 +197,6 @@ class ProgressCard extends StatelessWidget {
     );
   }
 
-  Color _getBackgroundColor(ThemeData theme) =>
-      backgroundColor ??
-      (theme.brightness == Brightness.dark
-          ? Palette.grayLight.shade800
-          : Palette.grayLight.shade25);
-
-  Color _getIconBadgeColor(ThemeData theme) =>
-      theme.brightness == Brightness.dark ? Palette.brand.shade900 : Palette.brand.shade100;
-
-  Color _getIconColor(ThemeData theme) =>
-      iconColor ?? (theme.brightness == Brightness.dark ? Palette.brand.shade400 : Palette.brand);
-
   Color _getTitleColor(ThemeData theme) =>
       theme.brightness == Brightness.dark ? Palette.white : Palette.grayLight.shade800;
 
@@ -169,10 +205,6 @@ class ProgressCard extends StatelessWidget {
 
   Color _getActionColor(ThemeData theme) =>
       theme.brightness == Brightness.dark ? Palette.brand.shade300 : Palette.brand.shade600;
-
-  Color _getProgressLabelColor(ThemeData theme) => theme.brightness == Brightness.dark
-      ? Palette.grayPurple.shade300
-      : Palette.grayLight.shade400;
 }
 
 class _IconBadge extends StatelessWidget {
