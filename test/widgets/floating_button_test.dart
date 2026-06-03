@@ -46,28 +46,22 @@ void main() {
       expect(pressed, isTrue);
     });
 
-    testWidgets('does not call onPressed when disabled', (tester) async {
-      // arrange
-      const pressed = false;
-
+    testWidgets('is disabled when onPressed is null', (tester) async {
       // act
       await pumpWidget(
         tester,
         const FloatingButton(label: 'Skip', icon: Icons.close, onPressed: null),
       );
-      await tester.tap(find.text('Skip'));
 
       // assert
-      expect(pressed, isFalse);
-      final button = tester.widget<TextButton>(find.byType(TextButton));
-      expect(button.onPressed, isNull);
+      expect(tester.widget<TextButton>(find.byType(TextButton)).onPressed, isNull);
     });
 
-    testWidgets('light theme uses design-system colors', (tester) async {
+    testWidgets('light theme enabled colors', (tester) async {
       // act
       await pumpWidget(
         tester,
-        const FloatingButton(label: 'Skip', icon: Icons.close, onPressed: null),
+        FloatingButton(label: 'Skip', icon: Icons.close, onPressed: () {}),
         theme: DesignSystem.lightTheme,
       );
 
@@ -77,7 +71,35 @@ void main() {
       expect(_iconColor(tester, Icons.close), Palette.grayDark.shade800);
     });
 
-    testWidgets('dark theme uses design-system colors', (tester) async {
+    testWidgets('light theme disabled colors', (tester) async {
+      // act
+      await pumpWidget(
+        tester,
+        const FloatingButton(label: 'Skip', icon: Icons.close, onPressed: null),
+        theme: DesignSystem.lightTheme,
+      );
+
+      // assert
+      expect(_buttonBackgroundColor(tester), Palette.grayLight.shade100);
+      expect(_labelColor(tester), Palette.grayLight.shade400);
+      expect(_iconColor(tester, Icons.close), Palette.grayLight.shade400);
+    });
+
+    testWidgets('dark theme enabled colors', (tester) async {
+      // act
+      await pumpWidget(
+        tester,
+        FloatingButton(label: 'Skip', icon: Icons.close, onPressed: () {}),
+        theme: DesignSystem.darkTheme,
+      );
+
+      // assert
+      expect(_buttonBackgroundColor(tester), Palette.grayDark.shade800);
+      expect(_labelColor(tester), Palette.white);
+      expect(_iconColor(tester, Icons.close), Palette.white);
+    });
+
+    testWidgets('dark theme disabled colors', (tester) async {
       // act
       await pumpWidget(
         tester,
@@ -86,9 +108,9 @@ void main() {
       );
 
       // assert
-      expect(_buttonBackgroundColor(tester), Palette.grayDark.shade800);
-      expect(_labelColor(tester), Palette.white);
-      expect(_iconColor(tester, Icons.close), Palette.white);
+      expect(_buttonBackgroundColor(tester), Palette.grayDarkAlpha.shade800);
+      expect(_labelColor(tester), Palette.grayDarkAlpha.shade600);
+      expect(_iconColor(tester, Icons.close), Palette.grayDarkAlpha.shade600);
     });
 
     testWidgets('icon is rendered at 16 px', (tester) async {

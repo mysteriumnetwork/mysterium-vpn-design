@@ -22,11 +22,13 @@ enum ProgressBarType {
 /// [value] is a fraction between `0` and `1`. When `null`, the indicator is
 /// indeterminate. On iOS and macOS an indeterminate bar renders a
 /// [CupertinoActivityIndicator]; on other platforms it uses Material
-/// progress indicators.
+/// progress indicators inside a [SizedBox].
 ///
-/// [width] and [height] constrain the outer [SizedBox]. For circular
-/// indeterminate indicators on Apple platforms, the Cupertino radius is derived
-/// from `width ?? height` (default radius `10`).
+/// [width] and [height] control size in a platform-specific way:
+/// - **Material** (Android, web, etc.): both set the outer [SizedBox].
+/// - **iOS/macOS indeterminate**: there is no [SizedBox]; diameter is set via
+///   [CupertinoActivityIndicator.radius] = `(width ?? height) / 2` (default
+///   radius `10` when both are omitted).
 ///
 /// [backgroundColor] and [color] override theme defaults. When omitted, colors
 /// are taken from the current [Palette].
@@ -84,10 +86,14 @@ class ProgressBar extends StatelessWidget {
   /// Completion fraction (`0`–`1`). `null` renders an indeterminate spinner.
   final double? value;
 
-  /// Optional width of the outer box.
+  /// Optional width. On Material platforms, sets the outer [SizedBox] width.
+  /// On iOS/macOS indeterminate, contributes to Cupertino radius when [height]
+  /// is null (`radius = width / 2`).
   final double? width;
 
-  /// Optional height of the outer box.
+  /// Optional height. On Material platforms, sets the outer [SizedBox] height.
+  /// On iOS/macOS indeterminate, used for radius only when [width] is null
+  /// (`radius = height / 2`).
   final double? height;
 
   /// Track/background fill. Falls back to theme-derived palette colors.
