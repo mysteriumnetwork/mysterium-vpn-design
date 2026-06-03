@@ -12,7 +12,7 @@ Widget buildProgressBar(BuildContext context) {
     labelBuilder: (value) => value.name,
   );
 
-  final value = context.knobs.double.slider(label: 'Value', initialValue: 0.5, min: 0, max: 1);
+  final value = context.knobs.double.slider(label: 'Value', initialValue: 0.5, max: 1);
   final width = context.knobs.double.input(label: 'Width', initialValue: 100);
   final height = context.knobs.double.input(label: 'Height', initialValue: 100);
   final color = context.knobs.color(label: 'Color', initialValue: Palette.brand.shade400);

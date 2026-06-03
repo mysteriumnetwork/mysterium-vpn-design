@@ -9,7 +9,6 @@ Widget buildProgressCard(BuildContext context) {
   final progressValue = context.knobs.double.slider(
     label: 'Progress value',
     initialValue: 0.5,
-    min: 0,
     max: 1,
   );
   final progressLabel = context.knobs.string(label: 'Progress label', initialValue: '3 / 6');
