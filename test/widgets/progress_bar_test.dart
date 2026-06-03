@@ -96,7 +96,7 @@ void main() {
         find.byType(LinearProgressIndicator),
       );
       expect(indicator.color, theme.palette.iconBrandSecondary);
-      expect(indicator.backgroundColor, Palette.grayPurple.shade700);
+      expect(indicator.backgroundColor, Palette.grayPurple.shade200);
     });
 
     testWidgets('uses default palette colors in dark theme', (tester) async {
@@ -111,7 +111,7 @@ void main() {
         find.byType(LinearProgressIndicator),
       );
       expect(indicator.color, theme.palette.iconBrandSecondary);
-      expect(indicator.backgroundColor, theme.palette.bgTertiary);
+      expect(indicator.backgroundColor, Palette.grayPurple.shade700);
     });
 
     testWidgets('indeterminate on iOS renders CupertinoActivityIndicator', (tester) async {

@@ -19,13 +19,21 @@ Widget buildProgressCard(BuildContext context) {
     initialValue: 'Quickly find countries, cities and servers with search.',
   );
 
-  return ProgressCard(
-    actionLabel: actionlabel,
-    onActionPressed: () {},
-    icon: Icons.search,
-    progressValue: progressValue,
-    progressLabel: progressLabel,
-    title: title,
-    description: description,
+  return Padding(
+    padding: const EdgeInsets.all(24),
+    child: Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 343),
+        child: ProgressCard(
+          actionLabel: actionlabel,
+          onActionPressed: () {},
+          icon: Icons.search,
+          progressValue: progressValue,
+          progressLabel: progressLabel,
+          title: title,
+          description: description,
+        ),
+      ),
+    ),
   );
 }
