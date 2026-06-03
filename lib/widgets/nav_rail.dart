@@ -1,14 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-typedef NavRailItemWrapper =
-    Widget Function({
-      required BuildContext context,
-      required int index,
-      required NavRailItem item,
-      required Widget child,
-    });
-
 // ─── NavRailItem ──────────────────────────────────────────────────────────────
 
 /// A single icon-only entry rendered inside [NavRail].
@@ -43,6 +35,9 @@ class NavRailItem {
 /// [NavRail.padding] inside the rail offsets the item column. Defaults to
 /// `EdgeInsets.only(top: 86)` so items sit below a typical app header.
 ///
+/// Optional [itemWrapper] can add an outer layer per entry (e.g. a product
+/// tour). Pass through `child` unless wrapping it.
+///
 /// ```dart
 /// NavRail(
 ///   currentIndex: 0,
@@ -51,6 +46,9 @@ class NavRailItem {
 ///     NavRailItem(icon: UntitledUI.star_06,     label: 'Products', onTap: () {}),
 ///     NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
 ///   ],
+///   itemWrapper: ({required context, required index, required item, required child}) {
+///     return MyTourTarget(key: tourKeys[index], child: child);
+///   },
 /// )
 /// ```
 class NavRail extends StatelessWidget {
@@ -72,8 +70,8 @@ class NavRail extends StatelessWidget {
   /// padding so items sit below a typical app header.
   final EdgeInsetsGeometry padding;
 
-  /// A function that wraps each item in the rail.
-  final NavRailItemWrapper? itemWrapper;
+  /// Wraps each built nav button. See [ListItemWrapper].
+  final ListItemWrapper<NavRailItem>? itemWrapper;
 
   @override
   Widget build(BuildContext context) {

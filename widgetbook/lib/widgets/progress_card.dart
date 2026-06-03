@@ -3,10 +3,9 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
 
-@UseCase(name: 'ProgressCard', type: ProgressCard)
+@UseCase(name: 'Default', type: ProgressCard)
 Widget buildProgressCard(BuildContext context) {
   final actionlabel = context.knobs.string(label: 'Action label', initialValue: 'Continue');
-  // final iconColor = context.knobs.color(label: 'Icon color', initialValue: Colors.blue);
   final progressValue = context.knobs.double.slider(
     label: 'Progress value',
     initialValue: 0.5,
@@ -21,7 +20,7 @@ Widget buildProgressCard(BuildContext context) {
   );
 
   return ProgressCard(
-    actionlabel: actionlabel,
+    actionLabel: actionlabel,
     onActionPressed: () {},
     icon: Icons.search,
     progressValue: progressValue,

@@ -8,7 +8,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// tertiary action.
 class ProgressCard extends StatelessWidget {
   const ProgressCard({
-    required this.actionlabel,
+    required this.actionLabel,
     required this.onActionPressed,
     this.icon,
     this.progressValue,
@@ -36,7 +36,7 @@ class ProgressCard extends StatelessWidget {
   final String? description;
 
   /// Label of the trailing tertiary action.
-  final String actionlabel;
+  final String actionLabel;
 
   /// Callback invoked when the trailing action is tapped.
   final VoidCallback onActionPressed;
@@ -58,7 +58,7 @@ class ProgressCard extends StatelessWidget {
           _Content(
             title: title,
             description: description,
-            actionLabel: actionlabel,
+            actionLabel: actionLabel,
             onActionPressed: onActionPressed,
           ),
         ],

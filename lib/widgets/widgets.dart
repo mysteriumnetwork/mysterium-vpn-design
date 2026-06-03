@@ -6,6 +6,7 @@ export 'checkbox_item.dart';
 export 'comparison_table.dart';
 export 'connection_bar.dart';
 export 'decorated_icon.dart';
+export 'floating_button.dart';
 export 'header.dart';
 export 'intent_tab.dart';
 export 'ip_selection_card.dart';

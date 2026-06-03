@@ -40,6 +40,10 @@ class BottomNavBarItem {
 /// The item row is capped at 448 px wide and centered, so on tablets and
 /// desktop the cells don't stretch across the entire screen.
 ///
+/// Optional [itemWrapper] can add an outer layer per tab (e.g. a product
+/// tour). `child` is an `Expanded` cell — return it inside your wrapper so
+/// tabs stay equal width.
+///
 /// ```dart
 /// BottomNavBar(
 ///   selectedIndex: 0,
@@ -50,6 +54,9 @@ class BottomNavBarItem {
 ///     BottomNavBarItem(icon: UntitledUI.star_06,     label: 'Products'),
 ///     BottomNavBarItem(icon: UntitledUI.settings_01, label: 'Settings'),
 ///   ],
+///   itemWrapper: ({required context, required index, required item, required child}) {
+///     return MyTourTarget(key: tourKeys[index], child: child);
+///   },
 /// )
 /// ```
 class BottomNavBar extends StatelessWidget {
@@ -57,6 +64,7 @@ class BottomNavBar extends StatelessWidget {
     required this.items,
     required this.selectedIndex,
     this.onDestinationSelected,
+    this.itemWrapper,
     super.key,
   });
 
@@ -70,6 +78,9 @@ class BottomNavBar extends StatelessWidget {
   /// `null`.
   final ValueChanged<int>? onDestinationSelected;
 
+  /// Wraps each built tab cell ([Expanded] + content). See [ListItemWrapper].
+  final ListItemWrapper<BottomNavBarItem>? itemWrapper;
+
   @override
   Widget build(BuildContext context) {
     assert(items.length >= 2, 'BottomNavBar requires at least 2 items');
@@ -80,6 +91,17 @@ class BottomNavBar extends StatelessWidget {
 
     final theme = Theme.of(context);
     final palette = theme.palette;
+
+    final navBarItems = List.generate(
+      items.length,
+      (i) => Expanded(
+        child: _BottomNavBarCell(
+          item: items[i],
+          selected: i == selectedIndex,
+          onTap: onDestinationSelected == null ? null : () => onDestinationSelected!(i),
+        ),
+      ),
+    );
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -98,15 +120,13 @@ class BottomNavBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   for (var i = 0; i < items.length; i++)
-                    Expanded(
-                      child: _BottomNavBarCell(
-                        item: items[i],
-                        selected: i == selectedIndex,
-                        onTap: onDestinationSelected == null
-                            ? null
-                            : () => onDestinationSelected!(i),
-                      ),
-                    ),
+                    itemWrapper?.call(
+                          context: context,
+                          index: i,
+                          item: items[i],
+                          child: navBarItems[i],
+                        ) ??
+                        navBarItems[i],
                 ],
               ),
             ),

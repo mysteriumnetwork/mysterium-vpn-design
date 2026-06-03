@@ -194,6 +194,67 @@ void main() {
       handle.dispose();
     });
 
+    testWidgets('itemWrapper wraps each tab cell', (tester) async {
+      // act
+      await pumpWidget(
+        tester,
+        BottomNavBar(
+          items: _items,
+          selectedIndex: 0,
+          itemWrapper: ({required context, required index, required item, required child}) =>
+              KeyedSubtree(key: Key('wrapped-$index'), child: child),
+        ),
+      );
+
+      // assert
+      expect(find.byKey(const Key('wrapped-0')), findsOneWidget);
+      expect(find.byKey(const Key('wrapped-1')), findsOneWidget);
+      expect(find.byKey(const Key('wrapped-2')), findsOneWidget);
+      expect(find.byKey(const Key('wrapped-3')), findsOneWidget);
+    });
+
+    testWidgets('itemWrapper receives correct index and item metadata', (tester) async {
+      // arrange
+      final seenIndices = <int>[];
+      final seenLabels = <String>[];
+
+      // act
+      await pumpWidget(
+        tester,
+        BottomNavBar(
+          items: _items,
+          selectedIndex: 0,
+          itemWrapper: ({required context, required index, required item, required child}) {
+            seenIndices.add(index);
+            seenLabels.add(item.label);
+            return child;
+          },
+        ),
+      );
+
+      // assert
+      expect(seenIndices, <int>[0, 1, 2, 3]);
+      expect(seenLabels, <String>['Map', 'Locations', 'Products', 'Settings']);
+    });
+
+    testWidgets('itemWrapper can wrap only selected items', (tester) async {
+      await pumpWidget(
+        tester,
+        BottomNavBar(
+          items: _items,
+          selectedIndex: 0,
+          itemWrapper: ({required context, required index, required item, required child}) {
+            if (index == 1) {
+              return KeyedSubtree(key: const Key('only-locations-wrapped'), child: child);
+            }
+            return child;
+          },
+        ),
+      );
+
+      expect(find.byKey(const Key('only-locations-wrapped')), findsOneWidget);
+    });
+
     testWidgets('hover-leave while focused keeps the highlight', (tester) async {
       await pumpWidget(
         tester,
