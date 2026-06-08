@@ -3,14 +3,16 @@ import 'dart:async';
 import 'package:flutter/material.dart' hide Radius;
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-/// A compact "Why can my IP change?" explainer card: a leading circular badge,
-/// a bold title, a multi-paragraph body, and a trailing **Got it** button.
+/// A compact informational popover: a leading circular [icon] badge, a bold
+/// [title], a multi-paragraph [body], and an optional trailing text button
+/// ([actionLabel] / [onAction]) — e.g. a short "why does X happen?" explainer
+/// or a contextual tip.
 ///
-/// Themed from the ambient design-system palette — the surface uses
-/// [Palette.bgModals] (`#22262f` in dark, light in light), matching the modal.
+/// Themed from the ambient design-system palette; the surface uses
+/// [Palette.bgModals] (`#22262f` in dark, near-white in light).
 ///
-/// This is content-only — it has no anchoring of its own. Use [showInfoPopover]
-/// to float it over an anchor with outside-tap dismissal, or embed it directly.
+/// Content-only — it has no anchoring of its own. Use [showInfoPopover] to
+/// float it over an anchor with outside-tap dismissal, or embed it directly.
 class InfoPopover extends StatelessWidget {
   const InfoPopover({
     required this.title,
