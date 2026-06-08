@@ -44,8 +44,9 @@ class InfoPopover extends StatelessWidget {
     final palette = theme.palette;
     final spacing = theme.spacing;
 
-    // Material provides the text/ink context the popover needs when shown in an
-    // Overlay (otherwise Text renders with the debug yellow underline).
+    // The action button's ink response needs a Material ancestor, which an
+    // Overlay does not provide on its own. The transparent Material supplies it
+    // (and a default text style) without painting a surface of its own.
     return Material(
       type: MaterialType.transparency,
       child: Container(
@@ -70,7 +71,7 @@ class InfoPopover extends StatelessWidget {
             DecoratedIcon(
               icon: icon,
               decoration: IconDecoration(
-                backgroundColor: palette.bgSecondarySelected,
+                backgroundColor: palette.bgInfoIcon,
                 iconSize: 20,
                 padding: const EdgeInsets.all(6),
                 borderRadius: const BorderRadius.all(Radius.kFull),
@@ -132,9 +133,9 @@ Future<void> showInfoPopover({
   if (anchorContext == null || overlay == null) {
     return Future<void>.value();
   }
-  final anchorBox = anchorContext.findRenderObject() as RenderBox?;
-  final overlayBox = overlay.context.findRenderObject() as RenderBox?;
-  if (anchorBox == null || !anchorBox.hasSize || overlayBox == null) {
+  final anchorBox = anchorContext.findRenderObject();
+  final overlayBox = overlay.context.findRenderObject();
+  if (anchorBox is! RenderBox || overlayBox is! RenderBox || !anchorBox.hasSize) {
     return Future<void>.value();
   }
 
