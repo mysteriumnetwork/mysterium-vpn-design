@@ -246,6 +246,9 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgWarning;
   abstract final Color bgSuccess;
   abstract final Color bgModals;
+
+  /// Circular informational-icon badge background (Figma `bg-info-icon`).
+  abstract final Color bgInfoIcon;
   abstract final Color bgPopover;
   abstract final Color bgSuccessTertiary;
   abstract final Color tooltipBackground;
@@ -490,6 +493,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgModals => Palette.grayDark.shade800;
+
+  @override
+  Color get bgInfoIcon => Palette.grayDark.shade700;
 
   @override
   Color get bgPopover => Palette.brandPurple.shade900;
@@ -796,6 +802,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgModals => Palette.grayLight.shade25;
+
+  @override
+  Color get bgInfoIcon => Palette.grayLight.shade100;
 
   @override
   Color get bgPopover => Palette.white;

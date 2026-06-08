@@ -125,10 +125,16 @@ class MainIpCard extends StatelessWidget {
     this.onThumbsDown,
     this.onDismissPreview,
     this.onSwitchCountry,
+    this.serviceQualityKey,
     super.key,
   });
 
   final MainIpCardStatus status;
+
+  /// Optional key placed on the service-quality label (e.g. "Residential") in
+  /// the connected / new-IP-preview states, so callers can anchor an overlay
+  /// to it. No effect in other states.
+  final Key? serviceQualityKey;
 
   final String connectLabel;
   final String disconnectLabel;
@@ -195,6 +201,7 @@ class MainIpCard extends StatelessWidget {
             city: city,
             ipAddress: ipAddress,
             serviceQuality: serviceQuality,
+            serviceQualityKey: serviceQualityKey,
             ipPoolCount: ipPoolCount,
             buttonLabel: disconnectLabel,
             connectionRatingLabel: connectionRatingLabel,
@@ -246,6 +253,7 @@ class MainIpCard extends StatelessWidget {
                     city: city,
                     ipAddress: ipAddress,
                     serviceQuality: serviceQuality,
+                    serviceQualityKey: serviceQualityKey,
                     ipPoolCount: ipPoolCount,
                     buttonLabel: switchLabel,
                     connectionRatingLabel: connectionRatingLabel,
@@ -502,6 +510,7 @@ class _ConnectedContent extends StatelessWidget {
     required this.buttonLabel,
     required this.connectionRatingLabel,
     required this.refreshIpTooltip,
+    this.serviceQualityKey,
     this.connectionRating = ConnectionRating.none,
     this.showConnectionRating = true,
     this.onButton,
@@ -515,6 +524,7 @@ class _ConnectedContent extends StatelessWidget {
   final String city;
   final String ipAddress;
   final String serviceQuality;
+  final Key? serviceQualityKey;
   final int ipPoolCount;
   final String buttonLabel;
   final String connectionRatingLabel;
@@ -589,6 +599,7 @@ class _ConnectedContent extends StatelessWidget {
                         Flexible(
                           child: Text(
                             serviceQuality,
+                            key: serviceQualityKey,
                             style: subtitleStyle,
                             overflow: TextOverflow.ellipsis,
                           ),

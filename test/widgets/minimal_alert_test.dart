@@ -49,5 +49,42 @@ void main() {
       await pumpWidget(tester, const MinimalAlert(message: 'Alert'));
       expect(find.byIcon(UntitledUI.info_circle), findsNothing);
     });
+
+    testWidgets('renders title and message when title provided', (tester) async {
+      await pumpWidget(
+        tester,
+        const MinimalAlert(title: 'High-speed IPs', message: 'Optimised for speed.'),
+      );
+      expect(find.text('High-speed IPs'), findsOneWidget);
+      expect(find.text('Optimised for speed.'), findsOneWidget);
+    });
+
+    testWidgets('renders tooltip beside title when titled', (tester) async {
+      await pumpWidget(
+        tester,
+        const MinimalAlert(
+          title: 'Residential IPs',
+          message: 'Provided by real households.',
+          tooltipTitle: 'Title',
+          tooltipBody: 'Body text',
+        ),
+      );
+      expect(find.byType(TooltipIcon), findsOneWidget);
+    });
+
+    testWidgets('titleAction replaces the tooltip beside the title', (tester) async {
+      await pumpWidget(
+        tester,
+        const MinimalAlert(
+          title: 'Residential IPs',
+          message: 'Provided by real households.',
+          tooltipTitle: 'Title',
+          tooltipBody: 'Body text',
+          titleAction: Icon(UntitledUI.info_circle, key: Key('action')),
+        ),
+      );
+      expect(find.byKey(const Key('action')), findsOneWidget);
+      expect(find.byType(TooltipIcon), findsNothing);
+    });
   });
 }
