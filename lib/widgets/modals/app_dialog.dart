@@ -101,6 +101,8 @@ class AppDialog extends StatelessWidget {
         : null;
 
     return Material(
+      clipBehavior: Clip.antiAlias,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kS)),
       child: Container(
         color: palette.bgModals,
         width: width,
