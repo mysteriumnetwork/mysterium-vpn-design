@@ -71,7 +71,6 @@ class AppDialog extends StatelessWidget {
         Text(
           title,
           textAlign: TextAlign.center,
-          maxLines: 2,
           style:
               titleStyle ?? theme.textStyles.textMd.semibold.copyWith(color: palette.textPrimary),
         ),
@@ -80,7 +79,6 @@ class AppDialog extends StatelessWidget {
           Text(
             description!,
             textAlign: TextAlign.center,
-            maxLines: 2,
             style:
                 descriptionStyle ??
                 theme.textStyles.textXs.regular.copyWith(color: palette.textTertiary),
