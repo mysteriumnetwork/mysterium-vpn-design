@@ -354,7 +354,9 @@ class PaletteDark extends Palette {
   /// Border Colors
   ///
   @override
-  Color get borderPrimary => Palette.grayPurple.shade600;
+  // Colors/Border/border-primary (dark) — neutral gray per Figma, not the
+  // purple-tinted grayPurple.shade600.
+  Color get borderPrimary => const Color(0xFF454950);
 
   @override
   Color get borderModals => Palette.grayDarkAlpha.shade700;
