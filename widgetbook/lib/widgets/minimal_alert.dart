@@ -67,3 +67,27 @@ Widget buildMinimalAlertTitled(BuildContext context) {
     ),
   );
 }
+
+// ─── Title with leading icon ──────────────────────────────────────────────────
+
+@UseCase(name: 'Title and icon', type: MinimalAlert)
+Widget buildMinimalAlertTitledWithIcon(BuildContext context) {
+  final showTooltip = context.knobs.boolean(label: 'Show tooltip', initialValue: true);
+  final showDismiss = context.knobs.boolean(label: 'Show dismiss button', initialValue: true);
+  return Padding(
+    padding: const EdgeInsets.all(16),
+    child: MinimalAlert(
+      leadingIcon: UntitledUI.home_03,
+      title: context.knobs.string(label: 'Title', initialValue: 'Residential IPs'),
+      message: context.knobs.string(
+        label: 'Message',
+        initialValue: 'Provided by real households. Nearly undetectable but less stable.',
+      ),
+      tooltipTitle: showTooltip ? 'Why can my IP change?' : null,
+      tooltipBody: showTooltip
+          ? 'Residential IPs are provided by real household devices, so availability can change over time.'
+          : null,
+      onDismiss: showDismiss ? () {} : null,
+    ),
+  );
+}

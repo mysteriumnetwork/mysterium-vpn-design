@@ -3,8 +3,12 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// A dismissible informational banner with optional tooltip.
 ///
-/// Shows [message] in a styled card. When a tooltip is provided an
-/// [info-circle] [TooltipIcon] is rendered inline after the text.
+/// Shows [message] in a styled card. When [title] is set the card renders a
+/// bold title line with [message] as supporting text below it, and any tooltip
+/// is placed beside the title. Otherwise [message] is shown on its own and the
+/// tooltip is rendered inline after it.
+///
+/// When a tooltip is provided an [info-circle] [TooltipIcon] is rendered.
 /// When [onDismiss] is provided an × button appears top-right.
 ///
 /// Tooltip priority (first non-null wins):
@@ -14,6 +18,8 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 class MinimalAlert extends StatelessWidget {
   const MinimalAlert({
     required this.message,
+    this.title,
+    this.titleAction,
     this.leadingIcon,
     this.tooltipMsg,
     this.tooltipTitle,
@@ -24,9 +30,20 @@ class MinimalAlert extends StatelessWidget {
   }) : assert(
          tooltipTitle == null || tooltipBody != null,
          'tooltipBody must be provided when tooltipTitle is set.',
-       );
+       ),
+       assert(titleAction == null || title != null, 'titleAction requires a title.');
 
   final String message;
+
+  /// Optional bold title rendered above [message]. When set, [message] becomes
+  /// supporting text, any tooltip is placed beside the title, and the leading
+  /// icon aligns to the top of the content (instead of vertically centered).
+  final String? title;
+
+  /// Optional widget rendered beside [title] instead of the built-in tooltip
+  /// icon — e.g. a tappable info icon that opens a custom popover. Takes
+  /// precedence over the tooltip when both are provided. Requires [title].
+  final Widget? titleAction;
 
   /// Optional glyph rendered in a circular informational badge before the
   /// message. Matches the "Minimal alert/Default" component in Figma.
@@ -61,28 +78,57 @@ class MinimalAlert extends StatelessWidget {
     final theme = Theme.of(context);
     final textColor = palette.textTertiary;
     final effectiveTooltip = _effectiveTooltip(textColor);
+    final hasTitle = title != null;
 
     // 44px right reserves space for the 36px dismiss button at right: 7.
     final rightPad = onDismiss != null ? 44.0 : theme.spacing.md;
 
-    final messageRich = Text.rich(
-      TextSpan(
-        children: [
-          TextSpan(
-            text: message,
-            style: theme.textStyles.textSm.regular.copyWith(color: textColor),
-          ),
-          if (effectiveTooltip != null)
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: Padding(
-                padding: EdgeInsets.only(left: theme.spacing.xs),
-                child: effectiveTooltip,
+    final content = hasTitle
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Flexible(
+                    child: Text(
+                      title!,
+                      style: theme.textStyles.textSm.semibold.copyWith(color: palette.textPrimary),
+                    ),
+                  ),
+                  if (titleAction != null)
+                    Padding(
+                      padding: EdgeInsets.only(left: theme.spacing.s),
+                      child: titleAction,
+                    )
+                  else if (effectiveTooltip != null)
+                    Padding(
+                      padding: EdgeInsets.only(left: theme.spacing.s),
+                      child: effectiveTooltip,
+                    ),
+                ],
               ),
+              SizedBox(height: theme.spacing.xxs),
+              Text(message, style: theme.textStyles.textXs.regular.copyWith(color: textColor)),
+            ],
+          )
+        : Text.rich(
+            TextSpan(
+              children: [
+                TextSpan(
+                  text: message,
+                  style: theme.textStyles.textSm.regular.copyWith(color: textColor),
+                ),
+                if (effectiveTooltip != null)
+                  WidgetSpan(
+                    alignment: PlaceholderAlignment.middle,
+                    child: Padding(
+                      padding: EdgeInsets.only(left: theme.spacing.xs),
+                      child: effectiveTooltip,
+                    ),
+                  ),
+              ],
             ),
-        ],
-      ),
-    );
+          );
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -101,6 +147,7 @@ class MinimalAlert extends StatelessWidget {
               theme.spacing.md,
             ),
             child: Row(
+              crossAxisAlignment: hasTitle ? CrossAxisAlignment.start : CrossAxisAlignment.center,
               children: [
                 if (leadingIcon != null) ...[
                   DecoratedIcon(
@@ -115,7 +162,7 @@ class MinimalAlert extends StatelessWidget {
                   ),
                   SizedBox(width: theme.spacing.s),
                 ],
-                Expanded(child: messageRich),
+                Expanded(child: content),
               ],
             ),
           ),
