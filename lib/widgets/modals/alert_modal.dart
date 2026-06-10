@@ -32,7 +32,9 @@ enum AlertModalType {
 ///
 /// Surface uses [Palette.bgModals] with [Palette.borderModals] and the
 /// shadow-lg drop shadow. The leading badge pulls its background and icon
-/// colours from the theme (`bg{Type}` and `icon{Type}Primary`).
+/// colours from the theme (`bg{Type}` and `icon{Type}Primary`); pass [icon] to
+/// override just the badge glyph (colours still follow [type]). Surface padding
+/// defaults to [Spacing.md] on every side and can be overridden via [padding].
 ///
 /// Layout adapts to screen size:
 /// - **Desktop** (`screenType >= tablet`): horizontal — icon left, content
