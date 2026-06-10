@@ -54,6 +54,7 @@ class AlertModal extends StatelessWidget {
     this.onClose,
     this.input,
     this.screenType,
+    this.padding,
     super.key,
   });
 
@@ -90,6 +91,9 @@ class AlertModal extends StatelessWidget {
   /// Override the screen type used to pick the layout. When null,
   /// resolved automatically via [ScreenType.of].
   final ScreenType? screenType;
+
+  /// Surface padding. Defaults to [Spacing.md] on every side.
+  final EdgeInsets? padding;
 
   bool get _hasButtons => primaryButton != null || secondaryButton != null;
 
@@ -129,7 +133,7 @@ class AlertModal extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.all(theme.spacing.md),
+            padding: padding ?? EdgeInsets.all(theme.spacing.md),
             child: isDesktop ? _buildDesktop(context) : _buildMobile(context),
           ),
           if (onClose != null)
