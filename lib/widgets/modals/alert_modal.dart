@@ -47,6 +47,7 @@ class AlertModal extends StatelessWidget {
     required this.title,
     this.supportingText,
     this.type = AlertModalType.brand,
+    this.icon,
     this.showIcon = true,
     this.primaryButton,
     this.secondaryButton,
@@ -61,8 +62,12 @@ class AlertModal extends StatelessWidget {
   /// Secondary line under the title. Hidden when null.
   final String? supportingText;
 
-  /// Status the alert conveys.
+  /// Status the alert conveys. Drives the badge's background and icon colours.
   final AlertModalType type;
+
+  /// Overrides the badge glyph. When null the icon is derived from [type].
+  /// The badge background/foreground colours still come from [type].
+  final IconData? icon;
 
   /// Whether to render the leading icon badge.
   final bool showIcon;
@@ -143,7 +148,7 @@ class AlertModal extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showIcon) ...[_Badge(type: type), SizedBox(width: theme.spacing.s)],
+        if (showIcon) ...[_Badge(type: type, icon: icon), SizedBox(width: theme.spacing.s)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,7 +184,7 @@ class AlertModal extends StatelessWidget {
         if (showIcon)
           Align(
             alignment: Alignment.centerLeft,
-            child: _Badge(type: type),
+            child: _Badge(type: type, icon: icon),
           ),
         _TextBlock(
           title: title,
@@ -201,9 +206,10 @@ class AlertModal extends StatelessWidget {
 }
 
 class _Badge extends StatelessWidget {
-  const _Badge({required this.type});
+  const _Badge({required this.type, this.icon});
 
   final AlertModalType type;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +218,7 @@ class _Badge extends StatelessWidget {
       width: 32,
       height: 32,
       decoration: BoxDecoration(color: _bg(palette, type), shape: BoxShape.circle),
-      child: Icon(_icon(type), size: 20, color: _fg(palette, type)),
+      child: Icon(icon ?? _icon(type), size: 20, color: _fg(palette, type)),
     );
   }
 
