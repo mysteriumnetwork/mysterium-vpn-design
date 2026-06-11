@@ -35,6 +35,7 @@ class TooltipIcon extends StatelessWidget {
     IconData icon = UntitledUI.help_circle,
     double size = 16.0,
     Color? color,
+    VoidCallback? onTriggered,
     Key? key,
   }) : this._(
          key: key,
@@ -42,6 +43,7 @@ class TooltipIcon extends StatelessWidget {
          icon: icon,
          size: size,
          color: color,
+         onTriggered: onTriggered,
        );
 
   const TooltipIcon._({
@@ -52,6 +54,7 @@ class TooltipIcon extends StatelessWidget {
     this.icon = UntitledUI.help_circle,
     this.size = 16.0,
     this.color,
+    this.onTriggered,
   }) : assert(
          message != null || richMessage != null || content != null,
          'Either message, richMessage, or content must be provided.',
@@ -69,6 +72,9 @@ class TooltipIcon extends StatelessWidget {
   /// Icon color. Defaults to [Palette.textTertiary] when null.
   final Color? color;
 
+  /// Called when the tooltip is triggered by tap or long-press (not hover).
+  final VoidCallback? onTriggered;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -85,6 +91,7 @@ class TooltipIcon extends StatelessWidget {
       message: effectiveRichMessage != null ? null : message,
       richMessage: effectiveRichMessage,
       verticalOffset: (size / 2) + 4,
+      onTriggered: onTriggered,
       child: Icon(icon, size: size, color: color ?? theme.palette.textTertiary),
     );
   }
