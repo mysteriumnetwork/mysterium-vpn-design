@@ -348,6 +348,7 @@ class PaletteDark extends Palette {
   Color get textSuccessTertiary => Palette.success.shade300;
 
   @override
+  // Tooltips are a contrast surface: light bg in dark mode, so text is dark.
   Color get textTooltip => Palette.grayLight.shade800;
 
   ///
@@ -506,7 +507,8 @@ class PaletteDark extends Palette {
   Color get bgSuccessTertiary => Palette.success.shade800;
 
   @override
-  Color get tooltipBackground => Palette.brandPurple.shade25;
+  // Figma Colors/Background/bg-tooltip = #FAFAFA in dark mode (light surface).
+  Color get tooltipBackground => Palette.grayLight.shade50;
 
   @override
   Color get bgMainIpCard => Palette.brand.shade100;
@@ -661,6 +663,7 @@ class PaletteLight extends Palette {
   @override
   Color get textSuccessTertiary => Palette.success.shade700;
 
+  // Tooltips are a contrast surface: dark bg in light mode, so text is white.
   @override
   Color get textTooltip => Palette.white;
 
@@ -815,7 +818,8 @@ class PaletteLight extends Palette {
   Color get bgSuccessTertiary => Palette.success.shade25;
 
   @override
-  Color get tooltipBackground => Palette.brandPurple.shade900;
+  // Figma Colors/Background/bg-tooltip = #252B37 in light mode (dark surface).
+  Color get tooltipBackground => Palette.grayLight.shade800;
 
   @override
   Color get bgMainIpCard => Palette.brand.shade900;

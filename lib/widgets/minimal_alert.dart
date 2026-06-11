@@ -81,7 +81,7 @@ class MinimalAlert extends StatelessWidget {
     final hasTitle = title != null;
 
     // 44px right reserves space for the 36px dismiss button at right: 7.
-    final rightPad = onDismiss != null ? 44.0 : theme.spacing.md;
+    final rightPad = onDismiss != null ? 44.0 : theme.spacing.ms;
 
     final content = hasTitle
         ? Column(
@@ -141,10 +141,10 @@ class MinimalAlert extends StatelessWidget {
         children: [
           Padding(
             padding: EdgeInsets.fromLTRB(
-              theme.spacing.md,
-              theme.spacing.md,
+              theme.spacing.ms,
+              theme.spacing.ms,
               rightPad,
-              theme.spacing.md,
+              theme.spacing.ms,
             ),
             child: Row(
               crossAxisAlignment: hasTitle ? CrossAxisAlignment.start : CrossAxisAlignment.center,
@@ -170,16 +170,18 @@ class MinimalAlert extends StatelessWidget {
             Positioned(
               top: 7,
               right: 7,
-              child: IconButton(
-                onPressed: onDismiss,
-                padding: EdgeInsets.zero,
-                icon: Icon(UntitledUI.x_close, size: 20, color: palette.iconTertiary),
-                style: ButtonStyle(
-                  shape: WidgetStateProperty.all(
-                    const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kS)),
+              child: SizedBox.square(
+                dimension: 36,
+                child: IconButton(
+                  onPressed: onDismiss,
+                  padding: EdgeInsets.zero,
+                  icon: Icon(UntitledUI.x_close, size: 20, color: palette.iconTertiary),
+                  style: ButtonStyle(
+                    shape: WidgetStateProperty.all(
+                      const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.kXs)),
+                    ),
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
-                  visualDensity: VisualDensity.compact,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
               ),
             ),
