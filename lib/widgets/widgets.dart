@@ -8,6 +8,7 @@ export 'connection_bar.dart';
 export 'decorated_icon.dart';
 export 'floating_button.dart';
 export 'header.dart';
+export 'info_popover.dart';
 export 'intent_tab.dart';
 export 'ip_selection_card.dart';
 export 'loading_indicator.dart';
