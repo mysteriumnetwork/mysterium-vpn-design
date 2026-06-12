@@ -32,7 +32,9 @@ enum AlertModalType {
 ///
 /// Surface uses [Palette.bgModals] with [Palette.borderModals] and the
 /// shadow-lg drop shadow. The leading badge pulls its background and icon
-/// colours from the theme (`bg{Type}` and `icon{Type}Primary`).
+/// colours from the theme (`bg{Type}` and `icon{Type}Primary`); pass [icon] to
+/// override just the badge glyph (colours still follow [type]). Surface padding
+/// defaults to [Spacing.md] on every side and can be overridden via [padding].
 ///
 /// Layout adapts to screen size:
 /// - **Desktop** (`screenType >= tablet`): horizontal — icon left, content
@@ -47,12 +49,14 @@ class AlertModal extends StatelessWidget {
     required this.title,
     this.supportingText,
     this.type = AlertModalType.brand,
+    this.icon,
     this.showIcon = true,
     this.primaryButton,
     this.secondaryButton,
     this.onClose,
     this.input,
     this.screenType,
+    this.padding,
     super.key,
   });
 
@@ -61,8 +65,12 @@ class AlertModal extends StatelessWidget {
   /// Secondary line under the title. Hidden when null.
   final String? supportingText;
 
-  /// Status the alert conveys.
+  /// Status the alert conveys. Drives the badge's background and icon colours.
   final AlertModalType type;
+
+  /// Overrides the badge glyph. When null the icon is derived from [type].
+  /// The badge background/foreground colours still come from [type].
+  final IconData? icon;
 
   /// Whether to render the leading icon badge.
   final bool showIcon;
@@ -85,6 +93,9 @@ class AlertModal extends StatelessWidget {
   /// Override the screen type used to pick the layout. When null,
   /// resolved automatically via [ScreenType.of].
   final ScreenType? screenType;
+
+  /// Surface padding. Defaults to [Spacing.md] on every side.
+  final EdgeInsets? padding;
 
   bool get _hasButtons => primaryButton != null || secondaryButton != null;
 
@@ -124,7 +135,7 @@ class AlertModal extends StatelessWidget {
       child: Stack(
         children: [
           Padding(
-            padding: EdgeInsets.all(theme.spacing.md),
+            padding: padding ?? EdgeInsets.all(theme.spacing.md),
             child: isDesktop ? _buildDesktop(context) : _buildMobile(context),
           ),
           if (onClose != null)
@@ -143,7 +154,7 @@ class AlertModal extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (showIcon) ...[_Badge(type: type), SizedBox(width: theme.spacing.s)],
+        if (showIcon) ...[_Badge(type: type, icon: icon), SizedBox(width: theme.spacing.s)],
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -179,7 +190,7 @@ class AlertModal extends StatelessWidget {
         if (showIcon)
           Align(
             alignment: Alignment.centerLeft,
-            child: _Badge(type: type),
+            child: _Badge(type: type, icon: icon),
           ),
         _TextBlock(
           title: title,
@@ -201,9 +212,10 @@ class AlertModal extends StatelessWidget {
 }
 
 class _Badge extends StatelessWidget {
-  const _Badge({required this.type});
+  const _Badge({required this.type, this.icon});
 
   final AlertModalType type;
+  final IconData? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +224,7 @@ class _Badge extends StatelessWidget {
       width: 32,
       height: 32,
       decoration: BoxDecoration(color: _bg(palette, type), shape: BoxShape.circle),
-      child: Icon(_icon(type), size: 20, color: _fg(palette, type)),
+      child: Icon(icon ?? _icon(type), size: 20, color: _fg(palette, type)),
     );
   }
 
