@@ -49,10 +49,7 @@ void main() {
     });
 
     testWidgets('renders the custom icon instead of the type glyph', (tester) async {
-      await pumpWidget(
-        tester,
-        const AlertModal(title: 'Title', icon: UntitledUI.thumbs_up),
-      );
+      await pumpWidget(tester, const AlertModal(title: 'Title', icon: UntitledUI.thumbs_up));
       expect(find.byIcon(UntitledUI.thumbs_up), findsOneWidget);
       // The default brand glyph is replaced.
       expect(find.byIcon(UntitledUI.check_circle), findsNothing);
@@ -70,9 +67,7 @@ void main() {
       const padding = EdgeInsets.fromLTRB(16, 40, 16, 32);
       await pumpWidget(tester, const AlertModal(title: 'Title', padding: padding));
       final paddingWidget = tester.widget<Padding>(
-        find
-            .descendant(of: find.byType(AlertModal), matching: find.byType(Padding))
-            .first,
+        find.descendant(of: find.byType(AlertModal), matching: find.byType(Padding)).first,
       );
       expect(paddingWidget.padding, padding);
     });

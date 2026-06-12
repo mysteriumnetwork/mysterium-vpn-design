@@ -18,12 +18,10 @@ FutureOr<T?> showModal<T>(
     builder: (context) {
       final theme = Theme.of(context);
       return Theme(
-        data: theme.isDesignSystem
-            ? theme
-            : switch (theme.brightness) {
-                Brightness.dark => DesignSystem.darkTheme,
-                Brightness.light => DesignSystem.lightTheme,
-              },
+        data: switch (theme.brightness) {
+          Brightness.dark => DesignSystem.darkTheme,
+          Brightness.light => DesignSystem.lightTheme,
+        },
         child: _AdaptiveModal(
           screenType: screenType,
           desktopConstraints: desktopConstraints,

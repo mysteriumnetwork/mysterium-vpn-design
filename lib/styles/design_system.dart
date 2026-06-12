@@ -326,7 +326,4 @@ extension ThemeExtensions on ThemeData {
   Spacing get spacing => extension<Spacing>()!;
 
   Radius get radius => extension<Radius>()!;
-
-  // A temporary util to check if the theme is from new design system or it is legacy.
-  bool get isDesignSystem => extension<Spacing>() != null;
 }
