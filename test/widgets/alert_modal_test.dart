@@ -66,10 +66,15 @@ void main() {
     testWidgets('applies custom surface padding', (tester) async {
       const padding = EdgeInsets.fromLTRB(16, 40, 16, 32);
       await pumpWidget(tester, const AlertModal(title: 'Title', padding: padding));
-      final paddingWidget = tester.widget<Padding>(
-        find.descendant(of: find.byType(AlertModal), matching: find.byType(Padding)).first,
+      // Match the specific surface Padding by its value rather than relying on
+      // tree order — AlertModal contains several Padding widgets (e.g. _TextBlock).
+      expect(
+        find.descendant(
+          of: find.byType(AlertModal),
+          matching: find.byWidgetPredicate((w) => w is Padding && w.padding == padding),
+        ),
+        findsOneWidget,
       );
-      expect(paddingWidget.padding, padding);
     });
 
     testWidgets('renders primary and secondary buttons', (tester) async {
