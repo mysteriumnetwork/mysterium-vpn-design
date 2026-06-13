@@ -35,6 +35,9 @@ class NavRailItem {
 /// [NavRail.padding] inside the rail offsets the item column. Defaults to
 /// `EdgeInsets.only(top: 86)` so items sit below a typical app header.
 ///
+/// Optional [itemWrapper] can add an outer layer per entry (e.g. a product
+/// tour). Pass through `child` unless wrapping it.
+///
 /// ```dart
 /// NavRail(
 ///   currentIndex: 0,
@@ -43,6 +46,9 @@ class NavRailItem {
 ///     NavRailItem(icon: UntitledUI.star_06,     label: 'Products', onTap: () {}),
 ///     NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
 ///   ],
+///   itemWrapper: ({required context, required index, required item, required child}) {
+///     return MyTourTarget(key: tourKeys[index], child: child);
+///   },
 /// )
 /// ```
 class NavRail extends StatelessWidget {
@@ -50,6 +56,7 @@ class NavRail extends StatelessWidget {
     required this.items,
     required this.currentIndex,
     this.padding = const EdgeInsets.only(top: 86),
+    this.itemWrapper,
     super.key,
   });
 
@@ -62,6 +69,9 @@ class NavRail extends StatelessWidget {
   /// Inner padding wrapping the item column. Defaults to 86 px of top
   /// padding so items sit below a typical app header.
   final EdgeInsetsGeometry padding;
+
+  /// Wraps each built nav button. See [ListItemWrapper].
+  final ListItemWrapper<NavRailItem>? itemWrapper;
 
   @override
   Widget build(BuildContext context) {
@@ -97,7 +107,13 @@ class NavRail extends StatelessWidget {
             spacing: theme.spacing.xl4,
             children: [
               for (var i = 0; i < items.length; i++)
-                _NavRailButton(item: items[i], selected: i == currentIndex),
+                itemWrapper?.call(
+                      context: context,
+                      index: i,
+                      item: items[i],
+                      child: _NavRailButton(item: items[i], selected: i == currentIndex),
+                    ) ??
+                    _NavRailButton(item: items[i], selected: i == currentIndex),
             ],
           ),
         ),

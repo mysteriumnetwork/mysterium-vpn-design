@@ -214,6 +214,66 @@ void main() {
       expect(fad.enabled, isFalse);
     });
 
+    testWidgets('itemWrapper wraps each nav item', (tester) async {
+      // act
+      await _pumpRail(
+        tester,
+        NavRail(
+          items: _items,
+          currentIndex: 0,
+          itemWrapper: ({required context, required index, required item, required child}) =>
+              SizedBox(key: Key('wrapped-$index'), child: child),
+        ),
+      );
+
+      // assert
+      expect(find.byKey(const Key('wrapped-0')), findsOneWidget);
+      expect(find.byKey(const Key('wrapped-1')), findsOneWidget);
+      expect(find.byKey(const Key('wrapped-2')), findsOneWidget);
+    });
+
+    testWidgets('itemWrapper receives correct index and item metadata', (tester) async {
+      // arrange
+      final seenIndices = <int>[];
+      final seenLabels = <String>[];
+
+      // act
+      await _pumpRail(
+        tester,
+        NavRail(
+          items: _items,
+          currentIndex: 0,
+          itemWrapper: ({required context, required index, required item, required child}) {
+            seenIndices.add(index);
+            seenLabels.add(item.label);
+            return child;
+          },
+        ),
+      );
+
+      // assert
+      expect(seenIndices, <int>[0, 1, 2]);
+      expect(seenLabels, <String>['Map', 'Products', 'Settings']);
+    });
+
+    testWidgets('itemWrapper can wrap only selected items', (tester) async {
+      await _pumpRail(
+        tester,
+        NavRail(
+          items: _items,
+          currentIndex: 0,
+          itemWrapper: ({required context, required index, required item, required child}) {
+            if (index == 1) {
+              return KeyedSubtree(key: const Key('only-middle-wrapped'), child: child);
+            }
+            return child;
+          },
+        ),
+      );
+
+      expect(find.byKey(const Key('only-middle-wrapped')), findsOneWidget);
+    });
+
     testWidgets('outer rail width is 48 px', (tester) async {
       await _pumpRail(tester, const NavRail(items: _items, currentIndex: 0));
       expect(tester.getSize(find.byType(NavRail)).width, 48);
