@@ -16,6 +16,7 @@ MainIpCard _build(
   VoidCallback? onThumbsUp,
   VoidCallback? onThumbsDown,
   VoidCallback? onRefreshIp,
+  SingleWidgetWrapper? buttonWrapper,
 }) => MainIpCard(
   status: status,
   connectLabel: 'Connect',
@@ -33,6 +34,7 @@ MainIpCard _build(
   onThumbsUp: onThumbsUp,
   onThumbsDown: onThumbsDown,
   onRefreshIp: onRefreshIp,
+  buttonWrapper: buttonWrapper,
 );
 
 void main() {
@@ -104,6 +106,28 @@ void main() {
       expect(find.text('IP pool: 3'), findsOneWidget);
       await tester.tap(find.text('Disconnect'));
       expect(disconnected, isTrue);
+    });
+
+    testWidgets('buttonWrapper wraps the main action button', (tester) async {
+      const wrapperKey = Key('main-ip-card-action-wrapper');
+      var connected = false;
+      await pumpWidget(
+        tester,
+        _build(
+          const MainIpCardNotConnected(),
+          onConnect: () => connected = true,
+          buttonWrapper: ({required context, required child}) =>
+              KeyedSubtree(key: wrapperKey, child: child),
+        ),
+      );
+
+      expect(
+        find.ancestor(of: find.text('Connect'), matching: find.byKey(wrapperKey)),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text('Connect'));
+      expect(connected, isTrue);
     });
 
     testWidgets('NewIpPreview renders preview country and main switch label', (tester) async {

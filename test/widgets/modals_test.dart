@@ -5,6 +5,76 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import '../helpers/pump_widget.dart';
 
 void main() {
+  group('AppDialog', () {
+    testWidgets('uses app dialog surface and content padding', (tester) async {
+      await pumpWidget(tester, const AppDialog(title: 'Title', width: 343, height: 236));
+
+      final theme = DesignSystem.lightTheme;
+      final container = tester.widget<Container>(
+        find.descendant(of: find.byType(AppDialog), matching: find.byType(Container)),
+      );
+      final padding = tester.widget<Padding>(
+        find.descendant(of: find.byType(AppDialog), matching: find.byType(Padding)),
+      );
+
+      expect(container.color, theme.palette.bgModals);
+      expect(container.constraints?.maxWidth, 343);
+      expect(container.constraints?.maxHeight, 236);
+      expect(padding.padding, EdgeInsets.all(theme.spacing.md));
+    });
+
+    testWidgets('uses subscription onboarding typography defaults', (tester) async {
+      await pumpWidget(
+        tester,
+        const AppDialog(title: 'Setup complete', description: 'You are ready to go.'),
+      );
+
+      final theme = DesignSystem.lightTheme;
+      final title = tester.widget<Text>(find.text('Setup complete'));
+      final description = tester.widget<Text>(find.text('You are ready to go.'));
+
+      expect(
+        title.style,
+        theme.textStyles.textMd.semibold.copyWith(color: theme.palette.textPrimary),
+      );
+      expect(
+        description.style,
+        theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
+      );
+    });
+
+    testWidgets('renders emblem and stacked action buttons', (tester) async {
+      var primaryPressed = false;
+      var secondaryPressed = false;
+
+      await pumpWidget(
+        tester,
+        AppDialog(
+          title: 'Start tour',
+          emblem: const Icon(Icons.flag),
+          primaryButton: ButtonPrimary(
+            onPressed: () => primaryPressed = true,
+            child: const Text('Start'),
+          ),
+          secondaryButton: ButtonTertiary(
+            onPressed: () => secondaryPressed = true,
+            child: const Text('Skip'),
+          ),
+        ),
+      );
+
+      expect(find.byIcon(Icons.flag), findsOneWidget);
+      expect(find.text('Start'), findsOneWidget);
+      expect(find.text('Skip'), findsOneWidget);
+
+      await tester.tap(find.text('Start'));
+      await tester.tap(find.text('Skip'));
+
+      expect(primaryPressed, isTrue);
+      expect(secondaryPressed, isTrue);
+    });
+  });
+
   group('ModalAppbar', () {
     testWidgets('renders title when provided', (tester) async {
       await pumpWidget(
