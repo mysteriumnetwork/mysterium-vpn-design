@@ -20,6 +20,14 @@ Widget buildAlertModal(BuildContext context) {
     initialValue: 'Get notified when your subscription ends or when key actions are needed.',
   );
   final showIcon = context.knobs.boolean(label: 'Show icon', initialValue: true);
+  final customIcon = context.knobs.boolean(
+    label: 'Custom badge icon (thumbs-up)',
+    description: 'Overrides the type glyph via `icon`; badge colours still follow the type.',
+  );
+  final customPadding = context.knobs.boolean(
+    label: 'Custom padding (40/32/16)',
+    description: 'Overrides the default spacing.md surface padding via `padding`.',
+  );
   final showClose = context.knobs.boolean(label: 'Show close button', initialValue: true);
   final showInput = context.knobs.boolean(label: 'Show input');
   final showPrimary = context.knobs.boolean(label: 'Show primary button', initialValue: true);
@@ -36,6 +44,8 @@ Widget buildAlertModal(BuildContext context) {
     title: title,
     supportingText: supportingText,
     showIcon: showIcon,
+    icon: customIcon ? UntitledUI.thumbs_up : null,
+    padding: customPadding ? const EdgeInsets.fromLTRB(16, 40, 16, 32) : null,
     onClose: showClose ? () {} : null,
     input: showInput ? const _SampleInput() : null,
     primaryButton: showPrimary

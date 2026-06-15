@@ -37,23 +37,19 @@ FutureOr<T?> showBottomSheetDialog<T>(
   final isDesktop = resolvedScreenType >= ScreenType.tablet;
 
   final theme = Theme.of(context);
-  final dsTheme = theme.isDesignSystem
-      ? theme
-      : switch (theme.brightness) {
-          Brightness.dark => DesignSystem.darkTheme,
-          Brightness.light => DesignSystem.lightTheme,
-        };
+  final dsTheme = switch (theme.brightness) {
+    Brightness.dark => DesignSystem.darkTheme,
+    Brightness.light => DesignSystem.lightTheme,
+  };
   final palette = dsTheme.palette;
 
   Widget applyTheme(BuildContext context, Widget child) {
     final theme = Theme.of(context);
     return Theme(
-      data: theme.isDesignSystem
-          ? theme
-          : switch (theme.brightness) {
-              Brightness.dark => DesignSystem.darkTheme,
-              Brightness.light => DesignSystem.lightTheme,
-            },
+      data: switch (theme.brightness) {
+        Brightness.dark => DesignSystem.darkTheme,
+        Brightness.light => DesignSystem.lightTheme,
+      },
       child: child,
     );
   }

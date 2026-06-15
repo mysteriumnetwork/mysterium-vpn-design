@@ -48,6 +48,35 @@ void main() {
       expect(find.byIcon(UntitledUI.check_circle), findsNothing);
     });
 
+    testWidgets('renders the custom icon instead of the type glyph', (tester) async {
+      await pumpWidget(tester, const AlertModal(title: 'Title', icon: UntitledUI.thumbs_up));
+      expect(find.byIcon(UntitledUI.thumbs_up), findsOneWidget);
+      // The default brand glyph is replaced.
+      expect(find.byIcon(UntitledUI.check_circle), findsNothing);
+    });
+
+    testWidgets('custom icon is not shown when showIcon is false', (tester) async {
+      await pumpWidget(
+        tester,
+        const AlertModal(title: 'Title', showIcon: false, icon: UntitledUI.thumbs_up),
+      );
+      expect(find.byIcon(UntitledUI.thumbs_up), findsNothing);
+    });
+
+    testWidgets('applies custom surface padding', (tester) async {
+      const padding = EdgeInsets.fromLTRB(16, 40, 16, 32);
+      await pumpWidget(tester, const AlertModal(title: 'Title', padding: padding));
+      // Match the specific surface Padding by its value rather than relying on
+      // tree order — AlertModal contains several Padding widgets (e.g. _TextBlock).
+      expect(
+        find.descendant(
+          of: find.byType(AlertModal),
+          matching: find.byWidgetPredicate((w) => w is Padding && w.padding == padding),
+        ),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('renders primary and secondary buttons', (tester) async {
       await pumpWidget(
         tester,
