@@ -62,9 +62,8 @@ class _RefreshIconButtonState extends State<RefreshIconButton> with SingleTicker
     if (widget.spinning) {
       _controller.repeat();
     } else {
-      _controller
-        ..stop()
-        ..reset();
+      // reset() also stops the controller (its value setter calls stop()).
+      _controller.reset();
     }
   }
 
