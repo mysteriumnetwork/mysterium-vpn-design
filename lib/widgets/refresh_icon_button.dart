@@ -5,8 +5,9 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 ///
 /// Defaults to the refresh glyph used across the app. Use for refresh-style
 /// actions where the continuous spin communicates in-progress work in place of
-/// a separate loading indicator. Disable the action while spinning by passing a
-/// null [onPressed].
+/// a separate loading indicator. While [spinning] the button ignores taps, so a
+/// spin reliably blocks repeat presses without the caller having to clear
+/// [onPressed].
 class RefreshIconButton extends StatefulWidget {
   const RefreshIconButton({
     this.onPressed,
@@ -18,7 +19,8 @@ class RefreshIconButton extends StatefulWidget {
     super.key,
   });
 
-  /// Called when tapped. Pass null to disable (e.g. while [spinning]).
+  /// Called when tapped. Pass null to disable; taps are also ignored while
+  /// [spinning].
   final VoidCallback? onPressed;
 
   /// Whether the glyph is currently spinning.
@@ -74,7 +76,8 @@ class _RefreshIconButtonState extends State<RefreshIconButton> with SingleTicker
 
   @override
   Widget build(BuildContext context) => IconButton(
-    onPressed: widget.onPressed,
+    // Spinning means a refresh is in flight, so ignore taps until it settles.
+    onPressed: widget.spinning ? null : widget.onPressed,
     tooltip: widget.tooltip,
     padding: EdgeInsets.zero,
     visualDensity: VisualDensity.compact,

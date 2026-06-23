@@ -23,6 +23,18 @@ void main() {
       expect(button.onPressed, isNull);
     });
 
+    testWidgets('ignores taps while spinning even when onPressed is provided', (tester) async {
+      var taps = 0;
+      await pumpWidget(tester, RefreshIconButton(spinning: true, onPressed: () => taps++));
+
+      final button = tester.widget<IconButton>(find.byType(IconButton));
+      expect(button.onPressed, isNull);
+
+      await tester.tap(find.byType(IconButton), warnIfMissed: false);
+      await tester.pump();
+      expect(taps, 0);
+    });
+
     testWidgets('spins while spinning is true', (tester) async {
       await pumpWidget(tester, const RefreshIconButton(spinning: true));
 
