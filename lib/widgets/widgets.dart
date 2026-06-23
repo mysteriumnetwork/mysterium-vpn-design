@@ -29,6 +29,7 @@ export 'progress_bar.dart';
 export 'progress_card.dart';
 export 'promo_bar.dart';
 export 'radio_button.dart';
+export 'refresh_icon_button.dart';
 export 'search_field.dart';
 export 'settings_card.dart';
 export 'snackbar.dart';

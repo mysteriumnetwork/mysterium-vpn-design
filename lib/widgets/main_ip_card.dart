@@ -173,11 +173,7 @@ class MainIpCard extends StatelessWidget {
           buttonWrapper: buttonWrapper,
         ),
       ),
-      MainIpCardLocationSelected(
-        :final country,
-        :final countryIcon,
-        :final serviceQuality,
-      ) =>
+      MainIpCardLocationSelected(:final country, :final countryIcon, :final serviceQuality) =>
         _CardShell(
           child: _LocationSelectedContent(
             country: country,
@@ -188,20 +184,15 @@ class MainIpCard extends StatelessWidget {
             buttonWrapper: buttonWrapper,
           ),
         ),
-      MainIpCardConnecting(
-        :final country,
-        :final countryIcon,
-        :final serviceQuality,
-      ) =>
-        _CardShell(
-          child: _ConnectingContent(
-            country: country,
-            countryIcon: countryIcon,
-            serviceQuality: serviceQuality,
-            connectingLabel: connectingLabel,
-            buttonWrapper: buttonWrapper,
-          ),
+      MainIpCardConnecting(:final country, :final countryIcon, :final serviceQuality) => _CardShell(
+        child: _ConnectingContent(
+          country: country,
+          countryIcon: countryIcon,
+          serviceQuality: serviceQuality,
+          connectingLabel: connectingLabel,
+          buttonWrapper: buttonWrapper,
         ),
+      ),
       MainIpCardConnected(
         :final country,
         :final countryIcon,
@@ -314,11 +305,8 @@ const _overlayPressedAlpha = 0.16;
 const _overlayHoveredAlpha = 0.10;
 const _overlayFocusedAlpha = 0.12;
 
-Widget _wrapButton(
-  BuildContext context,
-  SingleWidgetWrapper? wrapper,
-  Widget button,
-) => wrapper?.call(context: context, child: button) ?? button;
+Widget _wrapButton(BuildContext context, SingleWidgetWrapper? wrapper, Widget button) =>
+    wrapper?.call(context: context, child: button) ?? button;
 
 // ─── Card shell ───────────────────────────────────────────────────────────────
 
@@ -333,13 +321,7 @@ class _CardShell extends StatelessWidget {
     return DecoratedBox(
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.kM),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0x0D0A0D12),
-            blurRadius: 2,
-            offset: Offset(0, 1),
-          ),
-        ],
+        boxShadow: [BoxShadow(color: Color(0x0D0A0D12), blurRadius: 2, offset: Offset(0, 1))],
       ),
       child: Material(
         color: theme.palette.bgMainIpCard,
@@ -384,15 +366,8 @@ class _NotConnectedContent extends StatelessWidget {
             Container(
               width: 48,
               height: 48,
-              decoration: BoxDecoration(
-                color: palette.bgTransparent,
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                UntitledUI.star_01,
-                size: 24,
-                color: palette.textIpCardTitle,
-              ),
+              decoration: BoxDecoration(color: palette.bgTransparent, shape: BoxShape.circle),
+              child: Icon(UntitledUI.star_01, size: 24, color: palette.textIpCardTitle),
             ),
             Expanded(
               child: Column(
@@ -419,11 +394,7 @@ class _NotConnectedContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
-          ButtonPrimary(
-            onPressed: onConnect,
-            size: ButtonSize.large,
-            child: Text(connectLabel),
-          ),
+          ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
         ),
       ],
     );
@@ -486,9 +457,7 @@ class _ConnectingContent extends StatelessWidget {
           ButtonPrimary(
             onPressed: () {},
             size: ButtonSize.large,
-            decoration: ButtonDecoration(
-              decorationColor: Palette.brand.shade600,
-            ),
+            decoration: ButtonDecoration(decorationColor: Palette.brand.shade600),
             loading: ButtonLoading(text: connectingLabel),
             child: Text(connectingLabel),
           ),
@@ -553,11 +522,7 @@ class _LocationSelectedContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
-          ButtonPrimary(
-            onPressed: onConnect,
-            size: ButtonSize.large,
-            child: Text(connectLabel),
-          ),
+          ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
         ),
       ],
     );
@@ -662,11 +627,7 @@ class _ConnectedContent extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        Container(
-                          width: 1,
-                          height: 16,
-                          color: palette.textIpCardSubtitle,
-                        ),
+                        Container(width: 1, height: 16, color: palette.textIpCardSubtitle),
                         Flexible(
                           child: Text(
                             serviceQuality,
@@ -687,17 +648,11 @@ class _ConnectedContent extends StatelessWidget {
               children: [
                 _IconTap(
                   icon: UntitledUI.refresh_cw_05,
-                  iconColor: isRefreshActive
-                      ? palette.iconIpCard
-                      : palette.iconBrandPrimaryHover,
+                  iconColor: isRefreshActive ? palette.iconIpCard : palette.iconBrandPrimaryHover,
                   onPressed: isRefreshActive ? onRefreshIp : null,
                   tooltip: refreshIpTooltip,
                 ),
-                Text(
-                  'IP pool: $ipPoolCount',
-                  style: subtitleStyle,
-                  textAlign: TextAlign.right,
-                ),
+                Text('IP pool: $ipPoolCount', style: subtitleStyle, textAlign: TextAlign.right),
               ],
             ),
           ],
@@ -726,9 +681,7 @@ class _ConnectedContent extends StatelessWidget {
               Expanded(
                 child: Text(
                   connectionRatingLabel,
-                  style: theme.textStyles.textSm.medium.copyWith(
-                    color: palette.textIpCardSubtitle,
-                  ),
+                  style: theme.textStyles.textSm.medium.copyWith(color: palette.textIpCardSubtitle),
                 ),
               ),
               Row(
@@ -762,11 +715,7 @@ class _ConnectedContent extends StatelessWidget {
 // ─── Preview bar ──────────────────────────────────────────────────────────────
 
 class _PreviewBar extends StatelessWidget {
-  const _PreviewBar({
-    required this.country,
-    required this.countryIcon,
-    this.onDismiss,
-  });
+  const _PreviewBar({required this.country, required this.countryIcon, this.onDismiss});
 
   final String country;
   final Widget countryIcon;
@@ -777,10 +726,7 @@ class _PreviewBar extends StatelessWidget {
     final theme = Theme.of(context);
     return Material(
       color: theme.palette.bgMainIpPreview,
-      borderRadius: const BorderRadius.only(
-        topLeft: Radius.kM,
-        topRight: Radius.kM,
-      ),
+      borderRadius: const BorderRadius.only(topLeft: Radius.kM, topRight: Radius.kM),
       clipBehavior: Clip.antiAlias,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: theme.spacing.md),
