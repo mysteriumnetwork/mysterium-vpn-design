@@ -39,9 +39,7 @@ class FloatingButton extends StatelessWidget {
     final theme = Theme.of(context);
     final spacing = theme.spacing;
     final isDisabled = onPressed == null;
-    final foregroundColor = isDisabled
-        ? _disabledForegroundColor(theme)
-        : _foregroundColor(theme);
+    final foregroundColor = isDisabled ? _disabledForegroundColor(theme) : _foregroundColor(theme);
 
     return TextButton(
       style: ButtonStyle(
@@ -74,10 +72,7 @@ class FloatingButton extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            label,
-            style: theme.textStyles.textSm.regular.copyWith(color: foregroundColor),
-          ),
+          Text(label, style: theme.textStyles.textSm.regular.copyWith(color: foregroundColor)),
           SizedBox(width: spacing.xs),
           Icon(icon, color: foregroundColor, size: 16),
         ],
