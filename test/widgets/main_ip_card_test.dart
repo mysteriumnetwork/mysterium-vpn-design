@@ -9,6 +9,7 @@ const _flag = SizedBox(width: 32, height: 32);
 MainIpCard _build(
   MainIpCardStatus status, {
   ConnectionRating rating = ConnectionRating.none,
+  bool showConnectionRating = true,
   VoidCallback? onConnect,
   VoidCallback? onDisconnect,
   VoidCallback? onSwitchCountry,
@@ -27,6 +28,7 @@ MainIpCard _build(
   connectionRatingLabel: 'Rate this connection',
   refreshIpTooltip: 'Refresh IP',
   connectionRating: rating,
+  showConnectionRating: showConnectionRating,
   onConnect: onConnect,
   onDisconnect: onDisconnect,
   onSwitchCountry: onSwitchCountry,
@@ -153,6 +155,45 @@ void main() {
       expect(find.text('Switch to Poland'), findsOneWidget);
       await tester.tap(find.text('Switch to Poland'));
       expect(switched, isTrue);
+    });
+
+    testWidgets('Connected omits rating row when showConnectionRating is false', (tester) async {
+      await pumpWidget(
+        tester,
+        _build(
+          const MainIpCardConnected(
+            country: 'Germany',
+            countryIcon: _flag,
+            city: 'Frankfurt',
+            ipAddress: '203.0.113.5',
+            serviceQuality: 'Excellent',
+            ipPoolCount: 3,
+          ),
+          showConnectionRating: false,
+        ),
+      );
+      expect(find.text('Rate this connection'), findsNothing);
+    });
+
+    testWidgets('NewIpPreview omits rating row when showConnectionRating is false', (tester) async {
+      await pumpWidget(
+        tester,
+        _build(
+          const MainIpCardNewIpPreview(
+            country: 'Germany',
+            countryIcon: _flag,
+            city: 'Frankfurt',
+            ipAddress: '203.0.113.5',
+            serviceQuality: 'Excellent',
+            ipPoolCount: 3,
+            previewCountry: 'Poland',
+            previewCountryIcon: _flag,
+            switchLabel: 'Switch to Poland',
+          ),
+          showConnectionRating: false,
+        ),
+      );
+      expect(find.text('Rate this connection'), findsNothing);
     });
   });
 }

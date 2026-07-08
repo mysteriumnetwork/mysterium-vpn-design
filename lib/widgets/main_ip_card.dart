@@ -266,6 +266,7 @@ class MainIpCard extends StatelessWidget {
                     buttonLabel: switchLabel,
                     connectionRatingLabel: connectionRatingLabel,
                     connectionRating: connectionRating,
+                    showConnectionRating: showConnectionRating,
                     onButton: onSwitchCountry,
                     onRefreshIp: onRefreshIp,
                     onThumbsUp: onThumbsUp,
