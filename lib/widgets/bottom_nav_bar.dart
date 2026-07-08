@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart' as material show Radius;
 import 'package:flutter/material.dart' hide Radius;
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
@@ -92,12 +93,16 @@ class BottomNavBar extends StatelessWidget {
     final theme = Theme.of(context);
     final palette = theme.palette;
 
+    // Shared so every tab label shrinks to the same font size in unison.
+    final labelGroup = AutoSizeGroup();
+
     final navBarItems = List.generate(
       items.length,
       (i) => Expanded(
         child: _BottomNavBarCell(
           item: items[i],
           selected: i == selectedIndex,
+          labelGroup: labelGroup,
           onTap: onDestinationSelected == null ? null : () => onDestinationSelected!(i),
         ),
       ),
@@ -140,10 +145,16 @@ class BottomNavBar extends StatelessWidget {
 // ─── Internal cell ────────────────────────────────────────────────────────────
 
 class _BottomNavBarCell extends StatefulWidget {
-  const _BottomNavBarCell({required this.item, required this.selected, required this.onTap});
+  const _BottomNavBarCell({
+    required this.item,
+    required this.selected,
+    required this.labelGroup,
+    required this.onTap,
+  });
 
   final BottomNavBarItem item;
   final bool selected;
+  final AutoSizeGroup labelGroup;
   final VoidCallback? onTap;
 
   @override
@@ -214,11 +225,13 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
                 spacing: theme.spacing.xs,
                 children: [
                   Icon(widget.item.icon, size: 20, color: color),
-                  Text(
+                  AutoSizeText(
                     widget.item.label,
+                    group: widget.labelGroup,
                     style: theme.textStyles.textXs.semibold.copyWith(color: color),
                     textAlign: TextAlign.center,
                     maxLines: 1,
+                    minFontSize: 8,
                     overflow: TextOverflow.ellipsis,
                   ),
                 ],
