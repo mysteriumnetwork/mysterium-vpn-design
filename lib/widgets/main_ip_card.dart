@@ -118,6 +118,7 @@ class MainIpCard extends StatelessWidget {
     required this.refreshIpTooltip,
     this.connectionRating = ConnectionRating.none,
     this.showConnectionRating = true,
+    this.ipPoolLabel = _defaultIpPoolLabel,
     this.onConnect,
     this.onDisconnect,
     this.onRefreshIp,
@@ -149,6 +150,11 @@ class MainIpCard extends StatelessWidget {
   /// When `false`, the thumbs-up / thumbs-down rating row is omitted from the
   /// connected and new-IP-preview states. Defaults to `true`.
   final bool showConnectionRating;
+
+  /// Builds the IP-pool label (e.g. "IP pool: 13") for the connected / new-IP-
+  /// preview states. Pass a localized builder; defaults to English so the
+  /// widget renders standalone (e.g. in Widgetbook).
+  final String Function(int count) ipPoolLabel;
 
   final VoidCallback? onConnect;
   final VoidCallback? onDisconnect;
@@ -214,6 +220,7 @@ class MainIpCard extends StatelessWidget {
             connectionRatingLabel: connectionRatingLabel,
             connectionRating: connectionRating,
             showConnectionRating: showConnectionRating,
+            ipPoolLabel: ipPoolLabel,
             onButton: onDisconnect,
             onRefreshIp: onRefreshIp,
             onThumbsUp: onThumbsUp,
@@ -267,6 +274,7 @@ class MainIpCard extends StatelessWidget {
                     connectionRatingLabel: connectionRatingLabel,
                     connectionRating: connectionRating,
                     showConnectionRating: showConnectionRating,
+                    ipPoolLabel: ipPoolLabel,
                     onButton: onSwitchCountry,
                     onRefreshIp: onRefreshIp,
                     onThumbsUp: onThumbsUp,
@@ -293,6 +301,8 @@ class MainIpCard extends StatelessWidget {
 }
 
 // ─── Layout constants ─────────────────────────────────────────────────────────
+
+String _defaultIpPoolLabel(int count) => 'IP pool: $count';
 
 const _cardMaxWidthMobile = 480.0;
 const _cardMaxWidthDesktop = 343.0;
@@ -544,6 +554,7 @@ class _ConnectedContent extends StatelessWidget {
     this.serviceQualityKey,
     this.connectionRating = ConnectionRating.none,
     this.showConnectionRating = true,
+    this.ipPoolLabel = _defaultIpPoolLabel,
     this.onButton,
     this.onRefreshIp,
     this.onThumbsUp,
@@ -562,6 +573,7 @@ class _ConnectedContent extends StatelessWidget {
   final String connectionRatingLabel;
   final ConnectionRating connectionRating;
   final bool showConnectionRating;
+  final String Function(int count) ipPoolLabel;
   final VoidCallback? onButton;
   final VoidCallback? onRefreshIp;
   final VoidCallback? onThumbsUp;
@@ -584,17 +596,18 @@ class _ConnectedContent extends StatelessWidget {
       spacing: theme.spacing.md,
       children: [
         // Header area
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           spacing: theme.spacing.xxs,
           children: [
-            // Location + IP info column
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: theme.spacing.xxs,
-                children: [
-                  Row(
+            // Top line: location (flag + country/city) with the refresh icon
+            // and IP-pool label pinned to the right.
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: theme.spacing.xxs,
+              children: [
+                Expanded(
+                  child: Row(
                     spacing: theme.spacing.ms,
                     children: [
                       SizedBox(width: 32, height: 32, child: countryIcon),
@@ -615,46 +628,48 @@ class _ConnectedContent extends StatelessWidget {
                       ),
                     ],
                   ),
-                  // IP info row – 44px left pad aligns with location text
-                  Padding(
-                    padding: const EdgeInsets.only(left: 44),
-                    child: Row(
-                      spacing: theme.spacing.s,
-                      children: [
-                        Flexible(
-                          child: Text(
-                            ipAddress,
-                            style: subtitleStyle,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                        Container(width: 1, height: 16, color: palette.textIpCardSubtitle),
-                        Flexible(
-                          child: Text(
-                            serviceQuality,
-                            key: serviceQualityKey,
-                            style: subtitleStyle,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
+                ),
+                // Refresh icon + IP pool label column
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    _IconTap(
+                      icon: UntitledUI.refresh_cw_05,
+                      iconColor: isRefreshActive
+                          ? palette.iconIpCard
+                          : palette.iconBrandPrimaryHover,
+                      onPressed: isRefreshActive ? onRefreshIp : null,
+                      tooltip: refreshIpTooltip,
+                    ),
+                    Text(
+                      ipPoolLabel(ipPoolCount),
+                      style: subtitleStyle,
+                      textAlign: TextAlign.right,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            // IP info row on its own line – 44px left pad aligns with location text
+            Padding(
+              padding: const EdgeInsets.only(left: 44),
+              child: Row(
+                spacing: theme.spacing.s,
+                children: [
+                  Flexible(
+                    child: Text(ipAddress, style: subtitleStyle, overflow: TextOverflow.ellipsis),
+                  ),
+                  Container(width: 1, height: 16, color: palette.textIpCardSubtitle),
+                  Flexible(
+                    child: Text(
+                      serviceQuality,
+                      key: serviceQualityKey,
+                      style: subtitleStyle,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ],
               ),
-            ),
-            // Refresh icon + IP pool label column
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                _IconTap(
-                  icon: UntitledUI.refresh_cw_05,
-                  iconColor: isRefreshActive ? palette.iconIpCard : palette.iconBrandPrimaryHover,
-                  onPressed: isRefreshActive ? onRefreshIp : null,
-                  tooltip: refreshIpTooltip,
-                ),
-                Text('IP pool: $ipPoolCount', style: subtitleStyle, textAlign: TextAlign.right),
-              ],
             ),
           ],
         ),

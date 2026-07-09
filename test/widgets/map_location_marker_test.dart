@@ -29,8 +29,8 @@ void main() {
   });
 
   group('MapLocationTooltip', () {
-    testWidgets('renders "Connect to <label>"', (tester) async {
-      await pumpWidget(tester, const MapLocationTooltip(label: 'Berlin'));
+    testWidgets('renders the given text verbatim', (tester) async {
+      await pumpWidget(tester, const MapLocationTooltip(text: 'Connect to Berlin'));
       expect(find.text('Connect to Berlin'), findsOneWidget);
     });
   });

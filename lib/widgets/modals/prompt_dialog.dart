@@ -176,10 +176,14 @@ class _MobileButtons extends StatelessWidget {
 
 // ─── Desktop: side-by-side row (secondary left, primary right) ────────────────
 //
-// Per Figma: secondary stretches to fill the row, primary stays intrinsic.
-// With the row capped at 343 px and a typical primary label (~200 px), the
-// secondary lands around 135 px — narrow enough to read as the lower-emphasis
-// option, wide enough not to look squeezed.
+// Buttons split the row at a fixed 40 / 60 (secondary / primary) regardless of
+// label length. This matches the Figma proportion (~135 / 208 of the 343 px
+// row) while staying stable: a long primary label (e.g. "Allow notifications")
+// no longer stretches the primary and squeezes the secondary. When only one
+// button is present it fills the row.
+//
+// `stretch` keeps both buttons the same height: if one label wraps to two
+// lines, the other grows to match instead of looking shorter.
 
 class _DesktopButtons extends StatelessWidget {
   const _DesktopButtons({required this.spacing, this.primaryButton, this.secondaryButton});
@@ -188,12 +192,22 @@ class _DesktopButtons extends StatelessWidget {
   final Widget? secondaryButton;
   final double spacing;
 
+  // 2 : 3 == 40% : 60%.
+  static const int _secondaryFlex = 2;
+  static const int _primaryFlex = 3;
+
   @override
-  Widget build(BuildContext context) => Row(
-    spacing: spacing,
-    children: [
-      if (secondaryButton case final btn?) Expanded(child: btn),
-      ?primaryButton,
-    ],
+  // IntrinsicHeight bounds the row to its tallest child so `stretch` can size
+  // both buttons to that height (a plain stretched Row is measured with an
+  // unbounded height here and would assert).
+  Widget build(BuildContext context) => IntrinsicHeight(
+    child: Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      spacing: spacing,
+      children: [
+        if (secondaryButton case final btn?) Expanded(flex: _secondaryFlex, child: btn),
+        if (primaryButton case final btn?) Expanded(flex: _primaryFlex, child: btn),
+      ],
+    ),
   );
 }

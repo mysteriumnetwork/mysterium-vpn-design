@@ -141,15 +141,20 @@ class _ActivePin extends StatelessWidget {
 
 // ─── "Connect to…" tooltip ────────────────────────────────────────────────────
 
-/// A standalone tooltip card showing "Connect to <label>".
+/// A standalone tooltip card showing a short call-to-action, e.g.
+/// "Connect to Germany".
+///
+/// [text] is the full, already-localized string — this widget does not compose
+/// or translate it (the design system is translation-free; callers pass a
+/// localized value).
 ///
 /// Place this as a **separate** map marker (e.g. with `Alignment.topCenter`)
 /// at the same lat/lng as the pin so it appears above the pin without
 /// affecting its position.
 class MapLocationTooltip extends StatelessWidget {
-  const MapLocationTooltip({required this.label, super.key});
+  const MapLocationTooltip({required this.text, super.key});
 
-  final String label;
+  final String text;
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +189,7 @@ class MapLocationTooltip extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Text(
-          'Connect to $label',
+          text,
           style: theme.textStyles.textXs.semibold.copyWith(color: palette.textPrimary),
         ),
       ),

@@ -26,7 +26,7 @@ Widget buildMapLocationMarkerConnected(BuildContext context) =>
 @UseCase(name: 'Tooltip', type: MapLocationTooltip)
 Widget buildMapLocationTooltip(BuildContext context) => Center(
   child: MapLocationTooltip(
-    label: context.knobs.string(label: 'Label', initialValue: 'Netherlands'),
+    text: context.knobs.string(label: 'Text', initialValue: 'Connect to Netherlands'),
   ),
 );
 
