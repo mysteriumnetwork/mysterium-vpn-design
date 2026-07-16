@@ -12,9 +12,10 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// rendered in semibold; a read card drops the dot, indents the title to keep
 /// the text aligned, and uses a medium title weight.
 ///
-/// Hover is handled internally via [MouseRegion]; pass [onTap] to make the card
-/// interactive (e.g. to open the full message). The card fills the width of its
-/// parent, so constrain it (or place it in a list) to control its size.
+/// Hover feedback and the pointer cursor are applied only when [onTap] is
+/// provided; without it the card is inert. Hover is tracked internally via
+/// [MouseRegion]. The card fills the width of its parent, so constrain it (or
+/// place it in a list) to control its size.
 ///
 /// ```dart
 /// NewsCard(
@@ -74,14 +75,18 @@ class _NewsCardState extends State<NewsCard> {
 
   bool _hovered = false;
 
+  /// The card only reacts to the pointer when it has an [NewsCard.onTap].
+  bool get _interactive => widget.onTap != null;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
+    final hovered = _hovered && _interactive;
 
     final surface = DecoratedBox(
       decoration: BoxDecoration(
-        color: _hovered ? palette.bgPrimaryHover : palette.bgPrimary,
+        color: hovered ? palette.bgPrimaryHover : palette.bgPrimary,
         borderRadius: _borderRadius,
         border: Border.all(color: palette.borderQuaternary),
         boxShadow: [
@@ -122,8 +127,9 @@ class _NewsCardState extends State<NewsCard> {
     );
 
     return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
+      cursor: _interactive ? SystemMouseCursors.click : SystemMouseCursors.basic,
+      onEnter: _interactive ? (_) => setState(() => _hovered = true) : null,
+      onExit: _interactive ? (_) => setState(() => _hovered = false) : null,
       child: GestureDetector(onTap: widget.onTap, child: surface),
     );
   }

@@ -22,6 +22,7 @@ Widget buildNewsCard(BuildContext context) {
   );
   final timeLabel = context.knobs.string(label: 'Time', initialValue: '12min ago');
   final unread = context.knobs.boolean(label: 'Unread', initialValue: true);
+  final interactive = context.knobs.boolean(label: 'Interactive (onTap)', initialValue: true);
 
   return Center(
     child: SizedBox(
@@ -33,7 +34,7 @@ Widget buildNewsCard(BuildContext context) {
         message: message,
         timeLabel: timeLabel,
         unread: unread,
-        onTap: () {},
+        onTap: interactive ? () {} : null,
       ),
     ),
   );
