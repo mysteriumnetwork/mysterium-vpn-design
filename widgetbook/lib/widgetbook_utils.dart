@@ -23,6 +23,15 @@ abstract class WidgetbookUtils {
     'upload_02': UntitledUI.upload_02,
   };
 
+  /// Category → icon mapping for the news center (see `NewsPill` / `NewsCard`).
+  ///
+  /// Keys double as the (upper-cased-on-render) category labels in use-cases.
+  static const Map<String, IconData> newsCategoryIcons = {
+    'Incidents': UntitledUI.alert_triangle,
+    'News': UntitledUI.file_06,
+    'Offers': UntitledUI.tag_01,
+  };
+
   static List<IconData> get icons => namedIcons.values.toList();
 
   static String iconName(IconData icon) => namedIcons.entries

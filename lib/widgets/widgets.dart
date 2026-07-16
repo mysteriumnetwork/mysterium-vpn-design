@@ -21,6 +21,8 @@ export 'minimal_alert.dart';
 export 'modals/modals.dart';
 export 'nav_item.dart';
 export 'nav_rail.dart';
+export 'news_card.dart';
+export 'news_pill.dart';
 export 'onboarding_comparison_card.dart';
 export 'onboarding_item.dart';
 export 'plan_card.dart';

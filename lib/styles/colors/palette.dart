@@ -11,6 +11,13 @@ abstract class Palette extends ThemeExtension<Palette> {
   static const black = Color(0xFF000000);
   static const transparent = Color(0x00000000);
 
+  /// Accent used for the news-center unread indicator dot.
+  ///
+  /// A fixed utility blue (Figma `utility-blue-500`, `#2E90FA`). It is the
+  /// same in light and dark themes, so it lives here as a shared constant
+  /// rather than a themed getter.
+  static const unreadIndicator = Color(0xFF2E90FA);
+
   static const _grayLight = 0xFF717680;
   static const grayLight = PaletteColor(_grayLight, {
     25: Color(0xFFFDFDFD),
