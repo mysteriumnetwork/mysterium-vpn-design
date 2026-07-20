@@ -63,6 +63,12 @@ void main() {
       expect(selected, isNull);
     });
 
+    testWidgets('renders an empty row without asserting on an empty item list', (tester) async {
+      await pumpWidget(tester, const NewsTabs(items: [], selectedIndex: 0));
+
+      expect(find.byType(NewsTab), findsNothing);
+    });
+
     testWidgets('renders in dark theme without error', (tester) async {
       await pumpWidget(
         tester,

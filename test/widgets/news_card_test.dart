@@ -70,6 +70,20 @@ void main() {
       expect(tapped, 1);
     });
 
+    testWidgets('shows the click cursor only when interactive', (tester) async {
+      MouseCursor cursorOf(WidgetTester t) => t
+          .widget<MouseRegion>(
+            find.ancestor(of: find.byType(NewsPill), matching: find.byType(MouseRegion)).first,
+          )
+          .cursor;
+
+      await pumpWidget(tester, _card(onTap: () {}));
+      expect(cursorOf(tester), SystemMouseCursors.click);
+
+      await pumpWidget(tester, _card()); // onTap == null → inert
+      expect(cursorOf(tester), MouseCursor.defer);
+    });
+
     testWidgets('renders in dark theme without error', (tester) async {
       await pumpWidget(tester, _card(unread: true), theme: DesignSystem.darkTheme);
       expect(find.text('NEWS'), findsOneWidget);

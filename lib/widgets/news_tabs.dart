@@ -60,7 +60,7 @@ class NewsTabs extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     assert(
-      selectedIndex >= 0 && selectedIndex < items.length,
+      items.isEmpty || (selectedIndex >= 0 && selectedIndex < items.length),
       'selectedIndex must point to a valid item',
     );
 

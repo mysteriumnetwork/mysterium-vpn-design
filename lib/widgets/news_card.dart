@@ -8,7 +8,8 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// Shows a category [NewsPill], a relative [timeLabel], a [title] and a
 /// [message] preview. When [unread] is true a blue dot precedes the title and
 /// the title is rendered in semibold; read cards use a medium title and indent
-/// to keep alignment. Hover is handled internally via [MouseRegion].
+/// to keep alignment. When [onTap] is set the card is interactive and raises a
+/// hover background; with a null [onTap] it is inert (no hover, default cursor).
 class NewsCard extends StatefulWidget {
   const NewsCard({
     required this.categoryIcon,
@@ -53,6 +54,8 @@ class _NewsCardState extends State<NewsCard> {
 
   bool _hovered = false;
 
+  bool get _interactive => widget.onTap != null;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -60,7 +63,7 @@ class _NewsCardState extends State<NewsCard> {
 
     final surface = Container(
       decoration: BoxDecoration(
-        color: _hovered ? palette.bgPrimaryHover : palette.bgPrimary,
+        color: (_hovered && _interactive) ? palette.bgPrimaryHover : palette.bgPrimary,
         borderRadius: _radius,
         border: Border.all(color: palette.borderQuaternary),
         boxShadow: [
@@ -99,8 +102,9 @@ class _NewsCardState extends State<NewsCard> {
     );
 
     return MouseRegion(
-      onEnter: (_) => setState(() => _hovered = true),
-      onExit: (_) => setState(() => _hovered = false),
+      cursor: _interactive ? SystemMouseCursors.click : MouseCursor.defer,
+      onEnter: _interactive ? (_) => setState(() => _hovered = true) : null,
+      onExit: _interactive ? (_) => setState(() => _hovered = false) : null,
       child: GestureDetector(onTap: widget.onTap, child: surface),
     );
   }
