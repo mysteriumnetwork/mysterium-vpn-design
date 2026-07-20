@@ -11,6 +11,9 @@ abstract class Palette extends ThemeExtension<Palette> {
   static const black = Color(0xFF000000);
   static const transparent = Color(0x00000000);
 
+  /// Fill for the small "unread" dot on a news-center card. Theme-invariant.
+  static const unreadIndicator = Color(0xFF2E90FA);
+
   static const _grayLight = 0xFF717680;
   static const grayLight = PaletteColor(_grayLight, {
     25: Color(0xFFFDFDFD),
@@ -231,6 +234,9 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgPrimaryHover;
   abstract final Color bgSecondary;
   abstract final Color bgSecondaryDisabled;
+
+  /// Background for a disabled CTA/pill (Figma `bg-disabled-CTA`).
+  abstract final Color bgDisabled;
   abstract final Color bgSecondarySelected;
   abstract final Color bgTertiary;
   abstract final Color bgQuaternary;
@@ -260,6 +266,9 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgMainIpPreview;
   abstract final Color bgTransparent;
   abstract final Color bgInfoCard;
+
+  /// Background for a news-center category pill (light #F1EFF5 / dark #4A5578).
+  abstract final Color bgNewsPill;
   abstract final Color textIpCardTitle;
   abstract final Color textIpCardSubtitle;
 
@@ -450,6 +459,9 @@ class PaletteDark extends Palette {
   Color get bgSecondaryDisabled => Palette.grayPurple.shade800;
 
   @override
+  Color get bgDisabled => Palette.grayPurple.shade800;
+
+  @override
   Color get bgSecondary => Palette.brandPurple.shade900;
 
   @override
@@ -521,6 +533,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgInfoCard => const Color(0xFF251E31);
+
+  @override
+  Color get bgNewsPill => Palette.grayCool.shade600;
 
   @override
   Color get textIpCardTitle => Palette.grayLight.shade800;
@@ -761,6 +776,9 @@ class PaletteLight extends Palette {
   Color get bgSecondaryDisabled => Palette.grayLight.shade200;
 
   @override
+  Color get bgDisabled => Palette.grayLight.shade100;
+
+  @override
   Color get bgSecondary => gray.shade100;
 
   @override
@@ -832,6 +850,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgInfoCard => Palette.white;
+
+  @override
+  Color get bgNewsPill => Palette.grayPurple.shade100;
 
   @override
   Color get textIpCardTitle => Palette.white;
