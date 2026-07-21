@@ -5,13 +5,18 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// A single entry in a [NewsTabs] row.
 class NewsTabItem {
-  const NewsTabItem({required this.icon, required this.label});
+  const NewsTabItem({required this.icon, required this.label, this.enabled = true});
 
   /// 16px glyph shown before [label]. Tint follows selection state.
   final IconData icon;
 
   /// Tab caption. Also used as the accessibility label.
   final String label;
+
+  /// When false this tab renders disabled and ignores taps (e.g. its category
+  /// has nothing to filter). Combined with [NewsTabs.enabled] — the row-level
+  /// flag disables every tab, this one disables just this tab.
+  final bool enabled;
 }
 
 // ─── NewsTabs ─────────────────────────────────────────────────────────────────
@@ -22,6 +27,9 @@ class NewsTabItem {
 /// The tab at [selectedIndex] is highlighted; tapping another calls
 /// [onSelected] with its index. Selection is controlled — the parent owns
 /// [selectedIndex]. The row scrolls horizontally when it overflows.
+///
+/// Individual tabs can be disabled via [NewsTabItem.enabled] (e.g. a category
+/// with no items); [enabled] disables the whole row.
 ///
 /// ```dart
 /// NewsTabs(
@@ -76,13 +84,20 @@ class NewsTabs extends StatelessWidget {
             NewsTab(
               icon: items[i].icon,
               label: items[i].label,
-              status: !enabled
-                  ? NewsTabStatus.disabled
-                  : (i == selectedIndex ? NewsTabStatus.selected : NewsTabStatus.idle),
-              onTap: (!enabled || onSelected == null) ? null : () => onSelected!(i),
+              status: _statusAt(i),
+              onTap: (!_isEnabledAt(i) || onSelected == null) ? null : () => onSelected!(i),
             ),
         ],
       ),
     );
+  }
+
+  bool _isEnabledAt(int i) => enabled && items[i].enabled;
+
+  NewsTabStatus _statusAt(int i) {
+    if (!_isEnabledAt(i)) {
+      return NewsTabStatus.disabled;
+    }
+    return i == selectedIndex ? NewsTabStatus.selected : NewsTabStatus.idle;
   }
 }

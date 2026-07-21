@@ -63,6 +63,37 @@ void main() {
       expect(selected, isNull);
     });
 
+    testWidgets('disables only the tabs whose item is disabled', (tester) async {
+      int? selected;
+      await pumpWidget(
+        tester,
+        NewsTabs(
+          selectedIndex: 0,
+          onSelected: (i) => selected = i,
+          items: const [
+            NewsTabItem(icon: UntitledUI.inbox_01, label: 'All'),
+            NewsTabItem(icon: UntitledUI.alert_triangle, label: 'Incidents', enabled: false),
+            NewsTabItem(icon: UntitledUI.file_06, label: 'News'),
+            NewsTabItem(icon: UntitledUI.tag_01, label: 'Offers', enabled: false),
+          ],
+        ),
+      );
+
+      final tabs = tester.widgetList<NewsTab>(find.byType(NewsTab)).toList();
+      expect(tabs[1].status, NewsTabStatus.disabled);
+      expect(tabs[3].status, NewsTabStatus.disabled);
+      expect(tabs[1].onTap, isNull);
+      expect(tabs[3].onTap, isNull);
+      // Enabled tabs stay interactive.
+      expect(tabs[0].onTap, isNotNull);
+      expect(tabs[2].onTap, isNotNull);
+
+      await tester.tap(find.text('Incidents'));
+      expect(selected, isNull);
+      await tester.tap(find.text('News'));
+      expect(selected, 2);
+    });
+
     testWidgets('renders an empty row without asserting on an empty item list', (tester) async {
       await pumpWidget(tester, const NewsTabs(items: [], selectedIndex: 0));
 
