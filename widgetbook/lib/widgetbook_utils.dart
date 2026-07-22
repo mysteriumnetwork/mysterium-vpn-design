@@ -23,6 +23,13 @@ abstract class WidgetbookUtils {
     'upload_02': UntitledUI.upload_02,
   };
 
+  /// Category icons used by the news-center widgets (NewsPill / NewsCard).
+  static const Map<String, IconData> newsCategoryIcons = {
+    'alert-triangle': UntitledUI.alert_triangle,
+    'file-06': UntitledUI.file_06,
+    'tag-01': UntitledUI.tag_01,
+  };
+
   static List<IconData> get icons => namedIcons.values.toList();
 
   static String iconName(IconData icon) => namedIcons.entries
