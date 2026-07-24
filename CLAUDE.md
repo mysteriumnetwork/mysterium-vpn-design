@@ -27,7 +27,7 @@ widgetbook/                     # separate Flutter app (package: widgetbook_work
 
 ## Tooling
 
-- **Flutter is pinned via FVM** (`.fvmrc` → 3.41.9). **Always prefix Dart/Flutter commands with `fvm`.**
+- **Flutter is pinned via FVM** (`.fvmrc` → 3.44.7). **Always prefix Dart/Flutter commands with `fvm`.**
 - **Prefer existing Makefile targets over raw commands** where one exists (only `widgetbook/Makefile` today).
 - There is **no root Makefile**. The root package and the `widgetbook/` app are analyzed/tested separately.
 

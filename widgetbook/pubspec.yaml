@@ -1,11 +1,11 @@
 name: widgetbook_workspace
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ">=3.9.0 <4.0.0"
-  flutter: 3.41.9
+  sdk: ">=3.11.0 <4.0.0"
+  flutter: 3.44.7
 
 dependencies:
   flutter:
@@ -15,7 +15,6 @@ dependencies:
     path: ../
   widgetbook: 3.22.0
   widgetbook_annotation: 3.11.0
-
 
 dev_dependencies:
   build_runner: 2.13.1
