@@ -20,6 +20,78 @@ enum SettingsCardPosition {
   bottom,
 }
 
+// ─── GroupedCardShell ─────────────────────────────────────────────────────────
+
+/// Shared surface for rows in a grouped card list ([SettingsCard],
+/// [DetailCard]): rounds the corners dictated by [position], draws the inner
+/// bottom separator, and paints the elevated card background.
+class GroupedCardShell extends StatelessWidget {
+  const GroupedCardShell({
+    required this.position,
+    required this.minHeight,
+    required this.padding,
+    required this.child,
+    this.transparent = false,
+    super.key,
+  });
+
+  /// Position within the grouped list — controls corner rounding and whether
+  /// the bottom separator is drawn.
+  final SettingsCardPosition position;
+
+  /// Minimum row height.
+  final double minHeight;
+
+  /// Inner padding around [child].
+  final EdgeInsetsGeometry padding;
+
+  /// When true the surface is flush (no background or shadow) — used when a
+  /// larger panel supplies the background.
+  final bool transparent;
+
+  /// Row content.
+  final Widget child;
+
+  BorderRadius get _borderRadius => switch (position) {
+    SettingsCardPosition.single => const BorderRadius.all(Radius.kS),
+    SettingsCardPosition.top => const BorderRadius.vertical(top: Radius.kS),
+    SettingsCardPosition.middle => BorderRadius.zero,
+    SettingsCardPosition.bottom => const BorderRadius.vertical(bottom: Radius.kS),
+  };
+
+  bool get _showBottomBorder =>
+      position == SettingsCardPosition.top || position == SettingsCardPosition.middle;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = Theme.of(context).palette;
+    return Stack(
+      fit: StackFit.passthrough,
+      children: [
+        Container(
+          constraints: BoxConstraints(minHeight: minHeight),
+          decoration: BoxDecoration(
+            color: transparent ? null : palette.bgPrimary,
+            borderRadius: _borderRadius,
+            boxShadow: transparent
+                ? null
+                : [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
+          ),
+          padding: padding,
+          child: child,
+        ),
+        if (_showBottomBorder)
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Container(height: 1, color: palette.borderQuaternary),
+          ),
+      ],
+    );
+  }
+}
+
 // ─── SettingsCard ─────────────────────────────────────────────────────────────
 
 /// A responsive settings row that adapts its visual style to the current
@@ -88,59 +160,27 @@ class SettingsCard extends StatelessWidget {
   /// drawn. Defaults to [SettingsCardPosition.single].
   final SettingsCardPosition position;
 
-  BorderRadius get _borderRadius => switch (position) {
-    SettingsCardPosition.single => const BorderRadius.all(Radius.kS),
-    SettingsCardPosition.top => const BorderRadius.vertical(top: Radius.kS),
-    SettingsCardPosition.middle => BorderRadius.zero,
-    SettingsCardPosition.bottom => const BorderRadius.vertical(bottom: Radius.kS),
-  };
-
-  bool get _showBottomBorder =>
-      position == SettingsCardPosition.top || position == SettingsCardPosition.middle;
-
   @override
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
-    final palette = theme.palette;
-    return Stack(
-      fit: StackFit.passthrough,
-      children: [
-        Container(
-          constraints: const BoxConstraints(minHeight: 70),
-          decoration: BoxDecoration(
-            color: isDesktop ? null : palette.bgPrimary,
-            borderRadius: _borderRadius,
-            boxShadow: isDesktop
-                ? null
-                : [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
+    return GroupedCardShell(
+      position: position,
+      minHeight: 70,
+      transparent: isDesktop,
+      padding: isDesktop
+          ? EdgeInsets.symmetric(vertical: theme.spacing.md)
+          : EdgeInsets.all(theme.spacing.md),
+      child: Row(
+        spacing: theme.spacing.md,
+        children: [
+          ?icon,
+          Expanded(
+            child: _TextColumn(title: title, subtitle: subtitle, subtitleWidget: subtitleWidget),
           ),
-          padding: isDesktop
-              ? EdgeInsets.symmetric(vertical: theme.spacing.md)
-              : EdgeInsets.all(theme.spacing.md),
-          child: Row(
-            spacing: theme.spacing.md,
-            children: [
-              ?icon,
-              Expanded(
-                child: _TextColumn(
-                  title: title,
-                  subtitle: subtitle,
-                  subtitleWidget: subtitleWidget,
-                ),
-              ),
-              ?trailing,
-            ],
-          ),
-        ),
-        if (_showBottomBorder)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(height: 1, color: palette.borderQuaternary),
-          ),
-      ],
+          ?trailing,
+        ],
+      ),
     );
   }
 }
