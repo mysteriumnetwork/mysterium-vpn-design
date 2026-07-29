@@ -56,9 +56,10 @@ class DetailCard extends StatelessWidget {
       minHeight: 48,
       padding: EdgeInsets.symmetric(horizontal: theme.spacing.md, vertical: theme.spacing.sm),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         spacing: theme.spacing.s,
         children: [
-          Expanded(
+          Flexible(
             child: Text(
               title,
               style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
@@ -66,15 +67,29 @@ class DetailCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          ?valueIcon,
-          if (value != null)
-            Text(
-              value!,
-              style: theme.textStyles.textMd.regular.copyWith(
-                color: valueMuted ? palette.textTertiary : palette.textPrimary,
-              ),
+          // Loose flex so an overlong value ellipsizes instead of overflowing,
+          // while short content keeps hugging the trailing edge.
+          Flexible(
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              spacing: theme.spacing.s,
+              children: [
+                ?valueIcon,
+                if (value != null)
+                  Flexible(
+                    child: Text(
+                      value!,
+                      style: theme.textStyles.textMd.regular.copyWith(
+                        color: valueMuted ? palette.textTertiary : palette.textPrimary,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ?trailing,
+              ],
             ),
-          ?trailing,
+          ),
         ],
       ),
     );

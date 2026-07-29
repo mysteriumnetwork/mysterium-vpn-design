@@ -33,6 +33,20 @@ void main() {
       expect(find.byIcon(UntitledUI.refresh_cw_02), findsOneWidget);
     });
 
+    testWidgets('overlong value ellipsizes instead of overflowing', (tester) async {
+      const longValue = '2001:0db8:85a3:0000:0000:8a2e:0370:7334:abcd:ef01:2345:6789';
+      await pumpWidget(
+        tester,
+        const SizedBox(
+          width: 300,
+          child: DetailCard(title: 'VPN IP', value: longValue),
+        ),
+      );
+      expect(tester.takeException(), isNull);
+      final value = tester.widget<Text>(find.text(longValue));
+      expect(value.overflow, TextOverflow.ellipsis);
+    });
+
     testWidgets('top and middle positions draw a bottom separator', (tester) async {
       for (final position in SettingsCardPosition.values) {
         await pumpWidget(tester, DetailCard(title: 'Row', value: 'Value', position: position));
