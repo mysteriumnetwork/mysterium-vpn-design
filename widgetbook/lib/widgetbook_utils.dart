@@ -38,4 +38,21 @@ abstract class WidgetbookUtils {
         orElse: () => const MapEntry('unknown', UntitledUI.activity),
       )
       .key;
+
+  /// Round striped-flag placeholder for country-icon slots in use-cases.
+  /// [axis] is the direction the stripes are laid out in.
+  static Widget placeholderFlag(List<Color> stripes, {Axis axis = Axis.vertical}) {
+    assert(stripes.isNotEmpty, 'placeholderFlag needs at least one stripe color');
+    return ClipOval(
+      child: Flex(
+        direction: axis,
+        children: [
+          for (final color in stripes)
+            Expanded(
+              child: ColoredBox(color: color, child: const SizedBox.expand()),
+            ),
+        ],
+      ),
+    );
+  }
 }

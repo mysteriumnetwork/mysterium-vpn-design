@@ -8,15 +8,13 @@ const _flag = SizedBox(width: 32, height: 32);
 
 MainIpCard _build(
   MainIpCardStatus status, {
-  ConnectionRating rating = ConnectionRating.none,
-  bool showConnectionRating = true,
   VoidCallback? onConnect,
   VoidCallback? onDisconnect,
+  VoidCallback? onDetails,
+  VoidCallback? onFavorite,
   VoidCallback? onSwitchCountry,
   VoidCallback? onDismissPreview,
-  VoidCallback? onThumbsUp,
-  VoidCallback? onThumbsDown,
-  VoidCallback? onRefreshIp,
+  Key? connectedInfoKey,
   SingleWidgetWrapper? buttonWrapper,
 }) => MainIpCard(
   status: status,
@@ -25,18 +23,21 @@ MainIpCard _build(
   connectingLabel: 'Connecting…',
   noConnectionTitle: 'Not connected',
   noConnectionDescription: 'Pick a country to begin',
-  connectionRatingLabel: 'Rate this connection',
-  refreshIpTooltip: 'Refresh IP',
-  connectionRating: rating,
-  showConnectionRating: showConnectionRating,
   onConnect: onConnect,
   onDisconnect: onDisconnect,
+  onDetails: onDetails,
+  onFavorite: onFavorite,
   onSwitchCountry: onSwitchCountry,
   onDismissPreview: onDismissPreview,
-  onThumbsUp: onThumbsUp,
-  onThumbsDown: onThumbsDown,
-  onRefreshIp: onRefreshIp,
+  connectedInfoKey: connectedInfoKey,
   buttonWrapper: buttonWrapper,
+);
+
+const _connected = MainIpCardConnected(
+  country: 'Germany',
+  countryIcon: _flag,
+  city: 'Frankfurt',
+  ipAddress: '203.0.113.5',
 );
 
 void main() {
@@ -86,28 +87,65 @@ void main() {
       expect(find.text('Connecting…'), findsWidgets);
     });
 
-    testWidgets('Connected renders details and fires onDisconnect', (tester) async {
+    testWidgets('Connected renders location, IP and fires onDisconnect', (tester) async {
       var disconnected = false;
+      await pumpWidget(tester, _build(_connected, onDisconnect: () => disconnected = true));
+      expect(find.text('Germany'), findsOneWidget);
+      expect(find.text('Frankfurt'), findsOneWidget);
+      expect(find.text('203.0.113.5'), findsOneWidget);
+      await tester.tap(find.text('Disconnect'));
+      expect(disconnected, isTrue);
+    });
+
+    testWidgets('Connected fires onDetails from the chevron', (tester) async {
+      var details = false;
+      await pumpWidget(tester, _build(_connected, onDetails: () => details = true));
+      await tester.tap(find.byIcon(UntitledUI.chevron_right));
+      expect(details, isTrue);
+    });
+
+    testWidgets('Connected fires onFavorite from the heart', (tester) async {
+      var favorite = false;
+      await pumpWidget(tester, _build(_connected, onFavorite: () => favorite = true));
+      await tester.tap(find.byIcon(UntitledUI.heart));
+      expect(favorite, isTrue);
+    });
+
+    testWidgets('Connected hides the heart when onFavorite is null', (tester) async {
+      await pumpWidget(tester, _build(_connected));
+      expect(find.byIcon(UntitledUI.heart), findsNothing);
+    });
+
+    testWidgets('Connected omits the city divider when city is empty', (tester) async {
       await pumpWidget(
         tester,
         _build(
           const MainIpCardConnected(
             country: 'Germany',
             countryIcon: _flag,
-            city: 'Frankfurt',
+            city: '',
             ipAddress: '203.0.113.5',
-            serviceQuality: 'Excellent',
-            ipPoolCount: 3,
           ),
-          onDisconnect: () => disconnected = true,
         ),
       );
-      expect(find.text('Germany'), findsOneWidget);
-      expect(find.text('Frankfurt'), findsOneWidget);
       expect(find.text('203.0.113.5'), findsOneWidget);
-      expect(find.text('IP pool: 3'), findsOneWidget);
-      await tester.tap(find.text('Disconnect'));
-      expect(disconnected, isTrue);
+      expect(find.text(''), findsNothing);
+    });
+
+    testWidgets('Connected places connectedInfoKey on the subtitle row', (tester) async {
+      const infoKey = Key('connected-info');
+      await pumpWidget(tester, _build(_connected, connectedInfoKey: infoKey));
+      expect(find.byKey(infoKey), findsOneWidget);
+    });
+
+    testWidgets('Connected renders in dark theme', (tester) async {
+      await pumpWidget(
+        tester,
+        _build(_connected, onFavorite: () {}),
+        theme: DesignSystem.darkTheme,
+      );
+      expect(find.text('Germany'), findsOneWidget);
+      expect(find.byIcon(UntitledUI.heart), findsOneWidget);
     });
 
     testWidgets('buttonWrapper wraps the main action button', (tester) async {
@@ -142,8 +180,6 @@ void main() {
             countryIcon: _flag,
             city: 'Frankfurt',
             ipAddress: '203.0.113.5',
-            serviceQuality: 'Excellent',
-            ipPoolCount: 3,
             previewCountry: 'Poland',
             previewCountryIcon: _flag,
             switchLabel: 'Switch to Poland',
@@ -155,45 +191,6 @@ void main() {
       expect(find.text('Switch to Poland'), findsOneWidget);
       await tester.tap(find.text('Switch to Poland'));
       expect(switched, isTrue);
-    });
-
-    testWidgets('Connected omits rating row when showConnectionRating is false', (tester) async {
-      await pumpWidget(
-        tester,
-        _build(
-          const MainIpCardConnected(
-            country: 'Germany',
-            countryIcon: _flag,
-            city: 'Frankfurt',
-            ipAddress: '203.0.113.5',
-            serviceQuality: 'Excellent',
-            ipPoolCount: 3,
-          ),
-          showConnectionRating: false,
-        ),
-      );
-      expect(find.text('Rate this connection'), findsNothing);
-    });
-
-    testWidgets('NewIpPreview omits rating row when showConnectionRating is false', (tester) async {
-      await pumpWidget(
-        tester,
-        _build(
-          const MainIpCardNewIpPreview(
-            country: 'Germany',
-            countryIcon: _flag,
-            city: 'Frankfurt',
-            ipAddress: '203.0.113.5',
-            serviceQuality: 'Excellent',
-            ipPoolCount: 3,
-            previewCountry: 'Poland',
-            previewCountryIcon: _flag,
-            switchLabel: 'Switch to Poland',
-          ),
-          showConnectionRating: false,
-        ),
-      );
-      expect(find.text('Rate this connection'), findsNothing);
     });
   });
 }

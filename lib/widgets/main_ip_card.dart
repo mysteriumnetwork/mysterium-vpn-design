@@ -1,20 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-// ─── Connection rating ────────────────────────────────────────────────────────
-
-/// Rating state for the connection quality thumbs.
-enum ConnectionRating {
-  /// No rating given yet.
-  none,
-
-  /// User rated the connection positively.
-  thumbsUp,
-
-  /// User rated the connection negatively.
-  thumbsDown,
-}
-
 // ─── Status types ─────────────────────────────────────────────────────────────
 
 /// Status variants for [MainIpCard].
@@ -60,16 +46,12 @@ final class MainIpCardConnected extends MainIpCardStatus {
     required this.countryIcon,
     required this.city,
     required this.ipAddress,
-    required this.serviceQuality,
-    required this.ipPoolCount,
   });
 
   final String country;
   final Widget countryIcon;
   final String city;
   final String ipAddress;
-  final String serviceQuality;
-  final int ipPoolCount;
 }
 
 /// A new IP country is being previewed above the current connected card.
@@ -79,8 +61,6 @@ final class MainIpCardNewIpPreview extends MainIpCardStatus {
     required this.countryIcon,
     required this.city,
     required this.ipAddress,
-    required this.serviceQuality,
-    required this.ipPoolCount,
     required this.previewCountry,
     required this.previewCountryIcon,
     required this.switchLabel,
@@ -91,8 +71,6 @@ final class MainIpCardNewIpPreview extends MainIpCardStatus {
   final Widget countryIcon;
   final String city;
   final String ipAddress;
-  final String serviceQuality;
-  final int ipPoolCount;
 
   // Proposed switch
   final String previewCountry;
@@ -114,53 +92,45 @@ class MainIpCard extends StatelessWidget {
     required this.connectingLabel,
     required this.noConnectionTitle,
     required this.noConnectionDescription,
-    required this.connectionRatingLabel,
-    required this.refreshIpTooltip,
-    this.connectionRating = ConnectionRating.none,
-    this.showConnectionRating = true,
-    this.ipPoolLabel = _defaultIpPoolLabel,
     this.onConnect,
     this.onDisconnect,
-    this.onRefreshIp,
-    this.onThumbsUp,
-    this.onThumbsDown,
+    this.onDetails,
+    this.onFavorite,
+    this.favoriteTooltip,
     this.onDismissPreview,
     this.onSwitchCountry,
-    this.serviceQualityKey,
+    this.connectedInfoKey,
     this.buttonWrapper,
     super.key,
   });
 
   final MainIpCardStatus status;
 
-  /// Optional key placed on the service-quality label (e.g. "Residential") in
-  /// the connected / new-IP-preview states, so callers can anchor an overlay
-  /// to it. No effect in other states.
-  final Key? serviceQualityKey;
+  /// Optional key placed on the city/IP subtitle row in the connected /
+  /// new-IP-preview states, so callers can anchor an overlay to it. No effect
+  /// in other states.
+  final Key? connectedInfoKey;
 
   final String connectLabel;
   final String disconnectLabel;
   final String connectingLabel;
   final String noConnectionTitle;
   final String noConnectionDescription;
-  final String connectionRatingLabel;
-  final String refreshIpTooltip;
-  final ConnectionRating connectionRating;
-
-  /// When `false`, the thumbs-up / thumbs-down rating row is omitted from the
-  /// connected and new-IP-preview states. Defaults to `true`.
-  final bool showConnectionRating;
-
-  /// Builds the IP-pool label (e.g. "IP pool: 13") for the connected / new-IP-
-  /// preview states. Pass a localized builder; defaults to English so the
-  /// widget renders standalone (e.g. in Widgetbook).
-  final String Function(int count) ipPoolLabel;
 
   final VoidCallback? onConnect;
   final VoidCallback? onDisconnect;
-  final VoidCallback? onRefreshIp;
-  final VoidCallback? onThumbsUp;
-  final VoidCallback? onThumbsDown;
+
+  /// Tapping the chevron in the connected / new-IP-preview states — opens the
+  /// connection details view.
+  final VoidCallback? onDetails;
+
+  /// Tapping the heart in the connected / new-IP-preview states. When null,
+  /// the heart is not shown.
+  final VoidCallback? onFavorite;
+
+  /// Optional tooltip on the heart (e.g. "Favorites coming soon").
+  final String? favoriteTooltip;
+
   final VoidCallback? onDismissPreview;
   final VoidCallback? onSwitchCountry;
 
@@ -199,33 +169,19 @@ class MainIpCard extends StatelessWidget {
           buttonWrapper: buttonWrapper,
         ),
       ),
-      MainIpCardConnected(
-        :final country,
-        :final countryIcon,
-        :final city,
-        :final ipAddress,
-        :final serviceQuality,
-        :final ipPoolCount,
-      ) =>
+      MainIpCardConnected(:final country, :final countryIcon, :final city, :final ipAddress) =>
         _CardShell(
           child: _ConnectedContent(
             country: country,
             countryIcon: countryIcon,
             city: city,
             ipAddress: ipAddress,
-            serviceQuality: serviceQuality,
-            serviceQualityKey: serviceQualityKey,
-            ipPoolCount: ipPoolCount,
+            infoKey: connectedInfoKey,
             buttonLabel: disconnectLabel,
-            connectionRatingLabel: connectionRatingLabel,
-            connectionRating: connectionRating,
-            showConnectionRating: showConnectionRating,
-            ipPoolLabel: ipPoolLabel,
             onButton: onDisconnect,
-            onRefreshIp: onRefreshIp,
-            onThumbsUp: onThumbsUp,
-            onThumbsDown: onThumbsDown,
-            refreshIpTooltip: refreshIpTooltip,
+            onDetails: onDetails,
+            onFavorite: onFavorite,
+            favoriteTooltip: favoriteTooltip,
             buttonWrapper: buttonWrapper,
           ),
         ),
@@ -234,8 +190,6 @@ class MainIpCard extends StatelessWidget {
         :final countryIcon,
         :final city,
         :final ipAddress,
-        :final serviceQuality,
-        :final ipPoolCount,
         :final previewCountry,
         :final previewCountryIcon,
         :final switchLabel,
@@ -267,19 +221,12 @@ class MainIpCard extends StatelessWidget {
                     countryIcon: countryIcon,
                     city: city,
                     ipAddress: ipAddress,
-                    serviceQuality: serviceQuality,
-                    serviceQualityKey: serviceQualityKey,
-                    ipPoolCount: ipPoolCount,
+                    infoKey: connectedInfoKey,
                     buttonLabel: switchLabel,
-                    connectionRatingLabel: connectionRatingLabel,
-                    connectionRating: connectionRating,
-                    showConnectionRating: showConnectionRating,
-                    ipPoolLabel: ipPoolLabel,
                     onButton: onSwitchCountry,
-                    onRefreshIp: onRefreshIp,
-                    onThumbsUp: onThumbsUp,
-                    onThumbsDown: onThumbsDown,
-                    refreshIpTooltip: refreshIpTooltip,
+                    onDetails: onDetails,
+                    onFavorite: onFavorite,
+                    favoriteTooltip: favoriteTooltip,
                     buttonWrapper: buttonWrapper,
                   ),
                 ),
@@ -301,8 +248,6 @@ class MainIpCard extends StatelessWidget {
 }
 
 // ─── Layout constants ─────────────────────────────────────────────────────────
-
-String _defaultIpPoolLabel(int count) => 'IP pool: $count';
 
 const _cardMaxWidthMobile = 480.0;
 const _cardMaxWidthDesktop = 343.0;
@@ -546,19 +491,12 @@ class _ConnectedContent extends StatelessWidget {
     required this.countryIcon,
     required this.city,
     required this.ipAddress,
-    required this.serviceQuality,
-    required this.ipPoolCount,
     required this.buttonLabel,
-    required this.connectionRatingLabel,
-    required this.refreshIpTooltip,
-    this.serviceQualityKey,
-    this.connectionRating = ConnectionRating.none,
-    this.showConnectionRating = true,
-    this.ipPoolLabel = _defaultIpPoolLabel,
+    this.infoKey,
     this.onButton,
-    this.onRefreshIp,
-    this.onThumbsUp,
-    this.onThumbsDown,
+    this.onDetails,
+    this.onFavorite,
+    this.favoriteTooltip,
     this.buttonWrapper,
   });
 
@@ -566,19 +504,12 @@ class _ConnectedContent extends StatelessWidget {
   final Widget countryIcon;
   final String city;
   final String ipAddress;
-  final String serviceQuality;
-  final Key? serviceQualityKey;
-  final int ipPoolCount;
+  final Key? infoKey;
   final String buttonLabel;
-  final String connectionRatingLabel;
-  final ConnectionRating connectionRating;
-  final bool showConnectionRating;
-  final String Function(int count) ipPoolLabel;
   final VoidCallback? onButton;
-  final VoidCallback? onRefreshIp;
-  final VoidCallback? onThumbsUp;
-  final VoidCallback? onThumbsDown;
-  final String refreshIpTooltip;
+  final VoidCallback? onDetails;
+  final VoidCallback? onFavorite;
+  final String? favoriteTooltip;
   final SingleWidgetWrapper? buttonWrapper;
 
   @override
@@ -588,94 +519,66 @@ class _ConnectedContent extends StatelessWidget {
     final subtitleStyle = theme.textStyles.textXs.regular.copyWith(
       color: palette.textIpCardSubtitle,
     );
-    final isRefreshActive = ipPoolCount > 1;
 
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       spacing: theme.spacing.md,
       children: [
-        // Header area
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: theme.spacing.xxs,
+        // Header area: location info with heart + details chevron on the right.
+        Row(
+          spacing: theme.spacing.ms,
           children: [
-            // Top line: location (flag + country/city) with the refresh icon
-            // and IP-pool label pinned to the right.
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              spacing: theme.spacing.xxs,
-              children: [
-                Expanded(
-                  child: Row(
-                    spacing: theme.spacing.ms,
+            SizedBox(width: 40, height: 40, child: countryIcon),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                spacing: theme.spacing.xxs,
+                children: [
+                  Text(
+                    country,
+                    style: theme.textStyles.textLg.semibold.copyWith(
+                      color: palette.textIpCardTitle,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Row(
+                    key: infoKey,
+                    spacing: theme.spacing.s,
                     children: [
-                      SizedBox(width: 32, height: 32, child: countryIcon),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          spacing: theme.spacing.xxs,
-                          children: [
-                            Text(
-                              country,
-                              style: theme.textStyles.textLg.semibold.copyWith(
-                                color: palette.textIpCardTitle,
-                              ),
-                            ),
-                            Text(city, style: subtitleStyle),
-                          ],
+                      if (city.isNotEmpty) ...[
+                        Flexible(
+                          child: Text(city, style: subtitleStyle, overflow: TextOverflow.ellipsis),
+                        ),
+                        Container(width: 1, height: 16, color: palette.textIpCardSubtitle),
+                      ],
+                      Flexible(
+                        child: Text(
+                          ipAddress,
+                          style: subtitleStyle,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
-                ),
-                // Refresh icon + IP pool label column
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    _IconTap(
-                      icon: UntitledUI.refresh_cw_05,
-                      iconColor: isRefreshActive
-                          ? palette.iconIpCard
-                          : palette.iconBrandPrimaryHover,
-                      onPressed: isRefreshActive ? onRefreshIp : null,
-                      tooltip: refreshIpTooltip,
-                    ),
-                    Text(
-                      ipPoolLabel(ipPoolCount),
-                      style: subtitleStyle,
-                      textAlign: TextAlign.right,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            // IP info row on its own line – 44px left pad aligns with location text
-            Padding(
-              padding: const EdgeInsets.only(left: 44),
-              child: Row(
-                spacing: theme.spacing.s,
-                children: [
-                  Flexible(
-                    child: Text(ipAddress, style: subtitleStyle, overflow: TextOverflow.ellipsis),
-                  ),
-                  Container(width: 1, height: 16, color: palette.textIpCardSubtitle),
-                  Flexible(
-                    child: Text(
-                      serviceQuality,
-                      key: serviceQualityKey,
-                      style: subtitleStyle,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
                 ],
               ),
             ),
+            if (onFavorite != null)
+              _IconTap(
+                icon: UntitledUI.heart,
+                iconColor: palette.iconIpCard,
+                onPressed: onFavorite,
+                tooltip: favoriteTooltip,
+              ),
+            _IconTap(
+              icon: UntitledUI.chevron_right,
+              iconColor: palette.iconIpCard,
+              onPressed: onDetails,
+            ),
           ],
         ),
-        // Disconnect / switch button
-        // Figma tokens: bg-base/white, border-brand-secondary (#887db0),
-        // text-secondary-(700) (#535862)
+        // Disconnect / switch button — translucent surface over the card color.
         _wrapButton(
           context,
           buttonWrapper,
@@ -683,46 +586,13 @@ class _ConnectedContent extends StatelessWidget {
             onPressed: onButton,
             size: ButtonSize.large,
             decoration: ButtonDecoration(
-              decorationColor: Palette.white,
-              foregroundColor: Palette.grayLight.shade600,
-              borderColor: Palette.brandPurple.shade400,
+              decorationColor: palette.bgSecondaryCta,
+              foregroundColor: palette.textIpCardTitle,
+              borderColor: palette.bgSecondaryCta,
             ),
             child: Text(buttonLabel),
           ),
         ),
-        if (showConnectionRating)
-          Row(
-            spacing: theme.spacing.md,
-            children: [
-              Expanded(
-                child: Text(
-                  connectionRatingLabel,
-                  style: theme.textStyles.textSm.medium.copyWith(color: palette.textIpCardSubtitle),
-                ),
-              ),
-              Row(
-                spacing: theme.spacing.s,
-                children: [
-                  _IconTap(
-                    icon: UntitledUI.thumbs_down,
-                    iconColor: connectionRating == ConnectionRating.thumbsDown
-                        ? Palette.error
-                        : palette.textIpCardSubtitle,
-                    onPressed: onThumbsDown,
-                    padding: EdgeInsets.all(theme.spacing.xs),
-                  ),
-                  _IconTap(
-                    icon: UntitledUI.thumbs_up,
-                    iconColor: connectionRating == ConnectionRating.thumbsUp
-                        ? Palette.success
-                        : palette.textIpCardSubtitle,
-                    onPressed: onThumbsUp,
-                    padding: EdgeInsets.all(theme.spacing.xs),
-                  ),
-                ],
-              ),
-            ],
-          ),
       ],
     );
   }
@@ -780,25 +650,18 @@ class _PreviewBar extends StatelessWidget {
 // ─── Icon tap helper ──────────────────────────────────────────────────────────
 
 class _IconTap extends StatelessWidget {
-  const _IconTap({
-    required this.icon,
-    this.tooltip,
-    this.iconColor = Palette.white,
-    this.onPressed,
-    this.padding,
-  });
+  const _IconTap({required this.icon, required this.iconColor, this.onPressed, this.tooltip});
 
   final IconData icon;
   final Color iconColor;
   final VoidCallback? onPressed;
   final String? tooltip;
-  final EdgeInsetsGeometry? padding;
   @override
   Widget build(BuildContext context) => IconButton(
     onPressed: onPressed,
     icon: Icon(icon, size: 24, color: iconColor),
     tooltip: tooltip,
-    padding: padding ?? EdgeInsets.zero,
+    padding: EdgeInsets.zero,
     style: ButtonStyle(
       minimumSize: const WidgetStatePropertyAll(Size(32, 32)),
       tapTargetSize: MaterialTapTargetSize.shrinkWrap,

@@ -11,6 +11,7 @@ class ModalScaffold extends StatelessWidget {
     required this.body,
     this.appbar,
     this.autoApplyPadding = true,
+    this.backgroundColor,
     this.footer,
     this.onModalClose,
     this.showGradient = true,
@@ -27,10 +28,16 @@ class ModalScaffold extends StatelessWidget {
   /// Optional fixed footer (rendered as [Scaffold.bottomNavigationBar]).
   final Widget? footer;
 
-  /// When true, wraps [body] in a [ModalPadding] that honours safe-area
-  /// insets and the app-bar height. Disable when the body handles insets
-  /// itself.
+  /// When true, wraps [body] in a [SafeArea]. The body extends behind the
+  /// app bar and [Scaffold] injects the app-bar height (including any top
+  /// device inset) into the body's `MediaQuery` padding, so this positions
+  /// content directly below the app bar. Disable when the body handles
+  /// insets itself (e.g. to scroll content behind the app bar).
   final bool autoApplyPadding;
+
+  /// Background colour of the page. Defaults to the theme's popover
+  /// background.
+  final Color? backgroundColor;
 
   /// Close handler used by the default app bar's × button. Falls back to
   /// `Navigator.pop` when null.
@@ -47,21 +54,9 @@ class ModalScaffold extends StatelessWidget {
     appBar: appbar ?? ModalAppbar(onModalClose: onModalClose, showCloseButton: showCloseButton),
     body: BackgroundGradient(
       showGradient: showGradient,
-      child: Builder(
-        builder: (context) {
-          if (autoApplyPadding) {
-            return ModalPadding(
-              add: appbar is ModalAppbar
-                  ? EdgeInsets.only(top: appbar!.preferredSize.height)
-                  : EdgeInsets.zero,
-              child: body,
-            );
-          }
-          return body;
-        },
-      ),
+      child: autoApplyPadding ? SafeArea(child: body) : body,
     ),
-    backgroundColor: Theme.of(context).palette.bgPopover,
+    backgroundColor: backgroundColor ?? Theme.of(context).palette.bgPopover,
     extendBodyBehindAppBar: true,
     primary: false,
     resizeToAvoidBottomInset: false,

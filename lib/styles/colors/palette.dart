@@ -264,6 +264,9 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgMapBackground;
   abstract final Color bgMainIpCard;
   abstract final Color bgMainIpPreview;
+
+  /// Translucent CTA surface + border on the main IP card (Figma `bg-secondary_cta`).
+  abstract final Color bgSecondaryCta;
   abstract final Color bgTransparent;
   abstract final Color bgInfoCard;
 
@@ -435,7 +438,8 @@ class PaletteDark extends Palette {
   Color get iconInfoPrimary => Palette.grayLight.shade300;
 
   @override
-  Color get iconBrandPrimary => Palette.brand.shade300;
+  // Figma Colors/Icons/icon-brand-primary = #C644F1 in dark mode.
+  Color get iconBrandPrimary => Palette.brand;
 
   @override
   Color get iconBrandPrimaryHover => Palette.brand.shade200;
@@ -527,6 +531,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgMainIpPreview => Palette.brandPurple.shade300;
+
+  @override
+  Color get bgSecondaryCta => Palette.grayLight.shade800.withValues(alpha: 0.16);
 
   @override
   Color get bgTransparent => Palette.grayDarkAlpha.shade500;
@@ -755,7 +762,8 @@ class PaletteLight extends Palette {
   Color get iconInfoPrimary => Palette.grayLight.shade600;
 
   @override
-  Color get iconBrandPrimary => Palette.brand;
+  // Figma Colors/Icons/icon-brand-primary = #DA78FA in light mode.
+  Color get iconBrandPrimary => Palette.brand.shade400;
 
   @override
   Color get iconBrandPrimaryHover => Palette.brand.shade700;
@@ -844,6 +852,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgMainIpPreview => Palette.brandPurple.shade200;
+
+  @override
+  Color get bgSecondaryCta => Palette.white.withValues(alpha: 0.16);
 
   @override
   Color get bgTransparent => Palette.grayDarkAlpha.shade700;

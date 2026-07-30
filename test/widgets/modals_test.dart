@@ -164,5 +164,32 @@ void main() {
       );
       expect(find.text('Done'), findsOneWidget);
     });
+
+    testWidgets('autoApplyPadding places the body directly below the app bar', (tester) async {
+      await pumpWidget(
+        tester,
+        const ModalScaffold(
+          body: SizedBox(key: Key('modal-body'), width: 10, height: 10),
+          showGradient: false,
+        ),
+      );
+      final appbarHeight = tester.getRect(find.byType(ModalAppbar)).height;
+      // Exactly one app-bar inset — not the app bar plus the Scaffold-injected
+      // MediaQuery padding on top (the old double-count pushed content down).
+      expect(tester.getRect(find.byKey(const Key('modal-body'))).top, appbarHeight);
+    });
+
+    testWidgets('backgroundColor overrides the page background', (tester) async {
+      await pumpWidget(
+        tester,
+        const ModalScaffold(
+          body: Text('Body'),
+          showGradient: false,
+          backgroundColor: Color(0xFF123456),
+        ),
+      );
+      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+      expect(scaffold.backgroundColor, const Color(0xFF123456));
+    });
   });
 }
