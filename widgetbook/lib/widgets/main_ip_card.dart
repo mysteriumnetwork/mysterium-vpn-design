@@ -69,6 +69,7 @@ Widget buildMainIpCardConnected(BuildContext context) {
     label: 'Disconnect label',
     initialValue: 'Disconnect',
   );
+  final showFavorite = context.knobs.boolean(label: 'Show favorite', initialValue: true);
   return MainIpCard(
     status: MainIpCardConnected(
       country: country,
@@ -83,7 +84,7 @@ Widget buildMainIpCardConnected(BuildContext context) {
     noConnectionDescription: "We'll connect you to the nearest server.",
     onDisconnect: () {},
     onDetails: () {},
-    onFavorite: () {},
+    onFavorite: showFavorite ? () {} : null,
     favoriteTooltip: context.knobs.string(
       label: 'Favorite tooltip',
       initialValue: 'Favorites coming soon',

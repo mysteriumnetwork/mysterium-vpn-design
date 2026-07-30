@@ -124,7 +124,8 @@ class MainIpCard extends StatelessWidget {
   /// connection details view.
   final VoidCallback? onDetails;
 
-  /// Tapping the heart in the connected / new-IP-preview states.
+  /// Tapping the heart in the connected / new-IP-preview states. When null,
+  /// the heart is not shown.
   final VoidCallback? onFavorite;
 
   /// Optional tooltip on the heart (e.g. "Favorites coming soon").
@@ -563,12 +564,13 @@ class _ConnectedContent extends StatelessWidget {
                 ],
               ),
             ),
-            _IconTap(
-              icon: UntitledUI.heart,
-              iconColor: palette.iconIpCard,
-              onPressed: onFavorite,
-              tooltip: favoriteTooltip,
-            ),
+            if (onFavorite != null)
+              _IconTap(
+                icon: UntitledUI.heart,
+                iconColor: palette.iconIpCard,
+                onPressed: onFavorite,
+                tooltip: favoriteTooltip,
+              ),
             _IconTap(
               icon: UntitledUI.chevron_right,
               iconColor: palette.iconIpCard,

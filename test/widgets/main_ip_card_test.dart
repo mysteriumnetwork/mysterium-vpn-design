@@ -111,6 +111,11 @@ void main() {
       expect(favorite, isTrue);
     });
 
+    testWidgets('Connected hides the heart when onFavorite is null', (tester) async {
+      await pumpWidget(tester, _build(_connected));
+      expect(find.byIcon(UntitledUI.heart), findsNothing);
+    });
+
     testWidgets('Connected omits the city divider when city is empty', (tester) async {
       await pumpWidget(
         tester,
@@ -134,7 +139,11 @@ void main() {
     });
 
     testWidgets('Connected renders in dark theme', (tester) async {
-      await pumpWidget(tester, _build(_connected), theme: DesignSystem.darkTheme);
+      await pumpWidget(
+        tester,
+        _build(_connected, onFavorite: () {}),
+        theme: DesignSystem.darkTheme,
+      );
       expect(find.text('Germany'), findsOneWidget);
       expect(find.byIcon(UntitledUI.heart), findsOneWidget);
     });
