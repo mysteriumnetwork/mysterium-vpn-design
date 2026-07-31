@@ -138,6 +138,13 @@ void main() {
       expect(find.byKey(infoKey), findsOneWidget);
     });
 
+    testWidgets('Connected disconnect button is solid white in dark theme', (tester) async {
+      await pumpWidget(tester, _build(_connected), theme: DesignSystem.darkTheme);
+      final button = tester.widget<OutlinedButton>(find.byType(OutlinedButton));
+      expect(button.style?.backgroundColor?.resolve({}), Palette.white);
+      expect(button.style?.foregroundColor?.resolve({}), Palette.grayLight.shade600);
+    });
+
     testWidgets('Connected renders in dark theme', (tester) async {
       await pumpWidget(
         tester,
