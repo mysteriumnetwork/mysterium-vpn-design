@@ -265,8 +265,16 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color bgMainIpCard;
   abstract final Color bgMainIpPreview;
 
-  /// Translucent CTA surface + border on the main IP card (Figma `bg-secondary_cta`).
+  /// Secondary CTA surface on the main IP card (Figma `bg-secondary_cta`):
+  /// translucent white over the dark card in light mode, solid white over the
+  /// light card in dark mode.
   abstract final Color bgSecondaryCta;
+
+  /// Border of the main IP card's secondary CTA.
+  abstract final Color borderSecondaryCta;
+
+  /// Label colour of the main IP card's secondary CTA (Figma `text-secondary-(700)`).
+  abstract final Color textSecondaryCta;
   abstract final Color bgTransparent;
   abstract final Color bgInfoCard;
 
@@ -533,7 +541,13 @@ class PaletteDark extends Palette {
   Color get bgMainIpPreview => Palette.brandPurple.shade300;
 
   @override
-  Color get bgSecondaryCta => Palette.grayLight.shade800.withValues(alpha: 0.16);
+  Color get bgSecondaryCta => Palette.white;
+
+  @override
+  Color get borderSecondaryCta => Palette.grayLight.shade300;
+
+  @override
+  Color get textSecondaryCta => Palette.grayLight.shade600;
 
   @override
   Color get bgTransparent => Palette.grayDarkAlpha.shade500;
@@ -855,6 +869,12 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSecondaryCta => Palette.white.withValues(alpha: 0.16);
+
+  @override
+  Color get borderSecondaryCta => Palette.white.withValues(alpha: 0.16);
+
+  @override
+  Color get textSecondaryCta => Palette.white;
 
   @override
   Color get bgTransparent => Palette.grayDarkAlpha.shade700;
