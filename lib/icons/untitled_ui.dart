@@ -2890,6 +2890,11 @@ class UntitledUI {
     fontFamily: kIconFontFamily,
     fontPackage: kPackageName,
   );
+  static const IconData heart_filled = IconData(
+    0xec93,
+    fontFamily: kIconFontFamily,
+    fontPackage: kPackageName,
+  );
   static const IconData hearts = IconData(
     0xea41,
     fontFamily: kIconFontFamily,

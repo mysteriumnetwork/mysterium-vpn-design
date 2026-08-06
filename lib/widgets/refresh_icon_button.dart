@@ -61,8 +61,11 @@ class _RefreshIconButtonState extends State<RefreshIconButton> with SingleTicker
   void _syncSpin() {
     if (widget.spinning) {
       _controller.repeat();
-    } else {
-      _controller.reset();
+    } else if (_controller.value != 0) {
+      // Glide to the end of the current turn instead of snapping back —
+      // a fast refresh would otherwise jerk the glyph mid-rotation. A full
+      // turn is the same angle as rest, so the follow-up reset is invisible.
+      _controller.animateTo(1).whenComplete(_controller.reset);
     }
   }
 

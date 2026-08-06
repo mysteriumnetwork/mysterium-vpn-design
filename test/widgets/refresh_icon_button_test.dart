@@ -47,5 +47,25 @@ void main() {
       await pumpWidget(tester, const RefreshIconButton());
       expect(tester.hasRunningAnimations, isFalse);
     });
+
+    testWidgets('finishes the current turn instead of snapping when spinning stops', (
+      tester,
+    ) async {
+      double turns() =>
+          tester.widget<RotationTransition>(find.byType(RotationTransition)).turns.value;
+
+      await pumpWidget(tester, const RefreshIconButton(spinning: true));
+      // Stop mid-turn.
+      await tester.pump(const Duration(milliseconds: 300));
+      await pumpWidget(tester, const RefreshIconButton());
+      await tester.pump(const Duration(milliseconds: 50));
+
+      // Still mid-turn: the glyph glides onward rather than jumping back...
+      expect(turns() % 1, isNot(0));
+
+      // ...and comes to rest at the neutral angle.
+      await tester.pumpAndSettle();
+      expect(turns() % 1, 0);
+    });
   });
 }
