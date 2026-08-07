@@ -120,25 +120,25 @@ class TextStyles extends ThemeExtension<TextStyles> {
   TypeScale get textXs => TypeScale(
     regular: GoogleFonts.inter(
       fontSize: 12,
-      height: 18 / 12,
+      height: 16 / 12,
       fontWeight: FontWeight.w400,
       color: color,
     ),
     medium: GoogleFonts.inter(
       fontSize: 12,
-      height: 18 / 12,
+      height: 16 / 12,
       fontWeight: FontWeight.w500,
       color: color,
     ),
     semibold: GoogleFonts.inter(
       fontSize: 12,
-      height: 18 / 12,
+      height: 16 / 12,
       fontWeight: FontWeight.w600,
       color: color,
     ),
     bold: GoogleFonts.inter(
       fontSize: 12,
-      height: 18 / 12,
+      height: 16 / 12,
       fontWeight: FontWeight.w700,
       color: color,
     ),

@@ -186,6 +186,12 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color textTertiary;
   abstract final Color textWhite;
   abstract final Color textDisabled;
+
+  /// Figma `Colors/Text/text-primary_disabled` — primary text on a disabled
+  /// surface (e.g. an unavailable saved IP). Lighter than [textDisabled], and
+  /// currently the same value as [iconDisabled] in both themes (they are
+  /// separate variables in Figma, so they are kept separate here).
+  abstract final Color textPrimaryDisabled;
   abstract final Color textPlaceholder;
   abstract final Color textBrandPrimary;
   abstract final Color textErrorPrimary;
@@ -238,6 +244,17 @@ abstract class Palette extends ThemeExtension<Palette> {
   /// Background for a disabled CTA/pill (Figma `bg-disabled-CTA`).
   abstract final Color bgDisabled;
   abstract final Color bgSecondarySelected;
+
+  /// Hover surface for a selected/connected row (see [bgSecondarySelected]).
+  abstract final Color bgSecondarySelectedHover;
+
+  /// Surface for a control sitting *on* a selected/brand row — a pill or CTA
+  /// that must stay legible against [bgSecondarySelected] rather than against
+  /// the page (Figma `bg-secondary_CTA`).
+  ///
+  /// The row is a page surface, so this is the mirror of [bgSecondaryCta],
+  /// which serves the same purpose on the main IP card's inverted surface.
+  abstract final Color bgSecondarySelectedCta;
   abstract final Color bgTertiary;
   abstract final Color bgQuaternary;
   abstract final Color bgBrandPrimary;
@@ -350,6 +367,9 @@ class PaletteDark extends Palette {
   Color get textDisabled => gray.shade500;
 
   @override
+  Color get textPrimaryDisabled => Palette.grayPurple.shade300;
+
+  @override
   Color get textPlaceholder => gray.shade400;
 
   @override
@@ -377,7 +397,9 @@ class PaletteDark extends Palette {
   @override
   // Colors/Border/border-primary (dark) — neutral gray per Figma, not the
   // purple-tinted grayPurple.shade600.
-  Color get borderPrimary => const Color(0xFF454950);
+  // Figma `border-primary` is 16% white in dark mode, not an opaque slate:
+  // it must stay visible on lighter surfaces too (e.g. bg-secondary_disabled).
+  Color get borderPrimary => Palette.grayDarkAlpha.shade700;
 
   @override
   Color get borderModals => Palette.grayDarkAlpha.shade700;
@@ -431,7 +453,8 @@ class PaletteDark extends Palette {
   Color get iconWhite => Palette.white;
 
   @override
-  Color get iconDisabled => Palette.grayLight.shade400;
+  // Figma `icon-primary_disabled` resolves to grayPurple.300 in dark mode.
+  Color get iconDisabled => Palette.grayPurple.shade300;
 
   @override
   Color get iconBrandSecondary => Palette.brand.shade400;
@@ -453,7 +476,7 @@ class PaletteDark extends Palette {
   Color get iconBrandPrimaryHover => Palette.brand.shade200;
 
   @override
-  Color get iconIpCard => Palette.grayLight.shade600;
+  Color get iconIpCard => Palette.black;
 
   ///
   /// Background Colors
@@ -468,7 +491,8 @@ class PaletteDark extends Palette {
   );
 
   @override
-  Color get bgSecondaryDisabled => Palette.grayPurple.shade800;
+  // Figma `bg-secondary_disabled` resolves to grayPurple.600 in dark mode.
+  Color get bgSecondaryDisabled => Palette.grayPurple.shade600;
 
   @override
   Color get bgDisabled => Palette.grayPurple.shade800;
@@ -478,6 +502,16 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgSecondarySelected => Palette.brand.shade900;
+
+  @override
+  // Translucent white so the row's selected fill shows through, exactly as in
+  // Figma — an opaque page background reads as a hole punched in the row.
+  Color get bgSecondarySelectedCta => Palette.grayDarkAlpha.shade700;
+
+  @override
+  // Same 8% white overlay used by bgPrimaryHover, over the selected surface.
+  Color get bgSecondarySelectedHover =>
+      Color.alphaBlend(Palette.grayDarkAlpha.shade800, Palette.brand.shade900);
 
   @override
   Color get bgTertiary => Palette.grayPurple.shade800;
@@ -682,6 +716,9 @@ class PaletteLight extends Palette {
   Color get textDisabled => gray.shade500;
 
   @override
+  Color get textPrimaryDisabled => Palette.grayLight.shade400;
+
+  @override
   Color get textPlaceholder => gray.shade500;
 
   @override
@@ -783,7 +820,7 @@ class PaletteLight extends Palette {
   Color get iconBrandPrimaryHover => Palette.brand.shade700;
 
   @override
-  Color get iconIpCard => Palette.white.withValues(alpha: 0.8);
+  Color get iconIpCard => Palette.white;
 
   ///
   /// Background Colors
@@ -805,6 +842,14 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSecondarySelected => Palette.brand.shade100;
+
+  @override
+  // The light selected row is already pale, so a solid white pill keeps the
+  // contrast the dark theme gets from a translucent layer.
+  Color get bgSecondarySelectedCta => Palette.white;
+
+  @override
+  Color get bgSecondarySelectedHover => Palette.brand.shade200;
 
   @override
   Color get bgTertiary => Palette.grayPurple.shade25;
