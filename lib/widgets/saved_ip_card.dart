@@ -169,7 +169,7 @@ class _SavedIpCardState extends State<SavedIpCard> {
                   child: _IpColumn(
                     ipAddress: widget.ipAddress,
                     badgeLabel: widget.badgeLabel,
-                    disabled: _disabled,
+                    status: widget.status,
                   ),
                 ),
                 _TrailingIcon(
@@ -228,17 +228,18 @@ class _TextColumn extends StatelessWidget {
 // ─── IP + badge column ────────────────────────────────────────────────────────
 
 class _IpColumn extends StatelessWidget {
-  const _IpColumn({required this.ipAddress, required this.badgeLabel, required this.disabled});
+  const _IpColumn({required this.ipAddress, required this.badgeLabel, required this.status});
 
   final String ipAddress;
   final String badgeLabel;
-  final bool disabled;
+  final SavedIpCardStatus status;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
     final textXs = theme.textStyles.textXs;
+    final disabled = status == SavedIpCardStatus.disabled;
     final textColor = disabled ? palette.textPrimaryDisabled : palette.textTertiary;
     return Column(
       // crossAxisAlignment defaults to center: the address and its badge are
@@ -256,7 +257,12 @@ class _IpColumn extends StatelessWidget {
         // the padding like Figma's inside stroke — total height stays 20 px.
         DecoratedBox(
           decoration: BoxDecoration(
-            color: disabled ? palette.bgSecondaryDisabled : palette.bgPrimary,
+            // The pill sits on the row, so it follows the row's surface.
+            color: switch (status) {
+              SavedIpCardStatus.disabled => palette.bgSecondaryDisabled,
+              SavedIpCardStatus.connected => palette.bgSecondarySelectedCta,
+              SavedIpCardStatus.idle => palette.bgPrimary,
+            },
             borderRadius: const BorderRadius.all(Radius.kFull),
             border: Border.all(color: palette.borderPrimary),
           ),

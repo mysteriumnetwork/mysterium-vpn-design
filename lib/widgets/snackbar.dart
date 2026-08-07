@@ -20,6 +20,11 @@ enum SnackbarType {
   success,
 }
 
+// State-layer alphas for the action button's overlay, matching the icon
+// overlays used elsewhere in the system.
+const _actionHoveredAlpha = 0.16;
+const _actionPressedAlpha = 0.24;
+
 /// A toast-style status banner with a leading icon badge and a body of
 /// supporting text. Long messages wrap to multiple lines.
 ///
@@ -47,9 +52,8 @@ class Snackbar extends StatelessWidget {
     // The snackbar's surface is inverted from the page (dark in light mode,
     // light in dark mode). Resolve every colour from the opposite theme's
     // palette so they read correctly against the inverted surface.
-    final inverse = theme.brightness == Brightness.light
-        ? const PaletteDark()
-        : const PaletteLight();
+    final isLightPage = theme.brightness == Brightness.light;
+    final inverse = isLightPage ? const PaletteDark() : const PaletteLight();
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -77,12 +81,59 @@ class Snackbar extends StatelessWidget {
             ),
             if (action != null) ...[
               SizedBox(width: theme.spacing.s),
-              IconTheme(
-                data: IconThemeData(color: inverse.iconSecondary, size: 16),
-                child: action!,
+              // Hand the action the inverted theme as well, so a button dropped
+              // in here resolves its brand colour and hover against the
+              // snackbar's surface instead of the page's.
+              Theme(
+                data: _actionTheme(isLightPage ? DesignSystem.darkTheme : DesignSystem.lightTheme),
+                child: IconTheme(
+                  data: IconThemeData(color: inverse.iconSecondary, size: 16),
+                  child: action!,
+                ),
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+
+  /// [inverse] with its text buttons re-tuned for this surface: the brand
+  /// colour held steady across every state, with hover/press shown as a tint
+  /// of it. The stock theme instead darkens the label to brand-700 over a
+  /// page-coloured overlay, which on the inverted surface reads as the label
+  /// vanishing into a smear.
+  ///
+  /// Merges into the inverted theme's own button style rather than replacing
+  /// it, so text style, shape and disabled colours survive.
+  static ThemeData _actionTheme(ThemeData inverse) {
+    final brand = inverse.palette.textBrandPrimary;
+    final base = inverse.textButtonTheme.style;
+
+    // Steady on brand while the button is usable, but disabled still defers to
+    // the theme — an unusable action that keeps the brand colour reads enabled.
+    WidgetStateProperty<Color?> steadyBrand(WidgetStateProperty<Color?>? fallback) =>
+        WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.disabled) ? fallback?.resolve(states) : brand,
+        );
+
+    return inverse.copyWith(
+      textButtonTheme: TextButtonThemeData(
+        style: base?.copyWith(
+          foregroundColor: steadyBrand(base.foregroundColor),
+          iconColor: steadyBrand(base.iconColor),
+          overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return null;
+            }
+            if (states.contains(WidgetState.pressed)) {
+              return brand.withValues(alpha: _actionPressedAlpha);
+            }
+            if (states.contains(WidgetState.hovered) || states.contains(WidgetState.focused)) {
+              return brand.withValues(alpha: _actionHoveredAlpha);
+            }
+            return null;
+          }),
         ),
       ),
     );

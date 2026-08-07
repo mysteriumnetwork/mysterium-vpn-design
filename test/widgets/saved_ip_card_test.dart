@@ -32,6 +32,15 @@ Color? _surfaceColor(WidgetTester tester) {
   return (box.decoration as BoxDecoration).color;
 }
 
+/// The badge pill's decoration — the only [DecoratedBox] in the card with a
+/// border.
+BoxDecoration _badgeDecoration(WidgetTester tester) => tester
+    .widgetList<DecoratedBox>(
+      find.descendant(of: find.byType(SavedIpCard), matching: find.byType(DecoratedBox)),
+    )
+    .map((it) => it.decoration as BoxDecoration)
+    .firstWhere((it) => it.border != null);
+
 void main() {
   group('SavedIpCard', () {
     testWidgets('renders name, subtitle, IP address and badge label', (tester) async {
@@ -174,33 +183,36 @@ void main() {
         tester,
       ) async {
         final theme = isDark ? DesignSystem.darkTheme : DesignSystem.lightTheme;
-        Border? badgeBorder(WidgetTester tester) {
-          final boxes = find.descendant(
-            of: find.byType(SavedIpCard),
-            matching: find.byType(DecoratedBox),
-          );
-          // The badge pill is the only DecoratedBox with a border.
-          for (final w in tester.widgetList<DecoratedBox>(boxes)) {
-            final decoration = w.decoration as BoxDecoration;
-            if (decoration.border case final Border border) {
-              return border;
-            }
-          }
-          return null;
-        }
 
         await pumpWidget(tester, _card(), theme: theme);
-        final idleBorder = badgeBorder(tester);
-        expect(idleBorder?.top.color, theme.palette.borderPrimary);
+        expect((_badgeDecoration(tester).border! as Border).top.color, theme.palette.borderPrimary);
 
         await pumpWidget(tester, _card(status: SavedIpCardStatus.disabled), theme: theme);
         expect(
-          badgeBorder(tester)?.top.color,
+          (_badgeDecoration(tester).border! as Border).top.color,
           theme.palette.borderPrimary,
           reason: 'unavailable badge uses the same border token as an available one',
         );
       });
     }
+
+    // Figma: the pill on a connected row is bg-secondary_CTA (#FFFFFF29 in
+    // dark), i.e. a translucent layer over the row — not the page background,
+    // which reads as a hole punched in the row.
+    for (final isDark in [false, true]) {
+      testWidgets('connected pill uses the CTA surface (${isDark ? 'dark' : 'light'})', (
+        tester,
+      ) async {
+        final theme = isDark ? DesignSystem.darkTheme : DesignSystem.lightTheme;
+        await pumpWidget(tester, _card(status: SavedIpCardStatus.connected), theme: theme);
+
+        expect(_badgeDecoration(tester).color, theme.palette.bgSecondarySelectedCta);
+      });
+    }
+
+    test('dark bgSecondarySelectedCta is the translucent Figma layer', () {
+      expect(DesignSystem.darkTheme.palette.bgSecondarySelectedCta, const Color(0x29FFFFFF));
+    });
 
     test('dark borderPrimary is translucent so it shows on any surface', () {
       // Figma `border-primary` (dark) = #FFFFFF29.
