@@ -54,6 +54,24 @@ void main() {
       expect(find.byIcon(UntitledUI.heart_filled), findsNothing);
     });
 
+    testWidgets('announces the heart with the caller-supplied semantic label', (tester) async {
+      final semantics = tester.ensureSemantics();
+      await pumpWidget(
+        tester,
+        SavedIpCard(
+          countryIcon: const ColoredBox(color: Colors.red),
+          name: 'Albania',
+          subtitle: 'Tirana',
+          ipAddress: '195.285.15.404',
+          badgeLabel: 'Residential IP',
+          favoriteSemanticLabel: 'Remove from favourites',
+          onFavoriteTap: () {},
+        ),
+      );
+      expect(find.bySemanticsLabel('Remove from favourites'), findsOneWidget);
+      semantics.dispose();
+    });
+
     testWidgets('tapping the outline heart calls onFavoriteTap', (tester) async {
       var heartTapped = false;
       await pumpWidget(tester, _card(isFavorite: false, onFavoriteTap: () => heartTapped = true));

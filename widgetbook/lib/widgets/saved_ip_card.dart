@@ -37,6 +37,7 @@ Widget buildSavedIpCard(BuildContext context) {
         isFavorite: isFavorite,
         onTap: () {},
         onFavoriteTap: () {},
+        favoriteSemanticLabel: isFavorite ? 'Remove from favourites' : 'Save to favourites',
       ),
     ),
   );

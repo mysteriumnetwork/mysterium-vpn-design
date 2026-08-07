@@ -97,6 +97,9 @@ class MainIpCard extends StatelessWidget {
     this.onDetails,
     this.onFavorite,
     this.isFavorite = false,
+    this.favoriteSemanticLabel,
+    this.detailsSemanticLabel,
+    this.dismissPreviewSemanticLabel,
     this.onDismissPreview,
     this.onSwitchCountry,
     this.connectedInfoKey,
@@ -131,6 +134,17 @@ class MainIpCard extends StatelessWidget {
   /// Whether the current IP is already saved to the favourites list. Shows a
   /// filled heart when true and an outline heart when false.
   final bool isFavorite;
+
+  /// Accessibility label for the heart button (e.g. "Save to favourites").
+  /// Icon-only buttons are announced as unlabeled without one.
+  final String? favoriteSemanticLabel;
+
+  /// Accessibility label for the details chevron (e.g. "Connection details").
+  final String? detailsSemanticLabel;
+
+  /// Accessibility label for the preview bar's close button
+  /// (e.g. "Dismiss new IP preview").
+  final String? dismissPreviewSemanticLabel;
 
   final VoidCallback? onDismissPreview;
   final VoidCallback? onSwitchCountry;
@@ -183,6 +197,8 @@ class MainIpCard extends StatelessWidget {
             onDetails: onDetails,
             onFavorite: onFavorite,
             isFavorite: isFavorite,
+            favoriteSemanticLabel: favoriteSemanticLabel,
+            detailsSemanticLabel: detailsSemanticLabel,
             buttonWrapper: buttonWrapper,
           ),
         ),
@@ -210,6 +226,7 @@ class MainIpCard extends StatelessWidget {
                   country: previewCountry,
                   countryIcon: previewCountryIcon,
                   onDismiss: onDismissPreview,
+                  dismissSemanticLabel: dismissPreviewSemanticLabel,
                 ),
               ),
               // Main card rendered second = sits on top, offset down by 64px
@@ -228,6 +245,8 @@ class MainIpCard extends StatelessWidget {
                     onDetails: onDetails,
                     onFavorite: onFavorite,
                     isFavorite: isFavorite,
+                    favoriteSemanticLabel: favoriteSemanticLabel,
+                    detailsSemanticLabel: detailsSemanticLabel,
                     buttonWrapper: buttonWrapper,
                   ),
                 ),
@@ -498,6 +517,8 @@ class _ConnectedContent extends StatelessWidget {
     this.onButton,
     this.onDetails,
     this.onFavorite,
+    this.favoriteSemanticLabel,
+    this.detailsSemanticLabel,
     this.buttonWrapper,
   });
 
@@ -511,6 +532,8 @@ class _ConnectedContent extends StatelessWidget {
   final VoidCallback? onDetails;
   final VoidCallback? onFavorite;
   final bool isFavorite;
+  final String? favoriteSemanticLabel;
+  final String? detailsSemanticLabel;
   final SingleWidgetWrapper? buttonWrapper;
 
   @override
@@ -576,11 +599,13 @@ class _ConnectedContent extends StatelessWidget {
                 icon: isFavorite ? UntitledUI.heart_filled : UntitledUI.heart,
                 iconColor: palette.iconIpCard,
                 onPressed: onFavorite,
+                semanticLabel: favoriteSemanticLabel,
               ),
             _IconTap(
               icon: UntitledUI.chevron_right,
               iconColor: palette.iconIpCard,
               onPressed: onDetails,
+              semanticLabel: detailsSemanticLabel,
             ),
           ],
         ),
@@ -607,11 +632,17 @@ class _ConnectedContent extends StatelessWidget {
 // ─── Preview bar ──────────────────────────────────────────────────────────────
 
 class _PreviewBar extends StatelessWidget {
-  const _PreviewBar({required this.country, required this.countryIcon, this.onDismiss});
+  const _PreviewBar({
+    required this.country,
+    required this.countryIcon,
+    this.onDismiss,
+    this.dismissSemanticLabel,
+  });
 
   final String country;
   final Widget countryIcon;
   final VoidCallback? onDismiss;
+  final String? dismissSemanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -643,6 +674,7 @@ class _PreviewBar extends StatelessWidget {
                   icon: UntitledUI.x_close,
                   iconColor: Palette.grayLight.shade800,
                   onPressed: onDismiss,
+                  semanticLabel: dismissSemanticLabel,
                 ),
               ],
             ),
@@ -656,15 +688,20 @@ class _PreviewBar extends StatelessWidget {
 // ─── Icon tap helper ──────────────────────────────────────────────────────────
 
 class _IconTap extends StatelessWidget {
-  const _IconTap({required this.icon, required this.iconColor, this.onPressed});
+  const _IconTap({required this.icon, required this.iconColor, this.onPressed, this.semanticLabel});
 
   final IconData icon;
   final Color iconColor;
   final VoidCallback? onPressed;
+
+  /// Accessibility label announced by screen readers; the icon-only button
+  /// is otherwise unlabeled.
+  final String? semanticLabel;
+
   @override
   Widget build(BuildContext context) => IconButton(
     onPressed: onPressed,
-    icon: Icon(icon, size: 24, color: iconColor),
+    icon: Icon(icon, size: 24, color: iconColor, semanticLabel: semanticLabel),
     padding: EdgeInsets.zero,
     style: ButtonStyle(
       minimumSize: const WidgetStatePropertyAll(Size(32, 32)),

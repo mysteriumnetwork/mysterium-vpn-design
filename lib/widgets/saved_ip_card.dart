@@ -68,6 +68,7 @@ class SavedIpCard extends StatefulWidget {
     this.isFavorite = true,
     this.onTap,
     this.onFavoriteTap,
+    this.favoriteSemanticLabel,
     super.key,
   });
 
@@ -108,6 +109,10 @@ class SavedIpCard extends StatefulWidget {
   /// [SavedIpCardStatus.disabled] — a saved entry the user can't connect to
   /// must still be removable. Pass null to make the heart inert.
   final VoidCallback? onFavoriteTap;
+
+  /// Accessibility label for the heart button (e.g. "Remove from
+  /// favourites"). The icon-only heart is announced as unlabeled without one.
+  final String? favoriteSemanticLabel;
 
   @override
   State<SavedIpCard> createState() => _SavedIpCardState();
@@ -172,6 +177,7 @@ class _SavedIpCardState extends State<SavedIpCard> {
                   isFavorite: widget.isFavorite,
                   disabled: _disabled,
                   onFavoriteTap: widget.onFavoriteTap,
+                  favoriteSemanticLabel: widget.favoriteSemanticLabel,
                 ),
               ],
             ),
@@ -287,12 +293,14 @@ class _TrailingIcon extends StatelessWidget {
     required this.isFavorite,
     required this.disabled,
     this.onFavoriteTap,
+    this.favoriteSemanticLabel,
   });
 
   final SavedIpCardType type;
   final bool isFavorite;
   final bool disabled;
   final VoidCallback? onFavoriteTap;
+  final String? favoriteSemanticLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -305,6 +313,7 @@ class _TrailingIcon extends StatelessWidget {
         isFavorite: isFavorite,
         color: disabled ? palette.iconDisabled : palette.iconPrimary,
         onTap: onFavoriteTap,
+        semanticLabel: favoriteSemanticLabel,
       ),
       SavedIpCardType.locked => Icon(
         UntitledUI.lock_01,
@@ -320,11 +329,17 @@ class _TrailingIcon extends StatelessWidget {
 /// Paints its own hover / pressed overlay so the feedback works wherever the
 /// card is placed, and keeps a [_heartTapSize] target around the glyph.
 class _FavoriteHeart extends StatefulWidget {
-  const _FavoriteHeart({required this.isFavorite, required this.color, this.onTap});
+  const _FavoriteHeart({
+    required this.isFavorite,
+    required this.color,
+    this.onTap,
+    this.semanticLabel,
+  });
 
   final bool isFavorite;
   final Color color;
   final VoidCallback? onTap;
+  final String? semanticLabel;
 
   @override
   State<_FavoriteHeart> createState() => _FavoriteHeartState();
@@ -349,28 +364,33 @@ class _FavoriteHeartState extends State<_FavoriteHeart> {
   void _setPressed({required bool value}) => setState(() => _pressed = value);
 
   @override
-  Widget build(BuildContext context) => MouseRegion(
-    cursor: _interactive ? SystemMouseCursors.click : MouseCursor.defer,
-    onEnter: (_) => setState(() => _hovered = true),
-    onExit: (_) => setState(() {
-      _hovered = false;
-      _pressed = false;
-    }),
-    child: GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: widget.onTap,
-      onTapDown: _interactive ? (_) => _setPressed(value: true) : null,
-      onTapUp: _interactive ? (_) => _setPressed(value: false) : null,
-      onTapCancel: _interactive ? () => _setPressed(value: false) : null,
-      child: Container(
-        width: _heartTapSize,
-        height: _heartTapSize,
-        decoration: BoxDecoration(color: _overlay, shape: BoxShape.circle),
-        child: Center(
-          child: Icon(
-            widget.isFavorite ? UntitledUI.heart_filled : UntitledUI.heart,
-            size: 24,
-            color: widget.color,
+  Widget build(BuildContext context) => Semantics(
+    button: _interactive,
+    enabled: _interactive,
+    label: widget.semanticLabel,
+    child: MouseRegion(
+      cursor: _interactive ? SystemMouseCursors.click : MouseCursor.defer,
+      onEnter: (_) => setState(() => _hovered = true),
+      onExit: (_) => setState(() {
+        _hovered = false;
+        _pressed = false;
+      }),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: widget.onTap,
+        onTapDown: _interactive ? (_) => _setPressed(value: true) : null,
+        onTapUp: _interactive ? (_) => _setPressed(value: false) : null,
+        onTapCancel: _interactive ? () => _setPressed(value: false) : null,
+        child: Container(
+          width: _heartTapSize,
+          height: _heartTapSize,
+          decoration: BoxDecoration(color: _overlay, shape: BoxShape.circle),
+          child: Center(
+            child: Icon(
+              widget.isFavorite ? UntitledUI.heart_filled : UntitledUI.heart,
+              size: 24,
+              color: widget.color,
+            ),
           ),
         ),
       ),

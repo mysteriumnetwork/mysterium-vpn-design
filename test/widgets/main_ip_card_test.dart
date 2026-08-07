@@ -14,6 +14,9 @@ MainIpCard _build(
   VoidCallback? onDetails,
   VoidCallback? onFavorite,
   bool isFavorite = false,
+  String? favoriteSemanticLabel,
+  String? detailsSemanticLabel,
+  String? dismissPreviewSemanticLabel,
   VoidCallback? onSwitchCountry,
   VoidCallback? onDismissPreview,
   Key? connectedInfoKey,
@@ -30,6 +33,9 @@ MainIpCard _build(
   onDetails: onDetails,
   onFavorite: onFavorite,
   isFavorite: isFavorite,
+  favoriteSemanticLabel: favoriteSemanticLabel,
+  detailsSemanticLabel: detailsSemanticLabel,
+  dismissPreviewSemanticLabel: dismissPreviewSemanticLabel,
   onSwitchCountry: onSwitchCountry,
   onDismissPreview: onDismissPreview,
   connectedInfoKey: connectedInfoKey,
@@ -124,6 +130,23 @@ void main() {
       await pumpWidget(tester, _build(_connected, onFavorite: () {}, isFavorite: true));
       expect(find.byIcon(UntitledUI.heart_filled), findsOneWidget);
       expect(find.byIcon(UntitledUI.heart), findsNothing);
+    });
+
+    testWidgets('announces heart and chevron with caller-supplied semantic labels', (tester) async {
+      final semantics = tester.ensureSemantics();
+      await pumpWidget(
+        tester,
+        _build(
+          _connected,
+          onFavorite: () {},
+          onDetails: () {},
+          favoriteSemanticLabel: 'Save to favourites',
+          detailsSemanticLabel: 'Connection details',
+        ),
+      );
+      expect(find.bySemanticsLabel('Save to favourites'), findsOneWidget);
+      expect(find.bySemanticsLabel('Connection details'), findsOneWidget);
+      semantics.dispose();
     });
 
     testWidgets('Connected hides the heart when onFavorite is null', (tester) async {
@@ -243,6 +266,30 @@ void main() {
       expect(find.text('Switch to Poland'), findsOneWidget);
       await tester.tap(find.text('Switch to Poland'));
       expect(switched, isTrue);
+    });
+
+    testWidgets('NewIpPreview announces the dismiss button with its semantic label', (
+      tester,
+    ) async {
+      final semantics = tester.ensureSemantics();
+      await pumpWidget(
+        tester,
+        _build(
+          const MainIpCardNewIpPreview(
+            country: 'Germany',
+            countryIcon: _flag,
+            city: 'Frankfurt',
+            ipAddress: '203.0.113.5',
+            previewCountry: 'Poland',
+            previewCountryIcon: _flag,
+            switchLabel: 'Switch to Poland',
+          ),
+          onDismissPreview: () {},
+          dismissPreviewSemanticLabel: 'Dismiss new IP preview',
+        ),
+      );
+      expect(find.bySemanticsLabel('Dismiss new IP preview'), findsOneWidget);
+      semantics.dispose();
     });
   });
 }

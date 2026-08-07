@@ -65,7 +65,15 @@ class _RefreshIconButtonState extends State<RefreshIconButton> with SingleTicker
       // Glide to the end of the current turn instead of snapping back —
       // a fast refresh would otherwise jerk the glyph mid-rotation. A full
       // turn is the same angle as rest, so the follow-up reset is invisible.
-      _controller.animateTo(1).whenComplete(_controller.reset);
+      // (Interrupting the glide cancels the TickerFuture without completing
+      // it, so whenComplete stays silent then; the guard covers the one race
+      // left — a new spin starting in the same frame the glide finishes,
+      // where an unconditional reset would stop the fresh repeat.)
+      _controller.animateTo(1).whenComplete(() {
+        if (mounted && !widget.spinning) {
+          _controller.reset();
+        }
+      });
     }
   }
 

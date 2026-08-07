@@ -87,6 +87,8 @@ Widget buildMainIpCardConnected(BuildContext context) {
     onDetails: () {},
     onFavorite: showFavorite ? () {} : null,
     isFavorite: isFavorite,
+    favoriteSemanticLabel: isFavorite ? 'Remove from favourites' : 'Save to favourites',
+    detailsSemanticLabel: 'Connection details',
   );
 }
 
@@ -114,6 +116,7 @@ Widget buildMainIpCardNewIpPreview(BuildContext context) {
     noConnectionDescription: "We'll connect you to the nearest server.",
     onSwitchCountry: () {},
     onDismissPreview: () {},
+    dismissPreviewSemanticLabel: 'Dismiss new IP preview',
     onDetails: () {},
     onFavorite: () {},
   );
