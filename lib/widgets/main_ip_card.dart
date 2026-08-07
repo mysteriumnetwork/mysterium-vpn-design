@@ -587,8 +587,8 @@ class _ConnectedContent extends StatelessWidget {
             size: ButtonSize.large,
             decoration: ButtonDecoration(
               decorationColor: palette.bgSecondaryCta,
-              foregroundColor: palette.textIpCardTitle,
-              borderColor: palette.bgSecondaryCta,
+              foregroundColor: palette.textSecondaryCta,
+              borderColor: palette.borderSecondaryCta,
             ),
             child: Text(buttonLabel),
           ),
