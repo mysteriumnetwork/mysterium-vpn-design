@@ -108,12 +108,24 @@ class Snackbar extends StatelessWidget {
   /// it, so text style, shape and disabled colours survive.
   static ThemeData _actionTheme(ThemeData inverse) {
     final brand = inverse.palette.textBrandPrimary;
+    final base = inverse.textButtonTheme.style;
+
+    // Steady on brand while the button is usable, but disabled still defers to
+    // the theme — an unusable action that keeps the brand colour reads enabled.
+    WidgetStateProperty<Color?> steadyBrand(WidgetStateProperty<Color?>? fallback) =>
+        WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.disabled) ? fallback?.resolve(states) : brand,
+        );
+
     return inverse.copyWith(
       textButtonTheme: TextButtonThemeData(
-        style: inverse.textButtonTheme.style?.copyWith(
-          foregroundColor: WidgetStatePropertyAll(brand),
-          iconColor: WidgetStatePropertyAll(brand),
+        style: base?.copyWith(
+          foregroundColor: steadyBrand(base.foregroundColor),
+          iconColor: steadyBrand(base.iconColor),
           overlayColor: WidgetStateProperty.resolveWith((states) {
+            if (states.contains(WidgetState.disabled)) {
+              return null;
+            }
             if (states.contains(WidgetState.pressed)) {
               return brand.withValues(alpha: _actionPressedAlpha);
             }

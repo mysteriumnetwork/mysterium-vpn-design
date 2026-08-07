@@ -72,6 +72,32 @@ void main() {
         // Merged into the inverted theme's button style, not replacing it.
         expect(style.textStyle?.resolve({}), isNotNull);
       });
+
+      testWidgets('a disabled action still reads as disabled ($label)', (tester) async {
+        final inverse = isDark ? DesignSystem.lightTheme : DesignSystem.darkTheme;
+        await pumpWidget(
+          tester,
+          const Snackbar(
+            message: 'Removed',
+            action: ButtonTertiary(onPressed: null, child: Text('Undo')),
+          ),
+          theme: isDark ? DesignSystem.darkTheme : DesignSystem.lightTheme,
+        );
+
+        final style = Theme.of(tester.element(find.byType(ButtonTertiary))).textButtonTheme.style!;
+        const disabled = {WidgetState.disabled};
+
+        // Holding the brand colour steady must not swallow the disabled state.
+        expect(style.foregroundColor?.resolve(disabled), isNot(expected));
+        expect(
+          style.foregroundColor?.resolve(disabled),
+          inverse.textButtonTheme.style?.foregroundColor?.resolve(disabled),
+        );
+        expect(
+          style.iconColor?.resolve(disabled),
+          inverse.textButtonTheme.style?.iconColor?.resolve(disabled),
+        );
+      });
     }
 
     testWidgets('omits action when null', (tester) async {
