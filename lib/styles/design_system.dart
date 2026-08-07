@@ -275,9 +275,10 @@ sealed class DesignSystem {
         dividerColor: palette.borderSecondary,
         indicatorColor: palette.borderTabs,
         labelColor: palette.textPrimarySelected,
-        labelStyle: textStyles.textMd.semibold,
+        labelStyle: textStyles.textSm.semibold,
         labelPadding: EdgeInsets.zero,
         unselectedLabelColor: palette.textTertiary,
+        unselectedLabelStyle: textStyles.textSm.semibold,
       ),
       cupertinoOverrideTheme: NoDefaultCupertinoThemeData(
         primaryColor: Palette.brand,

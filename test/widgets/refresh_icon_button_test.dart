@@ -47,5 +47,39 @@ void main() {
       await pumpWidget(tester, const RefreshIconButton());
       expect(tester.hasRunningAnimations, isFalse);
     });
+
+    testWidgets('finishes the current turn instead of snapping when spinning stops', (
+      tester,
+    ) async {
+      double turns() =>
+          tester.widget<RotationTransition>(find.byType(RotationTransition)).turns.value;
+
+      await pumpWidget(tester, const RefreshIconButton(spinning: true));
+      // Stop mid-turn.
+      await tester.pump(const Duration(milliseconds: 300));
+      await pumpWidget(tester, const RefreshIconButton());
+      await tester.pump(const Duration(milliseconds: 50));
+
+      // Still mid-turn: the glyph glides onward rather than jumping back...
+      expect(turns() % 1, isNot(0));
+
+      // ...and comes to rest at the neutral angle.
+      await tester.pumpAndSettle();
+      expect(turns() % 1, 0);
+    });
+
+    testWidgets('keeps spinning when a refresh restarts mid-glide', (tester) async {
+      await pumpWidget(tester, const RefreshIconButton(spinning: true));
+      await tester.pump(const Duration(milliseconds: 300));
+      // Stop, then restart while the glide to rest is still in flight.
+      await pumpWidget(tester, const RefreshIconButton());
+      await tester.pump(const Duration(milliseconds: 50));
+      await pumpWidget(tester, const RefreshIconButton(spinning: true));
+
+      // Pump well past where the interrupted glide would have completed —
+      // its follow-up reset must not stop the new spin.
+      await tester.pump(const Duration(seconds: 2));
+      expect(tester.hasRunningAnimations, isTrue);
+    });
   });
 }

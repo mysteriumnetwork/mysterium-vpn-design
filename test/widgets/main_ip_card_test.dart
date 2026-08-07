@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -12,6 +13,10 @@ MainIpCard _build(
   VoidCallback? onDisconnect,
   VoidCallback? onDetails,
   VoidCallback? onFavorite,
+  bool isFavorite = false,
+  String? favoriteSemanticLabel,
+  String? detailsSemanticLabel,
+  String? dismissPreviewSemanticLabel,
   VoidCallback? onSwitchCountry,
   VoidCallback? onDismissPreview,
   Key? connectedInfoKey,
@@ -27,6 +32,10 @@ MainIpCard _build(
   onDisconnect: onDisconnect,
   onDetails: onDetails,
   onFavorite: onFavorite,
+  isFavorite: isFavorite,
+  favoriteSemanticLabel: favoriteSemanticLabel,
+  detailsSemanticLabel: detailsSemanticLabel,
+  dismissPreviewSemanticLabel: dismissPreviewSemanticLabel,
   onSwitchCountry: onSwitchCountry,
   onDismissPreview: onDismissPreview,
   connectedInfoKey: connectedInfoKey,
@@ -111,6 +120,35 @@ void main() {
       expect(favorite, isTrue);
     });
 
+    testWidgets('Connected shows an outline heart by default', (tester) async {
+      await pumpWidget(tester, _build(_connected, onFavorite: () {}));
+      expect(find.byIcon(UntitledUI.heart), findsOneWidget);
+      expect(find.byIcon(UntitledUI.heart_filled), findsNothing);
+    });
+
+    testWidgets('Connected shows a filled heart when isFavorite is true', (tester) async {
+      await pumpWidget(tester, _build(_connected, onFavorite: () {}, isFavorite: true));
+      expect(find.byIcon(UntitledUI.heart_filled), findsOneWidget);
+      expect(find.byIcon(UntitledUI.heart), findsNothing);
+    });
+
+    testWidgets('announces heart and chevron with caller-supplied semantic labels', (tester) async {
+      final semantics = tester.ensureSemantics();
+      await pumpWidget(
+        tester,
+        _build(
+          _connected,
+          onFavorite: () {},
+          onDetails: () {},
+          favoriteSemanticLabel: 'Save to favourites',
+          detailsSemanticLabel: 'Connection details',
+        ),
+      );
+      expect(find.bySemanticsLabel('Save to favourites'), findsOneWidget);
+      expect(find.bySemanticsLabel('Connection details'), findsOneWidget);
+      semantics.dispose();
+    });
+
     testWidgets('Connected hides the heart when onFavorite is null', (tester) async {
       await pumpWidget(tester, _build(_connected));
       expect(find.byIcon(UntitledUI.heart), findsNothing);
@@ -130,6 +168,36 @@ void main() {
       );
       expect(find.text('203.0.113.5'), findsOneWidget);
       expect(find.text(''), findsNothing);
+    });
+
+    testWidgets('Connected shows the IP in full, truncating the city instead', (tester) async {
+      const ip = '203.0.113.5';
+      const city = 'Frankfurt am Main Westend-Süd';
+      await pumpWidget(
+        tester,
+        // Real card width, so city and IP genuinely compete for the row
+        // (Center supplies loose constraints the SizedBox can shrink into).
+        Center(
+          child: SizedBox(
+            width: 343,
+            child: _build(
+              const MainIpCardConnected(
+                country: 'Germany',
+                countryIcon: _flag,
+                city: city,
+                ipAddress: ip,
+              ),
+            ),
+          ),
+        ),
+      );
+
+      // didExceedMaxLines is exactly "this Text had to ellipsize".
+      bool truncated(String text) =>
+          tester.renderObject<RenderParagraph>(find.text(text)).didExceedMaxLines;
+
+      expect(truncated(ip), isFalse, reason: 'the IP address must not be truncated');
+      expect(truncated(city), isTrue, reason: 'the city should absorb the truncation');
     });
 
     testWidgets('Connected places connectedInfoKey on the subtitle row', (tester) async {
@@ -198,6 +266,30 @@ void main() {
       expect(find.text('Switch to Poland'), findsOneWidget);
       await tester.tap(find.text('Switch to Poland'));
       expect(switched, isTrue);
+    });
+
+    testWidgets('NewIpPreview announces the dismiss button with its semantic label', (
+      tester,
+    ) async {
+      final semantics = tester.ensureSemantics();
+      await pumpWidget(
+        tester,
+        _build(
+          const MainIpCardNewIpPreview(
+            country: 'Germany',
+            countryIcon: _flag,
+            city: 'Frankfurt',
+            ipAddress: '203.0.113.5',
+            previewCountry: 'Poland',
+            previewCountryIcon: _flag,
+            switchLabel: 'Switch to Poland',
+          ),
+          onDismissPreview: () {},
+          dismissPreviewSemanticLabel: 'Dismiss new IP preview',
+        ),
+      );
+      expect(find.bySemanticsLabel('Dismiss new IP preview'), findsOneWidget);
+      semantics.dispose();
     });
   });
 }
