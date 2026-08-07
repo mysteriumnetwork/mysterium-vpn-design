@@ -15,15 +15,33 @@ Widget buildSnackbar(BuildContext context) {
     label: 'Message',
     initialValue: 'Promo code copied to the clipboard!',
   );
-  final showAction = context.knobs.boolean(label: 'Show action');
+  // Text actions (e.g. "Undo") take their colour and hover from the inverted
+  // theme the Snackbar supplies, so they are worth previewing in both modes.
+  final action = context.knobs.object.dropdown<_ActionKind>(
+    label: 'Action',
+    initialOption: _ActionKind.none,
+    options: _ActionKind.values,
+    labelBuilder: (it) => it.name,
+  );
   return Padding(
     padding: const EdgeInsets.all(16),
     child: Snackbar(
       message: message,
       type: type,
-      action: showAction
-          ? IconButton(icon: const Icon(Icons.close, size: 16), onPressed: () {})
-          : null,
+      action: switch (action) {
+        _ActionKind.none => null,
+        _ActionKind.textButton => ButtonTertiary(
+          onPressed: () {},
+          size: ButtonSize.small,
+          child: const Text('Undo'),
+        ),
+        _ActionKind.iconButton => IconButton(
+          icon: const Icon(Icons.close, size: 16),
+          onPressed: () {},
+        ),
+      },
     ),
   );
 }
+
+enum _ActionKind { none, textButton, iconButton }

@@ -247,6 +247,14 @@ abstract class Palette extends ThemeExtension<Palette> {
 
   /// Hover surface for a selected/connected row (see [bgSecondarySelected]).
   abstract final Color bgSecondarySelectedHover;
+
+  /// Surface for a control sitting *on* a selected/brand row — a pill or CTA
+  /// that must stay legible against [bgSecondarySelected] rather than against
+  /// the page (Figma `bg-secondary_CTA`).
+  ///
+  /// The row is a page surface, so this is the mirror of [bgSecondaryCta],
+  /// which serves the same purpose on the main IP card's inverted surface.
+  abstract final Color bgSecondarySelectedCta;
   abstract final Color bgTertiary;
   abstract final Color bgQuaternary;
   abstract final Color bgBrandPrimary;
@@ -468,7 +476,7 @@ class PaletteDark extends Palette {
   Color get iconBrandPrimaryHover => Palette.brand.shade200;
 
   @override
-  Color get iconIpCard => Palette.grayLight.shade600;
+  Color get iconIpCard => Palette.black;
 
   ///
   /// Background Colors
@@ -494,6 +502,11 @@ class PaletteDark extends Palette {
 
   @override
   Color get bgSecondarySelected => Palette.brand.shade900;
+
+  @override
+  // Translucent white so the row's selected fill shows through, exactly as in
+  // Figma — an opaque page background reads as a hole punched in the row.
+  Color get bgSecondarySelectedCta => Palette.grayDarkAlpha.shade700;
 
   @override
   // Same 8% white overlay used by bgPrimaryHover, over the selected surface.
@@ -807,7 +820,7 @@ class PaletteLight extends Palette {
   Color get iconBrandPrimaryHover => Palette.brand.shade700;
 
   @override
-  Color get iconIpCard => Palette.white.withValues(alpha: 0.8);
+  Color get iconIpCard => Palette.white;
 
   ///
   /// Background Colors
@@ -829,6 +842,11 @@ class PaletteLight extends Palette {
 
   @override
   Color get bgSecondarySelected => Palette.brand.shade100;
+
+  @override
+  // The light selected row is already pale, so a solid white pill keeps the
+  // contrast the dark theme gets from a translucent layer.
+  Color get bgSecondarySelectedCta => Palette.white;
 
   @override
   Color get bgSecondarySelectedHover => Palette.brand.shade200;

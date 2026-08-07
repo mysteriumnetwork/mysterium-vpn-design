@@ -149,6 +149,24 @@ void main() {
       semantics.dispose();
     });
 
+    // The card's surface is inverted from the page, so its icons run to full
+    // contrast against it: white on the dark card a light page shows, black on
+    // the light card a dark page shows.
+    for (final (label, isDark, expected) in const [
+      ('light', false, Color(0xFFFFFFFF)),
+      ('dark', true, Color(0xFF000000)),
+    ]) {
+      testWidgets('Connected heart is full-contrast against the card ($label)', (tester) async {
+        await pumpWidget(
+          tester,
+          _build(_connected, onFavorite: () {}),
+          theme: isDark ? DesignSystem.darkTheme : DesignSystem.lightTheme,
+        );
+        expect(tester.widget<Icon>(find.byIcon(UntitledUI.heart)).color, expected);
+        expect(tester.widget<Icon>(find.byIcon(UntitledUI.chevron_right)).color, expected);
+      });
+    }
+
     testWidgets('Connected hides the heart when onFavorite is null', (tester) async {
       await pumpWidget(tester, _build(_connected));
       expect(find.byIcon(UntitledUI.heart), findsNothing);
