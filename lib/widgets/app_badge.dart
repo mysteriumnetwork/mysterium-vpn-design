@@ -73,8 +73,8 @@ class AppBadge extends StatelessWidget {
   Color _getBorderColor(Palette palette) => switch (type) {
     BadgeType.green => Palette.success.shade700,
     BadgeType.greenSecondary => palette.borderSuccessTertiary,
-    BadgeType.warning => Palette.warning.shade400,
-    BadgeType.error => Palette.error.shade400,
+    BadgeType.warning => palette.borderWarning,
+    BadgeType.error => palette.borderError,
     _ => palette.borderPrimary,
   };
 }

@@ -228,6 +228,7 @@ class _TextColumn extends StatelessWidget {
       spacing: theme.spacing.xxs,
       children: [
         Row(
+          spacing: theme.spacing.md,
           children: [
             Flexible(
               child: Text(
@@ -237,10 +238,8 @@ class _TextColumn extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            if (badgeText != null) ...[
-              SizedBox(width: theme.spacing.md),
+            if (badgeText != null)
               AppBadge(text: badgeText!, type: badgeType, size: BadgeSize.small),
-            ],
           ],
         ),
         if (subtitleWidget != null)

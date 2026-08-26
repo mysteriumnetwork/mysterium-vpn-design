@@ -32,37 +32,51 @@ void main() {
       }
     });
 
-    testWidgets('warning type uses warning palette colours', (tester) async {
-      await pumpWidget(tester, const AppBadge(text: 'Soon', type: BadgeType.warning));
-      final palette = DesignSystem.lightTheme.palette;
-      final decoration = _badgeDecoration(tester);
-      expect(decoration.color, palette.bgWarning);
-      expect(decoration.border?.top.color, Palette.warning.shade400);
+    // Colours are asserted against the theme's own tokens, so a hardcoded
+    // shade that happens to match one theme fails in the other.
+    // Themes are built inside each test body: constructing them during
+    // collection pulls google_fonts outside the test zone and fails the file.
+    for (final label in ['light', 'dark']) {
+      final isLight = label == 'light';
 
-      final text = tester.widget<Text>(find.text('Soon'));
-      expect(text.style?.color, palette.textWarningPrimary);
-    });
-
-    testWidgets('error type uses error palette colours', (tester) async {
-      await pumpWidget(tester, const AppBadge(text: 'Failed', type: BadgeType.error));
-      final palette = DesignSystem.lightTheme.palette;
-      final decoration = _badgeDecoration(tester);
-      expect(decoration.color, palette.bgError);
-      expect(decoration.border?.top.color, Palette.error.shade400);
-
-      final text = tester.widget<Text>(find.text('Failed'));
-      expect(text.style?.color, palette.textErrorPrimary);
-    });
-
-    testWidgets('renders warning and error in dark theme', (tester) async {
-      for (final type in [BadgeType.warning, BadgeType.error]) {
+      testWidgets('warning type uses the $label warning tokens', (tester) async {
+        final theme = isLight ? DesignSystem.lightTheme : DesignSystem.darkTheme;
         await pumpWidget(
           tester,
-          AppBadge(text: type.name, type: type),
-          theme: DesignSystem.darkTheme,
+          const AppBadge(text: 'Soon', type: BadgeType.warning),
+          theme: theme,
         );
-        expect(find.text(type.name), findsOneWidget);
-      }
+        final palette = theme.palette;
+        final decoration = _badgeDecoration(tester);
+        expect(decoration.color, palette.bgWarning);
+        expect(decoration.border?.top.color, palette.borderWarning);
+        expect(tester.widget<Text>(find.text('Soon')).style?.color, palette.textWarningPrimary);
+      });
+
+      testWidgets('error type uses the $label error tokens', (tester) async {
+        final theme = isLight ? DesignSystem.lightTheme : DesignSystem.darkTheme;
+        await pumpWidget(
+          tester,
+          const AppBadge(text: 'Failed', type: BadgeType.error),
+          theme: theme,
+        );
+        final palette = theme.palette;
+        final decoration = _badgeDecoration(tester);
+        expect(decoration.color, palette.bgError);
+        expect(decoration.border?.top.color, palette.borderError);
+        expect(tester.widget<Text>(find.text('Failed')).style?.color, palette.textErrorPrimary);
+      });
+    }
+
+    testWidgets('warning and error borders differ between themes', (tester) async {
+      expect(
+        DesignSystem.lightTheme.palette.borderWarning,
+        isNot(DesignSystem.darkTheme.palette.borderWarning),
+      );
+      expect(
+        DesignSystem.lightTheme.palette.borderError,
+        isNot(DesignSystem.darkTheme.palette.borderError),
+      );
     });
   });
 }

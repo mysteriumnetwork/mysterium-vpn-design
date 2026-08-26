@@ -210,6 +210,7 @@ abstract class Palette extends ThemeExtension<Palette> {
   abstract final Color borderQuaternary;
   abstract final Color borderBrand;
   abstract final Color borderError;
+  abstract final Color borderWarning;
   abstract final Color borderTabs;
   abstract final Color borderBrandPrimary;
   abstract final Color borderBrandSecondary;
@@ -418,6 +419,9 @@ class PaletteDark extends Palette {
 
   @override
   Color get borderError => Palette.error.shade400;
+
+  @override
+  Color get borderWarning => Palette.warning.shade400;
 
   @override
   Color get borderTabs => Palette.brand.shade300;
@@ -763,6 +767,9 @@ class PaletteLight extends Palette {
 
   @override
   Color get borderError => Palette.error.shade500;
+
+  @override
+  Color get borderWarning => Palette.warning.shade500;
 
   @override
   Color get borderTabs => Palette.brand.shade700;
