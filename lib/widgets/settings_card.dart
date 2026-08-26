@@ -133,6 +133,8 @@ class SettingsCard extends StatelessWidget {
     this.subtitle,
     this.subtitleWidget,
     this.trailing,
+    this.badgeText,
+    this.badgeType = BadgeType.neutral,
     this.position = SettingsCardPosition.single,
     super.key,
   });
@@ -156,6 +158,14 @@ class SettingsCard extends StatelessWidget {
   /// toggle, or chevron).
   final Widget? trailing;
 
+  /// Optional label rendered as a small [AppBadge] beside [title].
+  /// When `null`, no badge is shown.
+  final String? badgeText;
+
+  /// Colour scheme for the badge. Ignored when [badgeText] is `null`.
+  /// Defaults to [BadgeType.neutral].
+  final BadgeType badgeType;
+
   /// Controls which corners are rounded and whether a bottom separator is
   /// drawn. Defaults to [SettingsCardPosition.single].
   final SettingsCardPosition position;
@@ -176,7 +186,13 @@ class SettingsCard extends StatelessWidget {
         children: [
           ?icon,
           Expanded(
-            child: _TextColumn(title: title, subtitle: subtitle, subtitleWidget: subtitleWidget),
+            child: _TextColumn(
+              title: title,
+              subtitle: subtitle,
+              subtitleWidget: subtitleWidget,
+              badgeText: badgeText,
+              badgeType: badgeType,
+            ),
           ),
           ?trailing,
         ],
@@ -188,11 +204,19 @@ class SettingsCard extends StatelessWidget {
 // ─── Shared sub-widgets ───────────────────────────────────────────────────────
 
 class _TextColumn extends StatelessWidget {
-  const _TextColumn({required this.title, this.subtitle, this.subtitleWidget});
+  const _TextColumn({
+    required this.title,
+    this.subtitle,
+    this.subtitleWidget,
+    this.badgeText,
+    this.badgeType = BadgeType.neutral,
+  });
 
   final String title;
   final String? subtitle;
   final Widget? subtitleWidget;
+  final String? badgeText;
+  final BadgeType badgeType;
 
   @override
   Widget build(BuildContext context) {
@@ -203,11 +227,20 @@ class _TextColumn extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: theme.spacing.xxs,
       children: [
-        Text(
-          title,
-          style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
+        Row(
+          spacing: theme.spacing.md,
+          children: [
+            Flexible(
+              child: Text(
+                title,
+                style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+            if (badgeText != null)
+              AppBadge(text: badgeText!, type: badgeType, size: BadgeSize.small),
+          ],
         ),
         if (subtitleWidget != null)
           subtitleWidget!

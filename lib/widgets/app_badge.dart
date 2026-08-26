@@ -3,8 +3,8 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 /// A small pill-shaped label used to tag or annotate content.
 ///
-/// Use [type] to pick a colour scheme (neutral / green / green secondary)
-/// and [size] for density.
+/// Use [type] to pick a colour scheme (neutral / green / green secondary /
+/// warning / error) and [size] for density.
 class AppBadge extends StatelessWidget {
   const AppBadge({
     required this.text,
@@ -57,18 +57,24 @@ class AppBadge extends StatelessWidget {
   Color _getBackgroundColor(Palette palette) => switch (type) {
     BadgeType.green => Palette.success.shade700,
     BadgeType.greenSecondary => palette.bgSuccessTertiary,
+    BadgeType.warning => palette.bgWarning,
+    BadgeType.error => palette.bgError,
     _ => palette.bgSecondary,
   };
 
   Color _getTextColor(Palette palette) => switch (type) {
     BadgeType.green => Palette.success.shade50,
     BadgeType.greenSecondary => palette.textSuccessTertiary,
+    BadgeType.warning => palette.textWarningPrimary,
+    BadgeType.error => palette.textErrorPrimary,
     _ => palette.textPrimary,
   };
 
   Color _getBorderColor(Palette palette) => switch (type) {
     BadgeType.green => Palette.success.shade700,
     BadgeType.greenSecondary => palette.borderSuccessTertiary,
+    BadgeType.warning => palette.borderWarning,
+    BadgeType.error => palette.borderError,
     _ => palette.borderPrimary,
   };
 }
@@ -83,6 +89,12 @@ enum BadgeType {
 
   /// Tinted green — low emphasis green.
   greenSecondary,
+
+  /// Warning yellow/amber palette (e.g. "Expiring soon").
+  warning,
+
+  /// Error red palette (e.g. "Failed", "Action required").
+  error,
 }
 
 /// Size preset for an [AppBadge].

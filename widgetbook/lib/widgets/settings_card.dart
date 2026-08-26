@@ -44,6 +44,13 @@ Widget buildSettingsCardButton(BuildContext context) {
     labelBuilder: (p) => p.name,
   );
   final buttonLabel = context.knobs.string(label: 'Button label', initialValue: 'Reset');
+  final badgeText = context.knobs.stringOrNull(label: 'Badge text');
+  final badgeType = context.knobs.object.dropdown(
+    label: 'Badge type',
+    options: BadgeType.values,
+    initialOption: BadgeType.neutral,
+    labelBuilder: (b) => b.name,
+  );
 
   return _scaffold(
     context,
@@ -52,6 +59,8 @@ Widget buildSettingsCardButton(BuildContext context) {
       title: title,
       subtitle: subtitle,
       position: position,
+      badgeText: badgeText,
+      badgeType: badgeType,
       trailing: _TextButtonTrailing(label: buttonLabel),
     ),
   );
@@ -71,6 +80,13 @@ Widget buildSettingsCardToggle(BuildContext context) {
     labelBuilder: (p) => p.name,
   );
   final toggled = context.knobs.boolean(label: 'Toggled', initialValue: true);
+  final badgeText = context.knobs.stringOrNull(label: 'Badge text');
+  final badgeType = context.knobs.object.dropdown(
+    label: 'Badge type',
+    options: BadgeType.values,
+    initialOption: BadgeType.neutral,
+    labelBuilder: (b) => b.name,
+  );
 
   return _scaffold(
     context,
@@ -79,6 +95,8 @@ Widget buildSettingsCardToggle(BuildContext context) {
       title: title,
       subtitle: subtitle,
       position: position,
+      badgeText: badgeText,
+      badgeType: badgeType,
       trailing: Switch(value: toggled, onChanged: (_) {}),
     ),
   );
@@ -94,6 +112,13 @@ Widget buildSettingsCardArrow(BuildContext context) {
     initialOption: SettingsCardPosition.single,
     labelBuilder: (p) => p.name,
   );
+  final badgeText = context.knobs.stringOrNull(label: 'Badge text');
+  final badgeType = context.knobs.object.dropdown(
+    label: 'Badge type',
+    options: BadgeType.values,
+    initialOption: BadgeType.neutral,
+    labelBuilder: (b) => b.name,
+  );
 
   return _scaffold(
     context,
@@ -102,6 +127,8 @@ Widget buildSettingsCardArrow(BuildContext context) {
       title: title,
       subtitle: subtitle,
       position: position,
+      badgeText: badgeText,
+      badgeType: badgeType,
       trailing: const _ArrowTrailing(),
     ),
   );
