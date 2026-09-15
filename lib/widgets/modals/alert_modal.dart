@@ -30,11 +30,12 @@ enum AlertModalType {
 /// supporting text, optional input field, and up to two optional action
 /// buttons.
 ///
-/// Surface uses [Palette.bgModals] with [Palette.borderModals] and the
-/// shadow-lg drop shadow. The leading badge pulls its background and icon
-/// colours from the theme (`bg{Type}` and `icon{Type}Primary`); pass [icon] to
-/// override just the badge glyph (colours still follow [type]). Surface padding
-/// defaults to [Spacing.md] on every side and can be overridden via [padding].
+/// Surface defaults to [Palette.bgModals] with [Palette.borderModals] and the
+/// shadow-lg drop shadow; override via [backgroundColor] / [borderColor]. The
+/// leading badge pulls its background and icon colours from the theme
+/// (`bg{Type}` and `icon{Type}Primary`); pass [icon] to override just the badge
+/// glyph (colours still follow [type]). Surface padding defaults to [Spacing.md]
+/// on every side and can be overridden via [padding].
 ///
 /// Layout adapts to screen size:
 /// - **Desktop** (`screenType >= tablet`): horizontal — icon left, content
@@ -57,6 +58,8 @@ class AlertModal extends StatelessWidget {
     this.input,
     this.screenType,
     this.padding,
+    this.backgroundColor,
+    this.borderColor,
     super.key,
   });
 
@@ -97,6 +100,12 @@ class AlertModal extends StatelessWidget {
   /// Surface padding. Defaults to [Spacing.md] on every side.
   final EdgeInsets? padding;
 
+  /// Background colour of the modal surface. Defaults to [Palette.bgModals].
+  final Color? backgroundColor;
+
+  /// Border colour of the modal surface. Defaults to [Palette.borderModals].
+  final Color? borderColor;
+
   bool get _hasButtons => primaryButton != null || secondaryButton != null;
 
   @override
@@ -108,9 +117,9 @@ class AlertModal extends StatelessWidget {
 
     return DecoratedBox(
       decoration: BoxDecoration(
-        color: palette.bgModals,
+        color: backgroundColor ?? palette.bgModals,
         borderRadius: const BorderRadius.all(Radius.kS),
-        border: Border.all(color: palette.borderModals),
+        border: Border.all(color: borderColor ?? palette.borderModals),
         boxShadow: [
           BoxShadow(
             color: palette.shadowLg03,

@@ -4,6 +4,15 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
 import '../helpers/pump_widget.dart';
 
+/// Surface [DecoratedBox] is the outermost child of [AlertModal]; the badge
+/// circle is a nested one.
+BoxDecoration _surfaceDecoration(WidgetTester tester) {
+  final box = tester.widget<DecoratedBox>(
+    find.descendant(of: find.byType(AlertModal), matching: find.byType(DecoratedBox)).first,
+  );
+  return box.decoration as BoxDecoration;
+}
+
 void main() {
   group('AlertModal', () {
     testWidgets('renders title', (tester) async {
@@ -75,6 +84,32 @@ void main() {
         ),
         findsOneWidget,
       );
+    });
+
+    testWidgets('uses palette.bgModals as the surface background by default', (tester) async {
+      await pumpWidget(tester, const AlertModal(title: 'Title'));
+      final decoration = _surfaceDecoration(tester);
+      expect(decoration.color, DesignSystem.lightTheme.palette.bgModals);
+    });
+
+    testWidgets('backgroundColor overrides the surface background', (tester) async {
+      const color = Color(0xFF123456);
+      await pumpWidget(tester, const AlertModal(title: 'Title', backgroundColor: color));
+      final decoration = _surfaceDecoration(tester);
+      expect(decoration.color, color);
+    });
+
+    testWidgets('uses palette.borderModals as the surface border by default', (tester) async {
+      await pumpWidget(tester, const AlertModal(title: 'Title'));
+      final decoration = _surfaceDecoration(tester);
+      expect(decoration.border?.top.color, DesignSystem.lightTheme.palette.borderModals);
+    });
+
+    testWidgets('borderColor overrides the surface border', (tester) async {
+      const color = Color(0xFFABCDEF);
+      await pumpWidget(tester, const AlertModal(title: 'Title', borderColor: color));
+      final decoration = _surfaceDecoration(tester);
+      expect(decoration.border?.top.color, color);
     });
 
     testWidgets('renders primary and secondary buttons', (tester) async {
