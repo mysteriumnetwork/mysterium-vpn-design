@@ -136,6 +136,7 @@ class SettingsCard extends StatelessWidget {
     this.badgeText,
     this.badgeType = BadgeType.neutral,
     this.position = SettingsCardPosition.single,
+    this.footer,
     super.key,
   });
 
@@ -170,6 +171,10 @@ class SettingsCard extends StatelessWidget {
   /// drawn. Defaults to [SettingsCardPosition.single].
   final SettingsCardPosition position;
 
+  /// Optional widget rendered below the main row (icon / title / trailing).
+  /// When `null`, nothing is shown.
+  final Widget? footer;
+
   @override
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
@@ -181,20 +186,27 @@ class SettingsCard extends StatelessWidget {
       padding: isDesktop
           ? EdgeInsets.symmetric(vertical: theme.spacing.md)
           : EdgeInsets.all(theme.spacing.md),
-      child: Row(
-        spacing: theme.spacing.md,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          ?icon,
-          Expanded(
-            child: _TextColumn(
-              title: title,
-              subtitle: subtitle,
-              subtitleWidget: subtitleWidget,
-              badgeText: badgeText,
-              badgeType: badgeType,
-            ),
+          Row(
+            spacing: theme.spacing.md,
+            children: [
+              ?icon,
+              Expanded(
+                child: _TextColumn(
+                  title: title,
+                  subtitle: subtitle,
+                  subtitleWidget: subtitleWidget,
+                  badgeText: badgeText,
+                  badgeType: badgeType,
+                ),
+              ),
+              ?trailing,
+            ],
           ),
-          ?trailing,
+          ?footer,
         ],
       ),
     );

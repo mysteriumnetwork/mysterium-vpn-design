@@ -134,6 +134,38 @@ Widget buildSettingsCardArrow(BuildContext context) {
   );
 }
 
+@UseCase(name: 'Footer', type: SettingsCard)
+Widget buildSettingsCardFooter(BuildContext context) {
+  final title = context.knobs.string(label: 'Title', initialValue: 'Kill switch');
+  final subtitle = context.knobs.stringOrNull(
+    label: 'Subtitle',
+    initialValue: 'Block internet when VPN drops',
+  );
+  final position = context.knobs.object.dropdown(
+    label: 'Position',
+    options: SettingsCardPosition.values,
+    initialOption: SettingsCardPosition.single,
+    labelBuilder: (p) => p.name,
+  );
+  final footerText = context.knobs.string(
+    label: 'Footer text',
+    initialValue: 'Requires a system VPN permission on this device.',
+  );
+  final toggled = context.knobs.boolean(label: 'Toggled', initialValue: true);
+
+  return _scaffold(
+    context,
+    child: SettingsCard(
+      icon: _CheckCircleIcon(),
+      title: title,
+      subtitle: subtitle,
+      position: position,
+      trailing: Switch(value: toggled, onChanged: (_) {}),
+      footer: _FooterText(text: footerText),
+    ),
+  );
+}
+
 @UseCase(name: 'Group', type: SettingsCard)
 Widget buildSettingsCardGroup(BuildContext context) => _scaffold(
   context,
@@ -246,4 +278,22 @@ class _CheckCircleIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) =>
       Icon(UntitledUI.check_circle, size: 20, color: Theme.of(context).palette.iconBrandSecondary);
+}
+
+class _FooterText extends StatelessWidget {
+  const _FooterText({required this.text});
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: EdgeInsets.only(top: theme.spacing.s),
+      child: Text(
+        text,
+        style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
+      ),
+    );
+  }
 }
