@@ -179,6 +179,22 @@ class SettingsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
+    final row = Row(
+      spacing: theme.spacing.md,
+      children: [
+        ?icon,
+        Expanded(
+          child: _TextColumn(
+            title: title,
+            subtitle: subtitle,
+            subtitleWidget: subtitleWidget,
+            badgeText: badgeText,
+            badgeType: badgeType,
+          ),
+        ),
+        ?trailing,
+      ],
+    );
     return GroupedCardShell(
       position: position,
       minHeight: 70,
@@ -186,29 +202,15 @@ class SettingsCard extends StatelessWidget {
       padding: isDesktop
           ? EdgeInsets.symmetric(vertical: theme.spacing.md)
           : EdgeInsets.all(theme.spacing.md),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Row(
-            spacing: theme.spacing.md,
-            children: [
-              ?icon,
-              Expanded(
-                child: _TextColumn(
-                  title: title,
-                  subtitle: subtitle,
-                  subtitleWidget: subtitleWidget,
-                  badgeText: badgeText,
-                  badgeType: badgeType,
-                ),
-              ),
-              ?trailing,
-            ],
-          ),
-          ?footer,
-        ],
-      ),
+      child: footer == null
+          ? row
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: theme.spacing.s,
+              children: [row, footer!],
+            ),
     );
   }
 }

@@ -288,12 +288,9 @@ class _FooterText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: EdgeInsets.only(top: theme.spacing.s),
-      child: Text(
-        text,
-        style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
-      ),
+    return Text(
+      text,
+      style: theme.textStyles.textXs.regular.copyWith(color: theme.palette.textTertiary),
     );
   }
 }
