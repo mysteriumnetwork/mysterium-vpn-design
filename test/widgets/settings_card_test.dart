@@ -130,5 +130,18 @@ void main() {
       expect(find.byIcon(Icons.chevron_right), findsOneWidget);
       expect(find.byKey(const Key('settings-card-footer')), findsOneWidget);
     });
+
+    testWidgets('renders footer in dark theme', (tester) async {
+      await pumpWidget(
+        tester,
+        const SettingsCard(
+          title: 'Kill switch',
+          footer: Text('Footer content', key: Key('settings-card-footer')),
+        ),
+        theme: DesignSystem.darkTheme,
+      );
+      expect(find.byKey(const Key('settings-card-footer')), findsOneWidget);
+      expect(find.text('Footer content'), findsOneWidget);
+    });
   });
 }
