@@ -99,5 +99,49 @@ void main() {
       expect(find.byType(AppBadge), findsOneWidget);
       expect(find.text('New'), findsOneWidget);
     });
+
+    testWidgets('does not render footer when null', (tester) async {
+      await pumpWidget(tester, const SettingsCard(title: 'Account'));
+      expect(find.byKey(const Key('settings-card-footer')), findsNothing);
+    });
+
+    testWidgets('renders footer when provided', (tester) async {
+      await pumpWidget(
+        tester,
+        const SettingsCard(
+          title: 'Kill switch',
+          footer: Text('Footer content', key: Key('settings-card-footer')),
+        ),
+      );
+      expect(find.text('Kill switch'), findsOneWidget);
+      expect(find.byKey(const Key('settings-card-footer')), findsOneWidget);
+      expect(find.text('Footer content'), findsOneWidget);
+    });
+
+    testWidgets('renders footer together with trailing', (tester) async {
+      await pumpWidget(
+        tester,
+        const SettingsCard(
+          title: 'Theme',
+          trailing: Icon(Icons.chevron_right),
+          footer: Text('Footer content', key: Key('settings-card-footer')),
+        ),
+      );
+      expect(find.byIcon(Icons.chevron_right), findsOneWidget);
+      expect(find.byKey(const Key('settings-card-footer')), findsOneWidget);
+    });
+
+    testWidgets('renders footer in dark theme', (tester) async {
+      await pumpWidget(
+        tester,
+        const SettingsCard(
+          title: 'Kill switch',
+          footer: Text('Footer content', key: Key('settings-card-footer')),
+        ),
+        theme: DesignSystem.darkTheme,
+      );
+      expect(find.byKey(const Key('settings-card-footer')), findsOneWidget);
+      expect(find.text('Footer content'), findsOneWidget);
+    });
   });
 }

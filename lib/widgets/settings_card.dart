@@ -136,6 +136,7 @@ class SettingsCard extends StatelessWidget {
     this.badgeText,
     this.badgeType = BadgeType.neutral,
     this.position = SettingsCardPosition.single,
+    this.footer,
     super.key,
   });
 
@@ -170,10 +171,30 @@ class SettingsCard extends StatelessWidget {
   /// drawn. Defaults to [SettingsCardPosition.single].
   final SettingsCardPosition position;
 
+  /// Optional widget rendered below the main row (icon / title / trailing).
+  /// When `null`, nothing is shown.
+  final Widget? footer;
+
   @override
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
+    final row = Row(
+      spacing: theme.spacing.md,
+      children: [
+        ?icon,
+        Expanded(
+          child: _TextColumn(
+            title: title,
+            subtitle: subtitle,
+            subtitleWidget: subtitleWidget,
+            badgeText: badgeText,
+            badgeType: badgeType,
+          ),
+        ),
+        ?trailing,
+      ],
+    );
     return GroupedCardShell(
       position: position,
       minHeight: 70,
@@ -181,22 +202,15 @@ class SettingsCard extends StatelessWidget {
       padding: isDesktop
           ? EdgeInsets.symmetric(vertical: theme.spacing.md)
           : EdgeInsets.all(theme.spacing.md),
-      child: Row(
-        spacing: theme.spacing.md,
-        children: [
-          ?icon,
-          Expanded(
-            child: _TextColumn(
-              title: title,
-              subtitle: subtitle,
-              subtitleWidget: subtitleWidget,
-              badgeText: badgeText,
-              badgeType: badgeType,
+      child: footer == null
+          ? row
+          : Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: theme.spacing.s,
+              children: [row, footer!],
             ),
-          ),
-          ?trailing,
-        ],
-      ),
     );
   }
 }
