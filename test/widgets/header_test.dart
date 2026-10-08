@@ -83,4 +83,44 @@ void main() {
       expect(pressed, isTrue);
     });
   });
+
+  group('Header without a Navigator ancestor', () {
+    /// No MaterialApp: the app mounts a Header above the router's Navigator on
+    /// its blocking screens, where `Navigator.of` would throw.
+    Future<void> pumpBare(WidgetTester tester, Header header) => tester.pumpWidget(
+      MediaQuery(
+        data: const MediaQueryData(),
+        child: Directionality(
+          textDirection: TextDirection.ltr,
+          child: Theme(
+            data: DesignSystem.lightTheme,
+            child: ScreenTypeOverride(screenType: ScreenType.mobile, child: header),
+          ),
+        ),
+      ),
+    );
+
+    testWidgets('builds instead of throwing', (tester) async {
+      await pumpBare(tester, Header.logo());
+
+      expect(tester.takeException(), isNull);
+      expect(find.byType(Logo), findsOneWidget);
+    });
+
+    testWidgets('shows no back control, since there is nothing to pop', (tester) async {
+      await pumpBare(tester, Header.logo());
+
+      expect(find.byType(IconButton), findsNothing);
+      expect(find.byType(TextButton), findsNothing);
+    });
+
+    testWidgets('still honours an explicit showBackButton', (tester) async {
+      var pressed = false;
+      await pumpBare(tester, Header(showBackButton: true, onBackPressed: () => pressed = true));
+
+      expect(tester.takeException(), isNull);
+      await tester.tap(find.byType(IconButton));
+      expect(pressed, isTrue);
+    });
+  });
 }

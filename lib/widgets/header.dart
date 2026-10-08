@@ -63,13 +63,14 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canGoBack = Navigator.of(context).canPop();
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
     final palette = theme.palette;
     final resolvedBg = backgroundColor ?? (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
-    final showBack = showBackButton ?? canGoBack;
+    // `maybeOf`, not `of`: a Header can sit above the router's Navigator (e.g. a
+    // blocking screen in the app's MaterialApp.builder), where `of` throws.
+    final showBack = showBackButton ?? (Navigator.maybeOf(context)?.canPop() ?? false);
 
     final backAction = onBackPressed ?? () => Navigator.of(context).maybePop();
 
