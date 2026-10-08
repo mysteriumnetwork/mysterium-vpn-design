@@ -55,7 +55,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
   final String? backLabel;
 
   /// Called when the back button is tapped. Falls back to
-  /// `Navigator.of(context).maybePop()` when null.
+  /// `Navigator.maybeOf(context)?.maybePop()` when null, so the control is
+  /// inert rather than throwing where there is no Navigator.
   final VoidCallback? onBackPressed;
 
   /// Visible header height in logical pixels (excluding any top safe-area inset).
@@ -63,15 +64,16 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canGoBack = Navigator.of(context).canPop();
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
     final theme = Theme.of(context);
     final palette = theme.palette;
     final resolvedBg = backgroundColor ?? (isDesktop ? palette.bgSidePanel : palette.bgPrimary);
     final hPad = isDesktop ? theme.spacing.xl3 : theme.spacing.md;
-    final showBack = showBackButton ?? canGoBack;
+    // `maybeOf`, not `of`: a Header can sit above the router's Navigator (e.g. a
+    // blocking screen in the app's MaterialApp.builder), where `of` throws.
+    final showBack = showBackButton ?? (Navigator.maybeOf(context)?.canPop() ?? false);
 
-    final backAction = onBackPressed ?? () => Navigator.of(context).maybePop();
+    final backAction = onBackPressed ?? () => Navigator.maybeOf(context)?.maybePop();
 
     return Material(
       color: resolvedBg,
