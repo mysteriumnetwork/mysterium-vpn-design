@@ -85,16 +85,22 @@ void main() {
   });
 
   group('Header without a Navigator ancestor', () {
-    /// No MaterialApp: the app mounts a Header above the router's Navigator on
-    /// its blocking screens, where `Navigator.of` would throw.
+    /// `MaterialApp.builder` with no `home`/`routes`: supplies Material
+    /// infrastructure (localizations, Directionality, MediaQuery) while leaving
+    /// the Header outside any Navigator — which is how the app mounts it on
+    /// blocking screens above the router.
     Future<void> pumpBare(WidgetTester tester, Header header) => tester.pumpWidget(
-      MediaQuery(
-        data: const MediaQueryData(),
-        child: Directionality(
-          textDirection: TextDirection.ltr,
-          child: Theme(
-            data: DesignSystem.lightTheme,
-            child: ScreenTypeOverride(screenType: ScreenType.mobile, child: header),
+      MaterialApp(
+        theme: DesignSystem.lightTheme,
+        builder: (context, _) => ScreenTypeOverride(
+          screenType: ScreenType.mobile,
+          child: Builder(
+            builder: (inner) {
+              // Guards the harness itself: if this ever gains a Navigator, the
+              // tests below would silently stop proving anything.
+              expect(Navigator.maybeOf(inner), isNull);
+              return header;
+            },
           ),
         ),
       ),
@@ -121,6 +127,17 @@ void main() {
       expect(tester.takeException(), isNull);
       await tester.tap(find.byType(IconButton));
       expect(pressed, isTrue);
+    });
+
+    testWidgets('the default back action is inert rather than throwing', (tester) async {
+      // No onBackPressed: the fallback runs, and it must not reach for a
+      // Navigator that is not there.
+      await pumpBare(tester, const Header(showBackButton: true));
+
+      await tester.tap(find.byType(IconButton));
+      await tester.pump();
+
+      expect(tester.takeException(), isNull);
     });
   });
 }
