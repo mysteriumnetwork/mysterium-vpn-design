@@ -86,10 +86,16 @@ void main() {
       );
     });
 
-    testWidgets('uses palette.bgModals as the surface background by default', (tester) async {
-      await pumpWidget(tester, const AlertModal(title: 'Title'));
-      final decoration = _surfaceDecoration(tester);
-      expect(decoration.color, DesignSystem.lightTheme.palette.bgModals);
+    testWidgets('uses modal surface palette colors in light and dark themes', (tester) async {
+      for (final theme in [DesignSystem.lightTheme, DesignSystem.darkTheme]) {
+        // Clear between themes — MaterialApp can reuse the prior theme element
+        // when light → dark is pumped in the same test without a reset.
+        await tester.pumpWidget(const SizedBox.shrink());
+        await pumpWidget(tester, const AlertModal(title: 'Title'), theme: theme);
+        final decoration = _surfaceDecoration(tester);
+        expect(decoration.color, theme.palette.bgModals);
+        expect(decoration.border?.top.color, theme.palette.borderModals);
+      }
     });
 
     testWidgets('backgroundColor overrides the surface background', (tester) async {
@@ -97,12 +103,6 @@ void main() {
       await pumpWidget(tester, const AlertModal(title: 'Title', backgroundColor: color));
       final decoration = _surfaceDecoration(tester);
       expect(decoration.color, color);
-    });
-
-    testWidgets('uses palette.borderModals as the surface border by default', (tester) async {
-      await pumpWidget(tester, const AlertModal(title: 'Title'));
-      final decoration = _surfaceDecoration(tester);
-      expect(decoration.border?.top.color, DesignSystem.lightTheme.palette.borderModals);
     });
 
     testWidgets('borderColor overrides the surface border', (tester) async {
