@@ -32,6 +32,8 @@ Widget buildAlertModal(BuildContext context) {
   final showInput = context.knobs.boolean(label: 'Show input');
   final showPrimary = context.knobs.boolean(label: 'Show primary button', initialValue: true);
   final showSecondary = context.knobs.boolean(label: 'Show secondary button', initialValue: true);
+  final backgroundColor = context.knobs.colorOrNull(label: 'Background color');
+  final borderColor = context.knobs.colorOrNull(label: 'Border color');
 
   // Derive screen type from the device frame so the modal adapts to the
   // selected device (e.g. iPhone 13 → mobile, MacBook → desktop).
@@ -54,6 +56,8 @@ Widget buildAlertModal(BuildContext context) {
     secondaryButton: showSecondary
         ? ButtonSecondary(onPressed: () {}, size: ButtonSize.small, child: const Text('Dismiss'))
         : null,
+    backgroundColor: backgroundColor,
+    borderColor: borderColor,
   );
 
   return Padding(
