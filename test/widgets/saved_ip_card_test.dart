@@ -1,8 +1,8 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
+import '../helpers/hover.dart';
 import '../helpers/pump_widget.dart';
 
 Widget _card({
@@ -240,12 +240,7 @@ void main() {
       final palette = DesignSystem.lightTheme.palette;
       expect(_surfaceColor(tester), palette.bgSecondarySelected);
 
-      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-      await gesture.addPointer(location: Offset.zero);
-      addTearDown(gesture.removePointer);
-
-      await gesture.moveTo(tester.getCenter(find.byType(SavedIpCard)));
-      await tester.pump();
+      await hover(tester, find.byType(SavedIpCard));
       expect(_surfaceColor(tester), palette.bgSecondarySelectedHover);
     });
 
@@ -267,12 +262,7 @@ void main() {
         expect(heartDecoration().color, isNull, reason: 'no overlay at rest');
         expect(heartDecoration().shape, BoxShape.circle);
 
-        final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-        await gesture.addPointer(location: Offset.zero);
-        addTearDown(gesture.removePointer);
-
-        await gesture.moveTo(tester.getCenter(find.byIcon(UntitledUI.heart_filled)));
-        await tester.pump();
+        await hover(tester, find.byIcon(UntitledUI.heart_filled));
         expect(
           heartDecoration().color,
           isNotNull,
@@ -283,12 +273,7 @@ void main() {
 
     testWidgets('hovering an idle card paints the hover surface', (tester) async {
       await pumpWidget(tester, _card(onTap: () {}));
-      final gesture = await tester.createGesture(kind: PointerDeviceKind.mouse);
-      await gesture.addPointer(location: Offset.zero);
-      addTearDown(gesture.removePointer);
-
-      await gesture.moveTo(tester.getCenter(find.byType(SavedIpCard)));
-      await tester.pump();
+      await hover(tester, find.byType(SavedIpCard));
       expect(_surfaceColor(tester), DesignSystem.lightTheme.palette.bgPrimaryHover);
     });
 
