@@ -25,6 +25,18 @@ enum SettingsCardPosition {
 /// Shared surface for rows in a grouped card list ([SettingsCard],
 /// [DetailCard]): rounds the corners dictated by [position], draws the inner
 /// bottom separator, and paints the elevated card background.
+///
+/// Pass [onTap] to make the whole row tappable. The row then becomes an
+/// [InkWell], so hover, press, splash and keyboard focus all come from one
+/// source and touch gets the splash that hover alone cannot provide. The ink
+/// is clipped to the row's corner rounding and sits above the background but
+/// below the separator.
+///
+/// The overlay is [Palette.bgPrimaryHover] in every state, which assumes the
+/// row sits on [Palette.bgPrimary] — true both when the shell paints its own
+/// background and when [transparent] hands the surface to a caller that is
+/// itself `bgPrimary`. A transparent row on a different surface needs its own
+/// overlay, or the ink will be invisible against it.
 class GroupedCardShell extends StatelessWidget {
   const GroupedCardShell({
     required this.position,
@@ -32,6 +44,7 @@ class GroupedCardShell extends StatelessWidget {
     required this.padding,
     required this.child,
     this.transparent = false,
+    this.onTap,
     super.key,
   });
 
@@ -52,6 +65,10 @@ class GroupedCardShell extends StatelessWidget {
   /// Row content.
   final Widget child;
 
+  /// Called when the row is tapped. When `null` the row is inert and shows no
+  /// hover, press or focus feedback.
+  final VoidCallback? onTap;
+
   BorderRadius get _borderRadius => switch (position) {
     SettingsCardPosition.single => const BorderRadius.all(Radius.kS),
     SettingsCardPosition.top => const BorderRadius.vertical(top: Radius.kS),
@@ -65,27 +82,49 @@ class GroupedCardShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = Theme.of(context).palette;
+
+    Widget surface = ConstrainedBox(
+      constraints: BoxConstraints(minHeight: minHeight),
+      child: Padding(padding: padding, child: child),
+    );
+
+    // Only interactive rows get a Material. It supplies the ink layer and
+    // paints the background so the ink lands above it; a read-only row would
+    // carry its elements and implicit animations for feedback it never shows.
+    if (onTap != null) {
+      surface = Material(
+        color: transparent ? Palette.transparent : palette.bgPrimary,
+        borderRadius: _borderRadius,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: _borderRadius,
+          overlayColor: WidgetStatePropertyAll(palette.bgPrimaryHover),
+          child: surface,
+        ),
+      );
+    }
+
     return Stack(
       fit: StackFit.passthrough,
       children: [
-        Container(
-          constraints: BoxConstraints(minHeight: minHeight),
+        DecoratedBox(
           decoration: BoxDecoration(
-            color: transparent ? null : palette.bgPrimary,
+            // An interactive row's Material already painted the background.
+            color: transparent || onTap != null ? null : palette.bgPrimary,
             borderRadius: _borderRadius,
             boxShadow: transparent
                 ? null
                 : [BoxShadow(color: palette.shadowXs, blurRadius: 2, offset: const Offset(0, 1))],
           ),
-          padding: padding,
-          child: child,
+          child: surface,
         ),
         if (_showBottomBorder)
           Positioned(
             bottom: 0,
             left: 0,
             right: 0,
-            child: Container(height: 1, color: palette.borderQuaternary),
+            // Sits above the ink, and a bare ColoredBox would swallow taps.
+            child: IgnorePointer(child: Container(height: 1, color: palette.borderQuaternary)),
           ),
       ],
     );
@@ -105,6 +144,9 @@ class GroupedCardShell extends StatelessWidget {
 ///
 /// Stack multiple cards and set the correct [position] to form a grouped
 /// settings list with rounded ends and inner separators.
+///
+/// Pass [onTap] when the whole row navigates — the row then tints on hover and
+/// while pressed.
 ///
 /// ```dart
 /// Column(
@@ -137,6 +179,7 @@ class SettingsCard extends StatelessWidget {
     this.badgeType = BadgeType.neutral,
     this.position = SettingsCardPosition.single,
     this.footer,
+    this.onTap,
     super.key,
   });
 
@@ -175,6 +218,11 @@ class SettingsCard extends StatelessWidget {
   /// When `null`, nothing is shown.
   final Widget? footer;
 
+  /// Called when the row is tapped. Supplying it also gives the row hover and
+  /// press feedback; leave it `null` for rows whose only interaction lives in
+  /// [trailing] (a toggle or button).
+  final VoidCallback? onTap;
+
   @override
   Widget build(BuildContext context) {
     final isDesktop = ScreenType.of(context) >= ScreenType.tablet;
@@ -199,6 +247,7 @@ class SettingsCard extends StatelessWidget {
       position: position,
       minHeight: 70,
       transparent: isDesktop,
+      onTap: onTap,
       padding: isDesktop
           ? EdgeInsets.symmetric(vertical: theme.spacing.md)
           : EdgeInsets.all(theme.spacing.md),

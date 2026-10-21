@@ -6,7 +6,9 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 /// A sidebar navigation item consisting of a leading [icon], a [label], and
 /// an optional current/active state.
 ///
-/// Hover is handled internally via [MouseRegion]. Set [current] to `true` to
+/// Hover is handled internally via [MouseRegion] — unselected items lift to
+/// [Palette.bgSidePanelHover] (the sidebar surface's own hover token), selected
+/// ones to [Palette.bgSecondarySelectedHover]. Set [current] to `true` to
 /// render the item with the brand-selected background and text colour.
 ///
 /// The widget fills its parent width — constrain from the outside (e.g. to
@@ -63,13 +65,11 @@ class _NavItemState extends State<NavItem> {
   bool get _interactive => widget.onTap != null;
 
   Color _bgColor(Palette palette) {
+    final hovered = _hovered && _interactive;
     if (widget.current) {
-      return palette.bgSecondarySelected;
+      return hovered ? palette.bgSecondarySelectedHover : palette.bgSecondarySelected;
     }
-    if (_hovered && _interactive) {
-      return palette.bgPrimaryHover;
-    }
-    return Palette.transparent;
+    return hovered ? palette.bgSidePanelHover : Palette.transparent;
   }
 
   @override

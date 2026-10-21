@@ -119,6 +119,7 @@ Widget buildSettingsCardArrow(BuildContext context) {
     initialOption: BadgeType.neutral,
     labelBuilder: (b) => b.name,
   );
+  final tappable = context.knobs.boolean(label: 'Tappable row', initialValue: true);
 
   return _scaffold(
     context,
@@ -129,6 +130,7 @@ Widget buildSettingsCardArrow(BuildContext context) {
       position: position,
       badgeText: badgeText,
       badgeType: badgeType,
+      onTap: tappable ? () {} : null,
       trailing: const _ArrowTrailing(),
     ),
   );
@@ -184,6 +186,7 @@ Widget buildSettingsCardGroup(BuildContext context) => _scaffold(
         title: 'VPN protocol',
         subtitle: 'Fast (WireGuard)',
         position: SettingsCardPosition.middle,
+        onTap: () {},
         trailing: const _ArrowTrailing(),
       ),
       SettingsCard(

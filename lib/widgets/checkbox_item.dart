@@ -5,7 +5,7 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 ///
 /// The whole row acts as the hit target — tapping anywhere calls
 /// [onChanged]. Intended for forms and option lists where the label is
-/// rich (e.g. contains [LinkSpan]s).
+/// rich (e.g. contains [LinkText] links).
 class CheckboxItem extends StatelessWidget {
   const CheckboxItem({
     required this.value,
