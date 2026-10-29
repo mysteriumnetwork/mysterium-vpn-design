@@ -430,10 +430,11 @@ class _ConnectingContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
+          // Disabled rather than merely non-interactive: the tunnel is
+          // mid-transition, so the action is unavailable, not just busy.
           ButtonPrimary(
-            onPressed: () {},
+            onPressed: null,
             size: ButtonSize.large,
-            decoration: ButtonDecoration(decorationColor: Palette.brand.shade600),
             loading: ButtonLoading(text: connectingLabel),
             child: Text(connectingLabel),
           ),

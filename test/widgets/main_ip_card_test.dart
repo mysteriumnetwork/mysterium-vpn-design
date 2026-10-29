@@ -96,6 +96,23 @@ void main() {
       expect(find.text('Connecting…'), findsWidgets);
     });
 
+    testWidgets('Connecting renders the action as disabled', (tester) async {
+      await pumpWidget(
+        tester,
+        _build(
+          const MainIpCardConnecting(
+            country: 'Germany',
+            countryIcon: _flag,
+            serviceQuality: 'Excellent',
+          ),
+        ),
+      );
+
+      final button = tester.widget<FilledButton>(find.byType(FilledButton));
+      expect(button.onPressed, isNull);
+      expect(button.enabled, isFalse);
+    });
+
     testWidgets('Connected renders location, IP and fires onDisconnect', (tester) async {
       var disconnected = false;
       await pumpWidget(tester, _build(_connected, onDisconnect: () => disconnected = true));
