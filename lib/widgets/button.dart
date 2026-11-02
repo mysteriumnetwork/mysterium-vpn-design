@@ -88,6 +88,9 @@ sealed class Button extends StatelessWidget {
   final ButtonDecoration decoration;
 
   /// Haptic fired on press. Pass [HapticLevel.none] to stay silent.
+  ///
+  /// Leave the default unless the action is consequential —
+  /// [HapticLevel.impact] is reserved for connect/disconnect-class buttons.
   final HapticLevel haptic;
 }
 

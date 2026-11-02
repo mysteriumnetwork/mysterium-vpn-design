@@ -19,6 +19,8 @@ enum HapticLevel {
   impact;
 
   /// Fires this feedback. No-op off Android/iOS.
+  ///
+  /// Use this for an inline tap body; use [wrap] for a pass-through callback.
   void fire() {
     if (!_supported) {
       return;
@@ -39,8 +41,10 @@ enum HapticLevel {
   ///
   /// Returns `null` for a `null` [callback] — controls derive their disabled
   /// rendering from a null handler, so the nullability has to survive.
+  /// Off Android/iOS it returns [callback] untouched, which the AOT compiler
+  /// folds into a pass-through.
   VoidCallback? wrap(VoidCallback? callback) {
-    if (callback == null || this == HapticLevel.none) {
+    if (callback == null || this == HapticLevel.none || !_supported) {
       return callback;
     }
     return () {

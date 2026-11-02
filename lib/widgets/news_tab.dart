@@ -60,7 +60,7 @@ class _NewsTabState extends State<NewsTab> {
   late final Map<Type, Action<Intent>> _actions = {
     ActivateIntent: CallbackAction<ActivateIntent>(
       onInvoke: (_) {
-        HapticLevel.selection.wrap(widget.onTap)?.call();
+        _handleTap();
         return null;
       },
     ),
@@ -68,6 +68,15 @@ class _NewsTabState extends State<NewsTab> {
 
   bool _hovered = false;
   bool _focused = false;
+
+  void _handleTap() {
+    final onTap = widget.onTap;
+    if (onTap == null) {
+      return;
+    }
+    HapticLevel.selection.fire();
+    onTap();
+  }
 
   bool get _interactive => widget.status != NewsTabStatus.disabled && widget.onTap != null;
 
@@ -104,14 +113,13 @@ class _NewsTabState extends State<NewsTab> {
     final palette = theme.palette;
     final contentColor = _contentColor(palette);
     final selected = widget.status == NewsTabStatus.selected;
-    final onTap = HapticLevel.selection.wrap(widget.onTap);
 
     return Semantics(
       selected: selected,
       button: _interactive,
       enabled: _interactive,
       label: widget.label,
-      onTap: _interactive ? onTap : null,
+      onTap: _interactive ? _handleTap : null,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: _interactive,
@@ -121,7 +129,7 @@ class _NewsTabState extends State<NewsTab> {
         actions: _actions,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: _interactive ? onTap : null,
+          onTap: _interactive ? _handleTap : null,
           child: Container(
             height: _height,
             padding: EdgeInsets.symmetric(horizontal: theme.spacing.ms),

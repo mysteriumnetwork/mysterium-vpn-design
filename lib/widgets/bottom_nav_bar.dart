@@ -165,6 +165,27 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
   bool _hovered = false;
   bool _focused = false;
 
+  // Built once: onInvoke reads the callback lazily, so it stays correct across
+  // rebuilds without re-allocating on every hover or focus tick.
+  late final Map<Type, Action<Intent>> _actions = {
+    ActivateIntent: CallbackAction<ActivateIntent>(
+      onInvoke: (_) {
+        _handleTap();
+        return null;
+      },
+    ),
+  };
+
+  void _handleTap() {
+    final onTap = widget.onTap;
+    if (onTap == null) {
+      return;
+    }
+    HapticLevel.selection.fire();
+    onTap();
+  }
+
+
   void _setHovered(bool value) {
     if (value == _hovered) {
       return;
@@ -186,31 +207,23 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
     final color = widget.selected ? palette.textPrimarySelected : palette.textTertiary;
     final interactive = widget.onTap != null;
     final showHighlight = interactive && !widget.selected && (_hovered || _focused);
-    final onTap = HapticLevel.selection.wrap(widget.onTap);
 
     return Semantics(
       selected: widget.selected,
       button: interactive,
       enabled: interactive,
       label: widget.item.label,
-      onTap: onTap,
+      onTap: interactive ? _handleTap : null,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: interactive,
         mouseCursor: interactive ? SystemMouseCursors.click : MouseCursor.defer,
         onShowHoverHighlight: _setHovered,
         onShowFocusHighlight: _setFocused,
-        actions: <Type, Action<Intent>>{
-          ActivateIntent: CallbackAction<ActivateIntent>(
-            onInvoke: (_) {
-              onTap?.call();
-              return null;
-            },
-          ),
-        },
+        actions: _actions,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: onTap,
+          onTap: interactive ? _handleTap : null,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: showHighlight ? palette.bgSidePanelHover : null,
