@@ -39,7 +39,9 @@ enum HapticLevel {
   /// Use this for an inline tap body or a state outcome; use [wrap] for a
   /// pass-through callback.
   void fire() {
-    if (!enabled || !_platformSupported) {
+    // Platform first: it folds to a constant in AOT, so the whole body
+    // disappears on desktop instead of loading the mutable flag.
+    if (!_platformSupported || !enabled) {
       return;
     }
     switch (this) {
