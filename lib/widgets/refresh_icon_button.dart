@@ -86,7 +86,7 @@ class _RefreshIconButtonState extends State<RefreshIconButton> with SingleTicker
   @override
   Widget build(BuildContext context) => IconButton(
     // Spinning means a refresh is in flight, so ignore taps until it settles.
-    onPressed: widget.spinning ? null : HapticLevel.press.wrap(widget.onPressed),
+    onPressed: widget.spinning ? null : widget.onPressed,
     tooltip: widget.tooltip,
     padding: EdgeInsets.zero,
     visualDensity: VisualDensity.compact,

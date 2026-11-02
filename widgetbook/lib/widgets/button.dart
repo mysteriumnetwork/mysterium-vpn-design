@@ -61,7 +61,7 @@ Widget _buildButton(BuildContext context, Button Function(_ButtonArgs) buttonBui
   );
   final haptic = context.knobs.object.dropdown(
     label: 'Haptic',
-    initialOption: HapticLevel.press,
+    initialOption: HapticLevel.none,
     options: HapticLevel.values,
     labelBuilder: (level) => level.name,
   );

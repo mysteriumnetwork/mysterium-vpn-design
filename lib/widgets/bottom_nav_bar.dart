@@ -170,21 +170,11 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
   late final Map<Type, Action<Intent>> _actions = {
     ActivateIntent: CallbackAction<ActivateIntent>(
       onInvoke: (_) {
-        _handleTap();
+        widget.onTap?.call();
         return null;
       },
     ),
   };
-
-  void _handleTap() {
-    final onTap = widget.onTap;
-    if (onTap == null) {
-      return;
-    }
-    HapticLevel.selection.fire();
-    onTap();
-  }
-
 
   void _setHovered(bool value) {
     if (value == _hovered) {
@@ -213,7 +203,7 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
       button: interactive,
       enabled: interactive,
       label: widget.item.label,
-      onTap: interactive ? _handleTap : null,
+      onTap: widget.onTap,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: interactive,
@@ -223,7 +213,7 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
         actions: _actions,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: interactive ? _handleTap : null,
+          onTap: widget.onTap,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: showHighlight ? palette.bgSidePanelHover : null,

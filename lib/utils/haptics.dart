@@ -4,25 +4,42 @@ import 'package:flutter/services.dart';
 /// Haptic feedback vocabulary for design-system controls.
 ///
 /// Fires only on Android and iOS. Both platforms already gate these calls on
-/// the user's system haptics setting, so there is nothing extra to honour here.
+/// the user's system haptics setting. See `docs/haptics.md` for which control
+/// uses which level.
 enum HapticLevel {
   /// No feedback.
   none,
 
-  /// Discrete state change — tabs, navigation, list and option selection.
+  /// Discrete state change — list and option selection.
   selection,
 
   /// Ordinary button or icon-button press.
   press,
 
   /// High-consequence action — connect and disconnect.
-  impact;
+  impact,
 
-  /// Fires this feedback. No-op off Android/iOS.
+  /// A task finished — the tunnel came up, a purchase went through.
+  success,
+
+  /// A task finished with a caveat.
+  warning,
+
+  /// A task failed.
+  error;
+
+  /// Master switch, mirroring the user's in-app haptics setting.
   ///
-  /// Use this for an inline tap body; use [wrap] for a pass-through callback.
+  /// Read when feedback fires rather than when it is wrapped, so flipping it
+  /// takes effect without rebuilding the widgets that wrapped a callback.
+  static bool enabled = true;
+
+  /// Fires this feedback. No-op off Android/iOS, or when [enabled] is false.
+  ///
+  /// Use this for an inline tap body or a state outcome; use [wrap] for a
+  /// pass-through callback.
   void fire() {
-    if (!_supported) {
+    if (!enabled || !_platformSupported) {
       return;
     }
     switch (this) {
@@ -34,6 +51,12 @@ enum HapticLevel {
         HapticFeedback.lightImpact();
       case HapticLevel.impact:
         HapticFeedback.mediumImpact();
+      case HapticLevel.success:
+        HapticFeedback.successNotification();
+      case HapticLevel.warning:
+        HapticFeedback.warningNotification();
+      case HapticLevel.error:
+        HapticFeedback.errorNotification();
     }
   }
 
@@ -44,7 +67,7 @@ enum HapticLevel {
   /// Off Android/iOS it returns [callback] untouched, which the AOT compiler
   /// folds into a pass-through.
   VoidCallback? wrap(VoidCallback? callback) {
-    if (callback == null || this == HapticLevel.none || !_supported) {
+    if (callback == null || this == HapticLevel.none || !_platformSupported) {
       return callback;
     }
     return () {
@@ -53,7 +76,7 @@ enum HapticLevel {
     };
   }
 
-  static bool get _supported => switch (defaultTargetPlatform) {
+  static bool get _platformSupported => switch (defaultTargetPlatform) {
     TargetPlatform.android || TargetPlatform.iOS => true,
     _ => false,
   };

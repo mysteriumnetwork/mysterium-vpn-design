@@ -250,7 +250,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
           if (hasChevron) ...[
             SizedBox(width: theme.spacing.ms),
             IconButton(
-              onPressed: isLoading ? null : HapticLevel.press.wrap(onChevronTap),
+              onPressed: isLoading ? null : onChevronTap,
               icon: Icon(
                 expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
                 size: 24,

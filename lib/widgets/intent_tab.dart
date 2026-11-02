@@ -116,9 +116,7 @@ class _IntentTabState extends State<IntentTab> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
-        onTap: widget.status == IntentTabStatus.disabled
-            ? null
-            : HapticLevel.selection.wrap(widget.onTap),
+        onTap: widget.status == IntentTabStatus.disabled ? null : widget.onTap,
         child: surface,
       ),
     );

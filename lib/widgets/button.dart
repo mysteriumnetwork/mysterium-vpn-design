@@ -59,7 +59,7 @@ sealed class Button extends StatelessWidget {
     this.loading,
     this.size = ButtonSize.medium,
     this.decoration = const ButtonDecoration(),
-    this.haptic = HapticLevel.press,
+    this.haptic = HapticLevel.none,
     super.key,
   });
 
@@ -87,10 +87,11 @@ sealed class Button extends StatelessWidget {
   /// Overrides for colours, text style, min size, and padding.
   final ButtonDecoration decoration;
 
-  /// Haptic fired on press. Pass [HapticLevel.none] to stay silent.
+  /// Haptic fired on press. Silent by default.
   ///
-  /// Leave the default unless the action is consequential —
-  /// [HapticLevel.impact] is reserved for connect/disconnect-class buttons.
+  /// Opt in only when the action commits something or changes a value; see
+  /// `docs/haptics.md`. [HapticLevel.impact] is reserved for
+  /// connect/disconnect-class actions.
   final HapticLevel haptic;
 }
 

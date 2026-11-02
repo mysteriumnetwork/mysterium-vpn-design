@@ -20,6 +20,45 @@ void main() {
       ]);
     });
 
+    testWidgets('notification levels map to the notification generators', (tester) async {
+      final fired = recordHaptics(tester);
+
+      HapticLevel.success.fire();
+      HapticLevel.warning.fire();
+      HapticLevel.error.fire();
+
+      expect(fired, [
+        'HapticFeedbackType.successNotification',
+        'HapticFeedbackType.warningNotification',
+        'HapticFeedbackType.errorNotification',
+      ]);
+    });
+
+    testWidgets('the master switch silences everything', (tester) async {
+      final fired = recordHaptics(tester);
+      HapticLevel.enabled = false;
+      addTearDown(() => HapticLevel.enabled = true);
+      var called = false;
+
+      HapticLevel.success.fire();
+      HapticLevel.selection.wrap(() => called = true)!();
+
+      expect(fired, isEmpty);
+      expect(called, isTrue);
+    });
+
+    testWidgets('a callback wrapped while disabled fires once re-enabled', (tester) async {
+      final fired = recordHaptics(tester);
+      HapticLevel.enabled = false;
+      addTearDown(() => HapticLevel.enabled = true);
+      final tap = HapticLevel.selection.wrap(() {})!;
+
+      HapticLevel.enabled = true;
+      tap();
+
+      expect(fired, ['HapticFeedbackType.selectionClick']);
+    });
+
     testWidgets('none fires nothing', (tester) async {
       final fired = recordHaptics(tester);
 

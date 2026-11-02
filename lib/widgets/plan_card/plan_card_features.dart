@@ -58,10 +58,7 @@ class _PlanCardFeaturesState extends State<_PlanCardFeatures> {
           Material(
             color: Colors.transparent,
             child: InkWell(
-              onTap: () {
-                HapticLevel.press.fire();
-                setState(() => _expanded = !_expanded);
-              },
+              onTap: () => setState(() => _expanded = !_expanded),
               child: Row(
                 spacing: theme.spacing.xs,
                 children: [

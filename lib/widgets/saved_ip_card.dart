@@ -383,7 +383,7 @@ class _FavoriteHeartState extends State<_FavoriteHeart> {
       }),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: HapticLevel.press.wrap(widget.onTap),
+        onTap: HapticLevel.selection.wrap(widget.onTap),
         onTapDown: _interactive ? (_) => _setPressed(value: true) : null,
         onTapUp: _interactive ? (_) => _setPressed(value: false) : null,
         onTapCancel: _interactive ? () => _setPressed(value: false) : null,

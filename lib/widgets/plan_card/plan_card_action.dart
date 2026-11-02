@@ -15,7 +15,7 @@ class _PlanCardAction extends StatelessWidget {
       child: MaterialWrapper(
         borderRadius: BorderRadius.all(theme.radius.s),
         child: InkWell(
-          onTap: HapticLevel.press.wrap(onPressed),
+          onTap: onPressed,
           child: Row(
             spacing: theme.spacing.xs,
             mainAxisSize: MainAxisSize.min,

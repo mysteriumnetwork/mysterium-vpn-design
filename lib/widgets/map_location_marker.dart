@@ -219,7 +219,7 @@ class _GestureHandlerState extends State<_GestureHandler> {
   DateTime? _lastTapTime;
 
   void _handleTap() {
-    HapticLevel.press.fire();
+    HapticLevel.selection.fire();
     final now = DateTime.now();
     if (widget.onDoubleTap != null &&
         _lastTapTime != null &&

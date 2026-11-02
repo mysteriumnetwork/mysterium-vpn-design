@@ -143,21 +143,11 @@ class _NavRailButtonState extends State<_NavRailButton> {
   late final Map<Type, Action<Intent>> _actions = {
     ActivateIntent: CallbackAction<ActivateIntent>(
       onInvoke: (_) {
-        _handleTap();
+        widget.item.onTap?.call();
         return null;
       },
     ),
   };
-
-  void _handleTap() {
-    final onTap = widget.item.onTap;
-    if (onTap == null) {
-      return;
-    }
-    HapticLevel.selection.fire();
-    onTap();
-  }
-
 
   void _setHovered(bool value) {
     if (value == _hovered) {
@@ -193,7 +183,7 @@ class _NavRailButtonState extends State<_NavRailButton> {
       button: interactive,
       enabled: interactive,
       label: widget.item.label,
-      onTap: interactive ? _handleTap : null,
+      onTap: widget.item.onTap,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: interactive,
@@ -203,7 +193,7 @@ class _NavRailButtonState extends State<_NavRailButton> {
         actions: _actions,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: interactive ? _handleTap : null,
+          onTap: widget.item.onTap,
           child: Tooltip(
             message: widget.item.label,
             triggerMode: TooltipTriggerMode.longPress,

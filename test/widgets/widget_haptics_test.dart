@@ -5,8 +5,9 @@ import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import '../helpers/haptics.dart';
 import '../helpers/pump_widget.dart';
 
+/// Policy under test: see `docs/haptics.md`. A tap fires only when it changes
+/// state in the world or commits something; moving the view stays silent.
 const _selection = 'HapticFeedbackType.selectionClick';
-const _press = 'HapticFeedbackType.lightImpact';
 const _impact = 'HapticFeedbackType.mediumImpact';
 
 const _flag = SizedBox(width: 32, height: 32);
@@ -26,36 +27,44 @@ const _offerData = PlanData(
   isOffer: true,
 );
 
+MainIpCard _mainIpCard({
+  required MainIpCardStatus status,
+  VoidCallback? onConnect,
+  VoidCallback? onDisconnect,
+  VoidCallback? onDetails,
+  VoidCallback? onFavorite,
+}) => MainIpCard(
+  status: status,
+  connectLabel: 'Connect',
+  disconnectLabel: 'Disconnect',
+  connectingLabel: 'Connecting…',
+  noConnectionTitle: 'Not connected',
+  noConnectionDescription: 'Pick a country',
+  onConnect: onConnect,
+  onDisconnect: onDisconnect,
+  onDetails: onDetails,
+  onFavorite: onFavorite,
+);
+
+const _connected = MainIpCardConnected(
+  country: 'Germany',
+  countryIcon: _flag,
+  city: 'Frankfurt',
+  ipAddress: '203.0.113.5',
+);
+
 void main() {
-  group('Button haptics', () {
-    testWidgets('primary fires a single press haptic', (tester) async {
+  group('Button is silent unless it opts in', () {
+    testWidgets('no haptic by default', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(tester, ButtonPrimary(onPressed: () {}, child: const Text('Go')));
 
       await tester.tap(find.text('Go'));
 
-      expect(fired, [_press]);
+      expect(fired, isEmpty);
     });
 
-    testWidgets('secondary and tertiary fire a press haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(
-        tester,
-        Column(
-          children: [
-            ButtonSecondary(onPressed: () {}, child: const Text('Two')),
-            ButtonTertiary(onPressed: () {}, child: const Text('Three')),
-          ],
-        ),
-      );
-
-      await tester.tap(find.text('Two'));
-      await tester.tap(find.text('Three'));
-
-      expect(fired, [_press, _press]);
-    });
-
-    testWidgets('haptic override escalates to impact', (tester) async {
+    testWidgets('opting in to impact fires impact', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
@@ -67,27 +76,30 @@ void main() {
       expect(fired, [_impact]);
     });
 
-    testWidgets('none stays silent but still invokes onPressed', (tester) async {
+    testWidgets('opting in still invokes onPressed', (tester) async {
       final fired = recordHaptics(tester);
       var pressed = false;
       await pumpWidget(
         tester,
-        ButtonPrimary(
+        ButtonSecondary(
           onPressed: () => pressed = true,
-          haptic: HapticLevel.none,
-          child: const Text('Quiet'),
+          haptic: HapticLevel.selection,
+          child: const Text('Pick'),
         ),
       );
 
-      await tester.tap(find.text('Quiet'));
+      await tester.tap(find.text('Pick'));
 
       expect(pressed, isTrue);
-      expect(fired, isEmpty);
+      expect(fired, [_selection]);
     });
 
-    testWidgets('disabled button stays silent', (tester) async {
+    testWidgets('disabled stays silent', (tester) async {
       final fired = recordHaptics(tester);
-      await pumpWidget(tester, const ButtonPrimary(onPressed: null, child: Text('Off')));
+      await pumpWidget(
+        tester,
+        const ButtonPrimary(onPressed: null, haptic: HapticLevel.impact, child: Text('Off')),
+      );
 
       await tester.tap(find.text('Off'));
 
@@ -95,73 +107,8 @@ void main() {
     });
   });
 
-  group('Navigation haptics', () {
-    testWidgets('BottomNavBar fires a single selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(
-        tester,
-        BottomNavBar(items: _navItems, selectedIndex: 0, onDestinationSelected: (_) {}),
-      );
-
-      await tester.tap(find.text('Settings'));
-
-      expect(fired, [_selection]);
-    });
-
-    testWidgets('NavRail fires a single selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(
-        tester,
-        NavRail(
-          currentIndex: 0,
-          items: [
-            const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
-            NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
-          ],
-        ),
-      );
-
-      await tester.tap(find.byIcon(UntitledUI.settings_01));
-
-      expect(fired, [_selection]);
-    });
-
-    testWidgets('NavItem fires a selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, NavItem(icon: const Icon(Icons.home), label: 'Home', onTap: () {}));
-
-      await tester.tap(find.text('Home'));
-
-      expect(fired, [_selection]);
-    });
-
-    testWidgets('IntentTab fires when idle and stays silent when disabled', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, IntentTab(icon: Icons.speed, label: 'Fast', onTap: () {}));
-      await tester.tap(find.text('Fast'));
-      expect(fired, [_selection]);
-
-      fired.clear();
-      await pumpWidget(
-        tester,
-        IntentTab(icon: Icons.speed, label: 'Off', status: IntentTabStatus.disabled, onTap: () {}),
-      );
-      await tester.tap(find.text('Off'));
-      expect(fired, isEmpty);
-    });
-
-    testWidgets('NewsTab fires a selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, NewsTab(icon: UntitledUI.file_06, label: 'News', onTap: () {}));
-
-      await tester.tap(find.text('News'));
-
-      expect(fired, [_selection]);
-    });
-  });
-
-  group('Selection surface haptics', () {
-    testWidgets('LocationCard fires a selection haptic', (tester) async {
+  group('A value change fires selection', () {
+    testWidgets('LocationCard', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
@@ -178,7 +125,7 @@ void main() {
       expect(fired, [_selection]);
     });
 
-    testWidgets('SavedIpCard row selects and its heart presses', (tester) async {
+    testWidgets('SavedIpCard row and its favourite heart', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
@@ -198,65 +145,10 @@ void main() {
 
       fired.clear();
       await tester.tap(find.byIcon(UntitledUI.heart_filled));
-      expect(fired, [_press]);
-    });
-
-    testWidgets('CheckboxItem fires a selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(
-        tester,
-        CheckboxItem(value: false, onChanged: () {}, label: const Text('Agree')),
-        wrapInScaffold: true,
-      );
-
-      await tester.tap(find.text('Agree'));
-
       expect(fired, [_selection]);
     });
 
-    testWidgets('RadioButton fires a selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, RadioButton<int>(value: 1, onPressed: () {}));
-
-      await tester.tap(find.byType(RadioButton<int>));
-
-      expect(fired, [_selection]);
-    });
-  });
-
-  group('SettingsCard haptics', () {
-    // SettingsCard forwards onTap into GroupedCardShell. Wrapping both would
-    // fire twice, so this asserts the exact count rather than "a haptic".
-    testWidgets('fires exactly one selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, SettingsCard(title: 'Account', onTap: () {}));
-
-      await tester.tap(find.text('Account'));
-
-      expect(fired, [_selection]);
-    });
-
-    testWidgets('GroupedCardShell fires exactly one selection haptic', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(
-        tester,
-        GroupedCardShell(
-          position: SettingsCardPosition.single,
-          minHeight: 70,
-          padding: const EdgeInsets.all(16),
-          onTap: () {},
-          child: const Text('Row'),
-        ),
-      );
-
-      await tester.tap(find.text('Row'));
-
-      expect(fired, [_selection]);
-    });
-  });
-
-  group('ExpandableIpCard haptics', () {
-    testWidgets('child item fires exactly one selection haptic', (tester) async {
+    testWidgets('ExpandableIpCard child item fires exactly once', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
@@ -274,42 +166,44 @@ void main() {
       expect(fired, [_selection]);
     });
 
-    testWidgets('content selects and chevron presses', (tester) async {
+    testWidgets('CheckboxItem', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
-        ExpandableIpCard(
-          name: 'Germany',
-          subtitle: 'Frankfurt',
-          countryIcon: _flag,
-          onConnect: () {},
-          items: const [IpCardItem(name: 'Child A', subtitle: '1.1.1.1')],
-        ),
+        CheckboxItem(value: false, onChanged: () {}, label: const Text('Agree')),
+        wrapInScaffold: true,
       );
 
-      await tester.tap(find.text('Germany'));
-      expect(fired, [_selection]);
+      await tester.tap(find.text('Agree'));
 
-      fired.clear();
-      await tester.tap(find.byIcon(UntitledUI.chevron_down));
-      expect(fired, [_press]);
+      expect(fired, [_selection]);
+    });
+
+    testWidgets('RadioButton', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, RadioButton<int>(value: 1, onPressed: () {}));
+
+      await tester.tap(find.byType(RadioButton<int>));
+
+      expect(fired, [_selection]);
+    });
+
+    testWidgets('MainIpCard favourite fires exactly once', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, _mainIpCard(status: _connected, onFavorite: () {}));
+
+      await tester.tap(find.byIcon(UntitledUI.heart));
+
+      expect(fired, [_selection]);
     });
   });
 
-  group('MainIpCard haptics', () {
-    testWidgets('connect fires an impact haptic', (tester) async {
+  group('A consequential commit fires impact', () {
+    testWidgets('connect', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
-        MainIpCard(
-          status: const MainIpCardNotConnected(),
-          connectLabel: 'Connect',
-          disconnectLabel: 'Disconnect',
-          connectingLabel: 'Connecting…',
-          noConnectionTitle: 'Not connected',
-          noConnectionDescription: 'Pick a country',
-          onConnect: () {},
-        ),
+        _mainIpCard(status: const MainIpCardNotConnected(), onConnect: () {}),
       );
 
       await tester.tap(find.text('Connect'));
@@ -317,57 +211,128 @@ void main() {
       expect(fired, [_impact]);
     });
 
-    testWidgets('details icon fires exactly one press haptic', (tester) async {
+    testWidgets('disconnect', (tester) async {
       final fired = recordHaptics(tester);
-      await pumpWidget(
-        tester,
-        MainIpCard(
-          status: const MainIpCardConnected(
-            country: 'Germany',
-            countryIcon: _flag,
-            city: 'Frankfurt',
-            ipAddress: '203.0.113.5',
-          ),
-          connectLabel: 'Connect',
-          disconnectLabel: 'Disconnect',
-          connectingLabel: 'Connecting…',
-          noConnectionTitle: 'Not connected',
-          noConnectionDescription: 'Pick a country',
-          onDetails: () {},
-        ),
-      );
+      await pumpWidget(tester, _mainIpCard(status: _connected, onDisconnect: () {}));
 
-      await tester.tap(find.byIcon(UntitledUI.chevron_right));
+      await tester.tap(find.text('Disconnect'));
 
-      expect(fired, [_press]);
+      expect(fired, [_impact]);
     });
   });
 
-  group('Raw button haptics', () {
-    testWidgets('FloatingButton fires a press haptic', (tester) async {
+  group('Moving the view stays silent', () {
+    testWidgets('BottomNavBar', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(
+        tester,
+        BottomNavBar(items: _navItems, selectedIndex: 0, onDestinationSelected: (_) {}),
+      );
+
+      await tester.tap(find.text('Settings'));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('NavRail', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(
+        tester,
+        NavRail(
+          currentIndex: 0,
+          items: [
+            const NavRailItem(icon: UntitledUI.map_01, label: 'Map'),
+            NavRailItem(icon: UntitledUI.settings_01, label: 'Settings', onTap: () {}),
+          ],
+        ),
+      );
+
+      await tester.tap(find.byIcon(UntitledUI.settings_01));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('NavItem', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, NavItem(icon: const Icon(Icons.home), label: 'Home', onTap: () {}));
+
+      await tester.tap(find.text('Home'));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('IntentTab', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, IntentTab(icon: Icons.speed, label: 'Fast', onTap: () {}));
+
+      await tester.tap(find.text('Fast'));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('NewsTab', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, NewsTab(icon: UntitledUI.file_06, label: 'News', onTap: () {}));
+
+      await tester.tap(find.text('News'));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('SettingsCard row', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, SettingsCard(title: 'Account', onTap: () {}));
+
+      await tester.tap(find.text('Account'));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('ExpandableIpCard chevron', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(
+        tester,
+        const ExpandableIpCard(
+          name: 'Germany',
+          subtitle: 'Frankfurt',
+          countryIcon: _flag,
+          items: [IpCardItem(name: 'Child A', subtitle: '1.1.1.1')],
+        ),
+      );
+
+      await tester.tap(find.byIcon(UntitledUI.chevron_down));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('MainIpCard details chevron', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, _mainIpCard(status: _connected, onDetails: () {}));
+
+      await tester.tap(find.byIcon(UntitledUI.chevron_right));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('RefreshIconButton', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, RefreshIconButton(onPressed: () {}));
+
+      await tester.tap(find.byType(IconButton));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('FloatingButton', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(tester, FloatingButton(label: 'Skip', icon: Icons.close, onPressed: () {}));
 
       await tester.tap(find.text('Skip'));
 
-      expect(fired, [_press]);
-    });
-
-    testWidgets('RefreshIconButton fires, and stays silent while spinning', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, RefreshIconButton(onPressed: () {}));
-      await tester.tap(find.byType(IconButton));
-      expect(fired, [_press]);
-
-      fired.clear();
-      await pumpWidget(tester, RefreshIconButton(spinning: true, onPressed: () {}));
-      await tester.tap(find.byType(IconButton));
       expect(fired, isEmpty);
     });
-  });
 
-  group('PlanCard haptics', () {
-    testWidgets('action footer fires exactly one press haptic', (tester) async {
+    testWidgets('PlanCard action footer', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
@@ -382,11 +347,10 @@ void main() {
 
       await tester.tap(find.text('Buy'));
 
-      expect(fired, [_press]);
+      expect(fired, isEmpty);
     });
 
-    // The toggle only renders for an offer, on tablet+, with >3 features.
-    testWidgets('features toggle fires a press haptic', (tester) async {
+    testWidgets('PlanCard features toggle', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(
         tester,
@@ -403,7 +367,7 @@ void main() {
 
       await tester.tap(find.text('View more'));
 
-      expect(fired, [_press]);
+      expect(fired, isEmpty);
     });
   });
 }
