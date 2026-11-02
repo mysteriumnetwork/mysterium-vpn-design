@@ -13,6 +13,9 @@ enum LocationCardStatus {
   /// This location is the active connection.
   selected,
 
+  /// A connection attempt to this location is in progress.
+  connecting,
+
   /// Card is non-interactive.
   disabled,
 }
@@ -136,6 +139,9 @@ class _LeadingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (status == LocationCardStatus.connecting) {
+      return LoadingIndicator(color: Theme.of(context).palette.iconPrimary);
+    }
     if (status == LocationCardStatus.selected) {
       return Container(
         width: 24,
