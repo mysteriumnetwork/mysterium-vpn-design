@@ -41,8 +41,8 @@ and make the consequential ones feel stronger.
 | `HapticLevel` | Fires on | Examples here |
 |---|---|---|
 | `success` / `warning` / `error` | the outcome of a task | tunnel came up; connection failed |
-| `impact` | a consequential commit | connect, disconnect, switch country |
-| `selection` | a value changes | location pick, favourite on/off, checkbox, radio, plan select |
+| `impact` | a consequential commit | connect, disconnect, switch country, refresh IP, confirming a warning dialog |
+| `selection` | a value changes | location pick, server-preset pick, favourite on/off, checkbox, radio, plan select, picker-sheet option, settings toggle |
 | `press` | an ordinary button, where a platform expects click feedback | opt-in only; no DS widget uses it by default |
 | `none` | everything else | navigation, chevrons, close/dismiss, refresh, details |
 
@@ -56,17 +56,40 @@ started it; the press and the outcome are separate events.
 action is consequential enough to opt in — that is the whole point of the
 default. Reserve `impact` for connect/disconnect-class actions.
 
+## Classify by behaviour, not by widget name
+
+Two surfaces were mis-binned on the first pass because their names suggested
+the wrong category, so check what a control *does* before filing it:
+
+- `RefreshIconButton` reloads the locations **list** (silent), while the
+  connection dialog's "Refresh" rebuilds the tunnel on a new IP (`impact`).
+- `IntentTab` is not a tab — it picks a server preset and connects, the same
+  act as tapping a location (`selection`).
+
+A picker row is the same trap in reverse: the `SettingsCard` only *opens* the
+sheet, so it is silent; the option tapped **inside** the sheet is the value
+change, and that is where the feedback belongs.
+
 ## Silent by decision
 
 These surfaces are deliberately silent. Listed so a future reader can tell
 silence-by-design from silence-by-oversight:
 
-- All navigation — `BottomNavBar`, `NavRail`, `NavItem`, `IntentTab`, `NewsTab`
+- All navigation — `BottomNavBar`, `NavRail`, `NavItem`, `NewsTab`. Not
+  `IntentTab`: despite the name it selects a server preset and connects,
+  the same act as tapping a location.
 - Settings rows (`SettingsCard` / `GroupedCardShell`) — they navigate
 - Expand/collapse chevrons — `ExpandableIpCardHeader`, `PlanCard` features
 - Close, back and dismiss buttons in modals, headers and the preview bar
-- `RefreshIconButton`, `FloatingButton`, connection-details chevron
+- `RefreshIconButton` (reloads the locations *list* — unlike the connection
+  dialog's Refresh, which rebuilds the tunnel and is `impact`), `FloatingButton`,
+  connection-details chevron
 - `NewsCard`, `PromoBar`, `SearchField`, `InfoPopover`, `MinimalAlert`
+- Read-only settings rows — DNS, Kill switch, push-notification permission:
+  they display OS-owned state and have no in-app toggle
+- The rows that merely open a picker sheet or a confirmation dialog
+- The locations datacenter/residential/favourite switcher — it filters which
+  list you are browsing, not what you connect to
 
 ## Turning it off
 

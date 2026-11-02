@@ -179,6 +179,21 @@ void main() {
       expect(fired, [_selection]);
     });
 
+    testWidgets('IntentTab picks a server preset', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, IntentTab(icon: Icons.speed, label: 'Fast', onTap: () {}));
+      await tester.tap(find.text('Fast'));
+      expect(fired, [_selection]);
+
+      fired.clear();
+      await pumpWidget(
+        tester,
+        IntentTab(icon: Icons.speed, label: 'Off', status: IntentTabStatus.disabled, onTap: () {}),
+      );
+      await tester.tap(find.text('Off'));
+      expect(fired, isEmpty);
+    });
+
     testWidgets('RadioButton', (tester) async {
       final fired = recordHaptics(tester);
       await pumpWidget(tester, RadioButton<int>(value: 1, onPressed: () {}));
@@ -257,15 +272,6 @@ void main() {
       await pumpWidget(tester, NavItem(icon: const Icon(Icons.home), label: 'Home', onTap: () {}));
 
       await tester.tap(find.text('Home'));
-
-      expect(fired, isEmpty);
-    });
-
-    testWidgets('IntentTab', (tester) async {
-      final fired = recordHaptics(tester);
-      await pumpWidget(tester, IntentTab(icon: Icons.speed, label: 'Fast', onTap: () {}));
-
-      await tester.tap(find.text('Fast'));
 
       expect(fired, isEmpty);
     });
