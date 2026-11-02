@@ -17,6 +17,14 @@ const _navItems = <BottomNavBarItem>[
   BottomNavBarItem(icon: UntitledUI.settings_01, label: 'Settings'),
 ];
 
+const _planData = PlanData(
+  name: '1-year plan',
+  fullPriceLabel: 'Total',
+  fullPrice: r'$99',
+  periodLabel: '/year',
+  perMonth: '/mo',
+);
+
 const _offerData = PlanData(
   name: 'Offer',
   fullPriceLabel: 'Total',
@@ -201,6 +209,55 @@ void main() {
       await tester.tap(find.byType(RadioButton<int>));
 
       expect(fired, [_selection]);
+    });
+
+    testWidgets('RadioButton already selected stays silent', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, RadioButton<int>(value: 1, selected: true, onPressed: () {}));
+
+      await tester.tap(find.byType(RadioButton<int>));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('PlanCard selects a different plan', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(
+        tester,
+        RadioGroup<int>(
+          onChanged: (_) {},
+          child: const PlanCard<int>(data: _planData, value: 1),
+        ),
+      );
+
+      await tester.tap(find.text('1-year plan'));
+
+      expect(fired, [_selection]);
+    });
+
+    testWidgets('PlanCard re-picking the current plan stays silent', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(
+        tester,
+        RadioGroup<int>(
+          groupValue: 1,
+          onChanged: (_) {},
+          child: const PlanCard<int>(data: _planData, value: 1),
+        ),
+      );
+
+      await tester.tap(find.text('1-year plan'));
+
+      expect(fired, isEmpty);
+    });
+
+    testWidgets('PlanCard without a group stays silent', (tester) async {
+      final fired = recordHaptics(tester);
+      await pumpWidget(tester, const PlanCard<int>(data: _planData, value: 1));
+
+      await tester.tap(find.text('1-year plan'));
+
+      expect(fired, isEmpty);
     });
 
     testWidgets('MainIpCard favourite fires exactly once', (tester) async {

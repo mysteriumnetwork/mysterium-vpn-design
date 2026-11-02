@@ -115,6 +115,10 @@ class PlanCard<T> extends StatelessWidget {
     final isCurrentPlan = currentPlanLabel != null;
 
     void handleSelect() {
+      // Without a group, or when this plan is already picked, nothing changes.
+      if (radioGroup != null && !isSelected) {
+        HapticLevel.selection.fire();
+      }
       radioGroup?.onChanged(value);
     }
 

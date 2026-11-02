@@ -26,7 +26,7 @@ class _PlanContainer extends StatelessWidget {
         Padding(
           padding: EdgeInsets.only(top: (bestValueBadge != null && data.isOffer) ? 27 : 0),
           child: RawMaterialButton(
-            onPressed: HapticLevel.selection.wrap(onTap),
+            onPressed: onTap,
             elevation: 0,
             hoverElevation: 0,
             focusElevation: 0,

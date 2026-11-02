@@ -65,7 +65,11 @@ class RadioButton<T> extends StatelessWidget {
     }
 
     void handlePressed() {
-      HapticLevel.selection.fire();
+      // Policy is value-change only: re-tapping the current option changes
+      // nothing.
+      if (!isSelected) {
+        HapticLevel.selection.fire();
+      }
       if (onPressed != null) {
         onPressed!.call();
       } else {
