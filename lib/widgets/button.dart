@@ -59,6 +59,7 @@ sealed class Button extends StatelessWidget {
     this.loading,
     this.size = ButtonSize.medium,
     this.decoration = const ButtonDecoration(),
+    this.haptic = HapticLevel.press,
     super.key,
   });
 
@@ -85,6 +86,9 @@ sealed class Button extends StatelessWidget {
 
   /// Overrides for colours, text style, min size, and padding.
   final ButtonDecoration decoration;
+
+  /// Haptic fired on press. Pass [HapticLevel.none] to stay silent.
+  final HapticLevel haptic;
 }
 
 /// Overrides for a [Button]'s appearance.
@@ -184,6 +188,7 @@ class ButtonPrimary extends Button {
     super.trailing,
     super.loading,
     super.decoration,
+    super.haptic,
     super.key,
   }) : super(variant: ButtonVariant.primary);
 
@@ -191,7 +196,7 @@ class ButtonPrimary extends Button {
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: loading != null,
     child: FilledButton(
-      onPressed: onPressed,
+      onPressed: haptic.wrap(onPressed),
       style: FilledButton.styleFrom(
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
@@ -234,6 +239,7 @@ class ButtonSecondary extends Button {
     super.trailing,
     super.loading,
     super.decoration,
+    super.haptic,
     super.key,
   }) : super(variant: ButtonVariant.secondary);
 
@@ -241,7 +247,7 @@ class ButtonSecondary extends Button {
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: loading != null,
     child: OutlinedButton(
-      onPressed: onPressed,
+      onPressed: haptic.wrap(onPressed),
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
@@ -285,6 +291,7 @@ class ButtonTertiary extends Button {
     super.trailing,
     super.loading,
     super.decoration,
+    super.haptic,
     super.key,
   }) : super(variant: ButtonVariant.tertiary);
 
@@ -292,7 +299,7 @@ class ButtonTertiary extends Button {
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: loading != null,
     child: TextButton(
-      onPressed: onPressed,
+      onPressed: haptic.wrap(onPressed),
       style:
           TextButton.styleFrom(
             padding: EdgeInsets.zero,

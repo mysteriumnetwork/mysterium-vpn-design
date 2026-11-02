@@ -85,7 +85,7 @@ class _NavItemState extends State<NavItem> {
         onEnter: _interactive ? (_) => setState(() => _hovered = true) : null,
         onExit: _interactive ? (_) => setState(() => _hovered = false) : null,
         child: GestureDetector(
-          onTap: widget.onTap,
+          onTap: HapticLevel.selection.wrap(widget.onTap),
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: _bgColor(palette),

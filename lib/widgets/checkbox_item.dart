@@ -27,7 +27,7 @@ class CheckboxItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return GestureDetector(
-      onTap: onChanged,
+      onTap: HapticLevel.selection.wrap(onChanged),
       behavior: HitTestBehavior.opaque,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

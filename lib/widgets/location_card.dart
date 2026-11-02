@@ -117,7 +117,10 @@ class _LocationCardState extends State<LocationCard> {
       child: MouseRegion(
         onEnter: (_) => setState(() => _hovered = true),
         onExit: (_) => setState(() => _hovered = false),
-        child: GestureDetector(onTap: isDisabled ? null : widget.onTap, child: surface),
+        child: GestureDetector(
+          onTap: isDisabled ? null : HapticLevel.selection.wrap(widget.onTap),
+          child: surface,
+        ),
       ),
     );
   }

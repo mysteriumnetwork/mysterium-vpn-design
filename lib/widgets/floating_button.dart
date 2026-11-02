@@ -68,7 +68,7 @@ class FloatingButton extends StatelessWidget {
           EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.s),
         ),
       ),
-      onPressed: onPressed,
+      onPressed: HapticLevel.press.wrap(onPressed),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

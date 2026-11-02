@@ -186,13 +186,14 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
     final color = widget.selected ? palette.textPrimarySelected : palette.textTertiary;
     final interactive = widget.onTap != null;
     final showHighlight = interactive && !widget.selected && (_hovered || _focused);
+    final onTap = HapticLevel.selection.wrap(widget.onTap);
 
     return Semantics(
       selected: widget.selected,
       button: interactive,
       enabled: interactive,
       label: widget.item.label,
-      onTap: widget.onTap,
+      onTap: onTap,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: interactive,
@@ -202,14 +203,14 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
         actions: <Type, Action<Intent>>{
           ActivateIntent: CallbackAction<ActivateIntent>(
             onInvoke: (_) {
-              widget.onTap?.call();
+              onTap?.call();
               return null;
             },
           ),
         },
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: widget.onTap,
+          onTap: onTap,
           child: DecoratedBox(
             decoration: BoxDecoration(
               color: showHighlight ? palette.bgSidePanelHover : null,

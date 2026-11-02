@@ -65,6 +65,7 @@ class RadioButton<T> extends StatelessWidget {
     }
 
     void handlePressed() {
+      HapticLevel.selection.fire();
       if (onPressed != null) {
         onPressed!.call();
       } else {

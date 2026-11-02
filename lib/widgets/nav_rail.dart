@@ -157,6 +157,7 @@ class _NavRailButtonState extends State<_NavRailButton> {
     final palette = Theme.of(context).palette;
     final color = widget.selected ? palette.textPrimarySelected : palette.iconTertiary;
     final interactive = widget.item.onTap != null;
+    final onTap = HapticLevel.selection.wrap(widget.item.onTap);
 
     final Color? bg;
     if (widget.selected) {
@@ -172,7 +173,7 @@ class _NavRailButtonState extends State<_NavRailButton> {
       button: interactive,
       enabled: interactive,
       label: widget.item.label,
-      onTap: widget.item.onTap,
+      onTap: onTap,
       excludeSemantics: true,
       child: FocusableActionDetector(
         enabled: interactive,
@@ -182,14 +183,14 @@ class _NavRailButtonState extends State<_NavRailButton> {
         actions: <Type, Action<Intent>>{
           ActivateIntent: CallbackAction<ActivateIntent>(
             onInvoke: (_) {
-              widget.item.onTap?.call();
+              onTap?.call();
               return null;
             },
           ),
         },
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: widget.item.onTap,
+          onTap: onTap,
           child: Tooltip(
             message: widget.item.label,
             triggerMode: TooltipTriggerMode.longPress,

@@ -370,7 +370,12 @@ class _NotConnectedContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
-          ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
+          ButtonPrimary(
+            onPressed: onConnect,
+            size: ButtonSize.large,
+            haptic: HapticLevel.impact,
+            child: Text(connectLabel),
+          ),
         ),
       ],
     );
@@ -499,7 +504,12 @@ class _LocationSelectedContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
-          ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
+          ButtonPrimary(
+            onPressed: onConnect,
+            size: ButtonSize.large,
+            haptic: HapticLevel.impact,
+            child: Text(connectLabel),
+          ),
         ),
       ],
     );
@@ -617,6 +627,7 @@ class _ConnectedContent extends StatelessWidget {
           ButtonSecondary(
             onPressed: onButton,
             size: ButtonSize.large,
+            haptic: HapticLevel.impact,
             decoration: ButtonDecoration(
               decorationColor: palette.bgSecondaryCta,
               foregroundColor: palette.textSecondaryCta,
@@ -701,7 +712,7 @@ class _IconTap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => IconButton(
-    onPressed: onPressed,
+    onPressed: HapticLevel.press.wrap(onPressed),
     icon: Icon(icon, size: 24, color: iconColor, semanticLabel: semanticLabel),
     padding: EdgeInsets.zero,
     style: ButtonStyle(

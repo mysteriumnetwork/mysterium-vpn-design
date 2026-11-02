@@ -96,7 +96,7 @@ class GroupedCardShell extends StatelessWidget {
         color: transparent ? Palette.transparent : palette.bgPrimary,
         borderRadius: _borderRadius,
         child: InkWell(
-          onTap: onTap,
+          onTap: HapticLevel.selection.wrap(onTap),
           borderRadius: _borderRadius,
           overlayColor: WidgetStatePropertyAll(palette.bgPrimaryHover),
           child: surface,

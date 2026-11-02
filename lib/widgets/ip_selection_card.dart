@@ -208,6 +208,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
     final hasChevron = onChevronTap != null;
     final isLoading = status == IpCardStatus.loading;
     final showPlus = plusUpgrade && status != IpCardStatus.selected && !isLoading;
+    final contentTap = HapticLevel.selection.wrap(onContentTap);
     return _IpCardShell(
       status: status,
       borderRadius: borderRadius,
@@ -216,7 +217,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
           Expanded(
             child: GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: onContentTap,
+              onTap: contentTap,
               child: Row(
                 spacing: theme.spacing.ms,
                 children: [
@@ -240,7 +241,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
             SizedBox(width: theme.spacing.ms),
             GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onTap: onContentTap,
+              onTap: contentTap,
               child: _PlusBadge(disabled: status == IpCardStatus.disabled),
             ),
           ],
@@ -249,7 +250,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
           if (hasChevron) ...[
             SizedBox(width: theme.spacing.ms),
             IconButton(
-              onPressed: isLoading ? null : onChevronTap,
+              onPressed: isLoading ? null : HapticLevel.press.wrap(onChevronTap),
               icon: Icon(
                 expanded ? UntitledUI.chevron_up : UntitledUI.chevron_down,
                 size: 24,
@@ -375,7 +376,7 @@ class _IpCardShellState extends State<_IpCardShell> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
-        onTap: widget.onTap,
+        onTap: HapticLevel.selection.wrap(widget.onTap),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: _bgColor(palette),
