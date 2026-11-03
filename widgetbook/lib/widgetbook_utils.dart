@@ -11,6 +11,7 @@ abstract class WidgetbookUtils {
     'arrow_left': UntitledUI.arrow_left,
     'arrow_right': UntitledUI.arrow_right,
     'arrow_up': UntitledUI.arrow_up,
+    'gift_02': UntitledUI.gift_02,
     'check_circle': UntitledUI.check_circle,
     'x_close': UntitledUI.x_close,
     'download_01': UntitledUI.download_01,

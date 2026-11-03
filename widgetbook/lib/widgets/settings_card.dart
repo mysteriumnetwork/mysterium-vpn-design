@@ -66,6 +66,40 @@ Widget buildSettingsCardButton(BuildContext context) {
   );
 }
 
+@UseCase(name: 'Bonus badge', type: SettingsCard)
+Widget buildSettingsCardBonusBadge(BuildContext context) {
+  final title = context.knobs.string(label: 'Title', initialValue: 'Basic 1-Year');
+  final badgeText = context.knobs.string(label: 'Badge text', initialValue: '+3 bonus months');
+  // A long trailing label squeezes the text column until the badge wraps below
+  // the title, as the mobile account design does.
+  final trailing = context.knobs.string(label: 'Trailing label', initialValue: 'Manage');
+  final position = context.knobs.object.dropdown(
+    label: 'Position',
+    options: SettingsCardPosition.values,
+    initialOption: SettingsCardPosition.single,
+    labelBuilder: (p) => p.name,
+  );
+
+  return _scaffold(
+    context,
+    child: SettingsCard(
+      title: title,
+      subtitle: 'Renews on 6 Jan, 2028',
+      position: position,
+      badge: AppBadge(
+        text: badgeText,
+        type: BadgeType.brand,
+        size: BadgeSize.small,
+        icon: UntitledUI.gift_02,
+        tooltip:
+            'Your first subscription period includes 3 bonus months. '
+            'After that, your plan renews every 12 months at the standard price.',
+      ),
+      trailing: _TextButtonTrailing(label: trailing),
+    ),
+  );
+}
+
 @UseCase(name: 'Toggle', type: SettingsCard)
 Widget buildSettingsCardToggle(BuildContext context) {
   final title = context.knobs.string(label: 'Title', initialValue: 'Kill switch');

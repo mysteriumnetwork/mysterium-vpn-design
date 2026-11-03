@@ -175,6 +175,7 @@ class SettingsCard extends StatelessWidget {
     this.subtitle,
     this.subtitleWidget,
     this.trailing,
+    this.badge,
     this.badgeText,
     this.badgeType = BadgeType.neutral,
     this.position = SettingsCardPosition.single,
@@ -202,12 +203,24 @@ class SettingsCard extends StatelessWidget {
   /// toggle, or chevron).
   final Widget? trailing;
 
+  /// Optional pre-built badge shown beside [title], replacing [badgeText].
+  /// Use when the badge needs more than a label and colour — an icon or a
+  /// tooltip.
+  ///
+  /// A badge that handles taps (an [AppBadge] with a `tooltip`, for instance)
+  /// consumes them, so it will swallow [onTap] for the part of the row it
+  /// covers.
+  ///
+  /// The badge keeps its natural width and drops onto its own line below
+  /// [title] when the row is too narrow to hold both.
+  final Widget? badge;
+
   /// Optional label rendered as a small [AppBadge] beside [title].
   /// When `null`, no badge is shown.
   final String? badgeText;
 
-  /// Colour scheme for the badge. Ignored when [badgeText] is `null`.
-  /// Defaults to [BadgeType.neutral].
+  /// Colour scheme for the badge. Ignored when [badgeText] is `null` or when
+  /// [badge] is set. Defaults to [BadgeType.neutral].
   final BadgeType badgeType;
 
   /// Controls which corners are rounded and whether a bottom separator is
@@ -236,6 +249,7 @@ class SettingsCard extends StatelessWidget {
             title: title,
             subtitle: subtitle,
             subtitleWidget: subtitleWidget,
+            badge: badge,
             badgeText: badgeText,
             badgeType: badgeType,
           ),
@@ -271,6 +285,7 @@ class _TextColumn extends StatelessWidget {
     required this.title,
     this.subtitle,
     this.subtitleWidget,
+    this.badge,
     this.badgeText,
     this.badgeType = BadgeType.neutral,
   });
@@ -278,6 +293,7 @@ class _TextColumn extends StatelessWidget {
   final String title;
   final String? subtitle;
   final Widget? subtitleWidget;
+  final Widget? badge;
   final String? badgeText;
   final BadgeType badgeType;
 
@@ -285,26 +301,33 @@ class _TextColumn extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final palette = theme.palette;
+    final effectiveBadge =
+        badge ??
+        (badgeText != null
+            ? AppBadge(text: badgeText!, type: badgeType, size: BadgeSize.small)
+            : null);
+    final titleText = Text(
+      title,
+      style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       spacing: theme.spacing.xxs,
       children: [
-        Row(
-          spacing: theme.spacing.md,
-          children: [
-            Flexible(
-              child: Text(
-                title,
-                style: theme.textStyles.textMd.regular.copyWith(color: palette.textPrimary),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            if (badgeText != null)
-              AppBadge(text: badgeText!, type: badgeType, size: BadgeSize.small),
-          ],
-        ),
+        if (effectiveBadge == null)
+          titleText
+        else
+          // Wrap, not Row: a flex child is capped at its share of the row, so a
+          // Flexible badge would truncate rather than move to its own line.
+          Wrap(
+            spacing: theme.spacing.s,
+            runSpacing: theme.spacing.xxs,
+            crossAxisAlignment: WrapCrossAlignment.center,
+            children: [titleText, effectiveBadge],
+          ),
         if (subtitleWidget != null)
           subtitleWidget!
         else if (subtitle != null)

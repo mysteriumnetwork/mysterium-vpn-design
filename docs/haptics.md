@@ -108,5 +108,33 @@ and compiles to a pass-through elsewhere. macOS has real trackpad haptics via
 Core Haptics, but Apple scopes Mac haptics to dragging and force-click, not
 button taps.
 
+## Known limitation: some Android devices feel nothing
+
+Flutter asks Android for one specific `HapticFeedbackConstants` value per tier
+and **discards the boolean that says whether it worked**, so when an OEM has
+not implemented that constant the tap is silently dropped and there is no
+fallback. Confirmed dead on a Galaxy A73; [flutter#73987][flutterbug] reports
+the same on A33, M30, S10, S20 Ultra and an Oppo Reno 2F, so it is not
+Samsung-only. Raising the system vibration intensity does not help.
+
+Three of our six tiers are API 30+ constants (`CONFIRM` / `REJECT`), the least
+consistently implemented, so the outcome tiers are the most exposed.
+
+Diagnosing it is easy because of how the app is built: Material ink widgets
+also play Android's touch *click sound*, raw `GestureDetector`s do not. A
+tester hearing clicks on Connect and the map while the locations list stays
+silent is hearing `Feedback.forTap`, not haptics — those two surfaces have
+identical haptic configuration. **Sound-mode feedback is not a pass for this
+feature.**
+
+Decided 2026-11-03 not to work around it with a vibration plugin. Driving
+`VibrationEffect` directly would bypass the user's system touch-feedback
+setting below API 33, which `performHapticFeedback` honours for free, and that
+costs more than the feature is worth. The failure mode is silence, not
+misbehaviour. `HapticLevel.fire()` is the single call site if this is ever
+revisited.
+
+[flutterbug]: https://github.com/flutter/flutter/issues/73987
+
 [apple]: https://developer.apple.com/design/human-interface-guidelines/playing-haptics
 [android]: https://developer.android.com/develop/ui/views/haptics/haptics-principles
