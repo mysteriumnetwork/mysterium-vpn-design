@@ -140,7 +140,7 @@ class _SavedIpCardState extends State<SavedIpCard> {
       onEnter: (_) => setState(() => _hovered = true),
       onExit: (_) => setState(() => _hovered = false),
       child: GestureDetector(
-        onTap: _disabled ? null : widget.onTap,
+        onTap: _disabled ? null : HapticLevel.selection.wrap(widget.onTap),
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: _bgColor(palette),
@@ -383,7 +383,7 @@ class _FavoriteHeartState extends State<_FavoriteHeart> {
       }),
       child: GestureDetector(
         behavior: HitTestBehavior.opaque,
-        onTap: widget.onTap,
+        onTap: HapticLevel.selection.wrap(widget.onTap),
         onTapDown: _interactive ? (_) => _setPressed(value: true) : null,
         onTapUp: _interactive ? (_) => _setPressed(value: false) : null,
         onTapCancel: _interactive ? () => _setPressed(value: false) : null,

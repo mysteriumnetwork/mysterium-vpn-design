@@ -370,7 +370,12 @@ class _NotConnectedContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
-          ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
+          ButtonPrimary(
+            onPressed: onConnect,
+            size: ButtonSize.large,
+            haptic: HapticLevel.impact,
+            child: Text(connectLabel),
+          ),
         ),
       ],
     );
@@ -499,7 +504,12 @@ class _LocationSelectedContent extends StatelessWidget {
         _wrapButton(
           context,
           buttonWrapper,
-          ButtonPrimary(onPressed: onConnect, size: ButtonSize.large, child: Text(connectLabel)),
+          ButtonPrimary(
+            onPressed: onConnect,
+            size: ButtonSize.large,
+            haptic: HapticLevel.impact,
+            child: Text(connectLabel),
+          ),
         ),
       ],
     );
@@ -601,6 +611,7 @@ class _ConnectedContent extends StatelessWidget {
                 iconColor: palette.iconIpCard,
                 onPressed: onFavorite,
                 semanticLabel: favoriteSemanticLabel,
+                haptic: HapticLevel.selection,
               ),
             _IconTap(
               icon: UntitledUI.chevron_right,
@@ -617,6 +628,7 @@ class _ConnectedContent extends StatelessWidget {
           ButtonSecondary(
             onPressed: onButton,
             size: ButtonSize.large,
+            haptic: HapticLevel.impact,
             decoration: ButtonDecoration(
               decorationColor: palette.bgSecondaryCta,
               foregroundColor: palette.textSecondaryCta,
@@ -689,7 +701,13 @@ class _PreviewBar extends StatelessWidget {
 // ─── Icon tap helper ──────────────────────────────────────────────────────────
 
 class _IconTap extends StatelessWidget {
-  const _IconTap({required this.icon, required this.iconColor, this.onPressed, this.semanticLabel});
+  const _IconTap({
+    required this.icon,
+    required this.iconColor,
+    this.onPressed,
+    this.semanticLabel,
+    this.haptic = HapticLevel.none,
+  });
 
   final IconData icon;
   final Color iconColor;
@@ -699,9 +717,12 @@ class _IconTap extends StatelessWidget {
   /// is otherwise unlabeled.
   final String? semanticLabel;
 
+  /// Silent unless the tap changes a value — see `docs/haptics.md`.
+  final HapticLevel haptic;
+
   @override
   Widget build(BuildContext context) => IconButton(
-    onPressed: onPressed,
+    onPressed: haptic.wrap(onPressed),
     icon: Icon(icon, size: 24, color: iconColor, semanticLabel: semanticLabel),
     padding: EdgeInsets.zero,
     style: ButtonStyle(

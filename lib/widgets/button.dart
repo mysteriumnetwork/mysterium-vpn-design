@@ -59,6 +59,7 @@ sealed class Button extends StatelessWidget {
     this.loading,
     this.size = ButtonSize.medium,
     this.decoration = const ButtonDecoration(),
+    this.haptic = HapticLevel.none,
     super.key,
   });
 
@@ -85,6 +86,13 @@ sealed class Button extends StatelessWidget {
 
   /// Overrides for colours, text style, min size, and padding.
   final ButtonDecoration decoration;
+
+  /// Haptic fired on press. Silent by default.
+  ///
+  /// Opt in only when the action commits something or changes a value; see
+  /// `docs/haptics.md`. [HapticLevel.impact] is reserved for
+  /// connect/disconnect-class actions.
+  final HapticLevel haptic;
 }
 
 /// Overrides for a [Button]'s appearance.
@@ -184,6 +192,7 @@ class ButtonPrimary extends Button {
     super.trailing,
     super.loading,
     super.decoration,
+    super.haptic,
     super.key,
   }) : super(variant: ButtonVariant.primary);
 
@@ -191,7 +200,7 @@ class ButtonPrimary extends Button {
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: loading != null,
     child: FilledButton(
-      onPressed: onPressed,
+      onPressed: haptic.wrap(onPressed),
       style: FilledButton.styleFrom(
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
@@ -234,6 +243,7 @@ class ButtonSecondary extends Button {
     super.trailing,
     super.loading,
     super.decoration,
+    super.haptic,
     super.key,
   }) : super(variant: ButtonVariant.secondary);
 
@@ -241,7 +251,7 @@ class ButtonSecondary extends Button {
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: loading != null,
     child: OutlinedButton(
-      onPressed: onPressed,
+      onPressed: haptic.wrap(onPressed),
       style: OutlinedButton.styleFrom(
         padding: EdgeInsets.zero,
         visualDensity: VisualDensity.compact,
@@ -285,6 +295,7 @@ class ButtonTertiary extends Button {
     super.trailing,
     super.loading,
     super.decoration,
+    super.haptic,
     super.key,
   }) : super(variant: ButtonVariant.tertiary);
 
@@ -292,7 +303,7 @@ class ButtonTertiary extends Button {
   Widget build(BuildContext context) => IgnorePointer(
     ignoring: loading != null,
     child: TextButton(
-      onPressed: onPressed,
+      onPressed: haptic.wrap(onPressed),
       style:
           TextButton.styleFrom(
             padding: EdgeInsets.zero,

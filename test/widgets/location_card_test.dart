@@ -46,6 +46,20 @@ void main() {
       expect(tapped, isFalse);
     });
 
+    testWidgets('shows a loading indicator in place of the icon when connecting', (tester) async {
+      await pumpWidget(
+        tester,
+        const LocationCard(
+          icon: Icon(Icons.flag),
+          name: 'Germany',
+          subtitle: 'Berlin',
+          status: LocationCardStatus.connecting,
+        ),
+      );
+      expect(find.byType(LoadingIndicator), findsOneWidget);
+      expect(find.byIcon(Icons.flag), findsNothing);
+    });
+
     testWidgets('all statuses render without error', (tester) async {
       for (final status in LocationCardStatus.values) {
         await pumpWidget(

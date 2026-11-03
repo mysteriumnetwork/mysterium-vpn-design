@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
@@ -220,7 +219,7 @@ class _GestureHandlerState extends State<_GestureHandler> {
   DateTime? _lastTapTime;
 
   void _handleTap() {
-    HapticFeedback.lightImpact();
+    HapticLevel.selection.fire();
     final now = DateTime.now();
     if (widget.onDoubleTap != null &&
         _lastTapTime != null &&

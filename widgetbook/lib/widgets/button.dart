@@ -9,6 +9,7 @@ Widget buildPrimaryButton(BuildContext context) => _buildButton(
   (args) => ButtonPrimary(
     onPressed: args.isDisabled ? null : () {},
     size: args.size,
+    haptic: args.haptic,
     loading: args.isLoading ? ButtonLoading(text: args.loadingText) : null,
     leading: args.showLeading ? const Icon(UntitledUI.plus_circle) : null,
     trailing: args.showTrailing ? const Icon(UntitledUI.arrow_right) : null,
@@ -22,6 +23,7 @@ Widget buildSecondaryButton(BuildContext context) => _buildButton(
   (args) => ButtonSecondary(
     onPressed: args.isDisabled ? null : () {},
     size: args.size,
+    haptic: args.haptic,
     loading: args.isLoading ? ButtonLoading(text: args.loadingText) : null,
     leading: args.showLeading ? const Icon(UntitledUI.plus_circle) : null,
     trailing: args.showTrailing ? const Icon(UntitledUI.arrow_right) : null,
@@ -35,6 +37,7 @@ Widget buildTertiaryButton(BuildContext context) => _buildButton(
   (args) => ButtonTertiary(
     onPressed: args.isDisabled ? null : () {},
     size: args.size,
+    haptic: args.haptic,
     loading: args.isLoading ? ButtonLoading(text: args.loadingText) : null,
     leading: args.showLeading ? const Icon(UntitledUI.plus_circle) : null,
     trailing: args.showTrailing ? const Icon(UntitledUI.arrow_right) : null,
@@ -56,6 +59,12 @@ Widget _buildButton(BuildContext context, Button Function(_ButtonArgs) buttonBui
     options: ButtonSize.values,
     labelBuilder: (size) => size.name,
   );
+  final haptic = context.knobs.object.dropdown(
+    label: 'Haptic',
+    initialOption: HapticLevel.none,
+    options: HapticLevel.values,
+    labelBuilder: (level) => level.name,
+  );
 
   return buttonBuilder((
     isDisabled: isDisabled,
@@ -65,6 +74,7 @@ Widget _buildButton(BuildContext context, Button Function(_ButtonArgs) buttonBui
     showTrailing: showTrailing,
     buttonText: buttonText,
     size: size,
+    haptic: haptic,
     // ignore: require_trailing_commas
   ));
 }
@@ -77,4 +87,5 @@ typedef _ButtonArgs = ({
   bool showTrailing,
   String buttonText,
   ButtonSize size,
+  HapticLevel haptic,
 });

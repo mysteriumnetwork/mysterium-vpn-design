@@ -66,6 +66,12 @@ Widget buildLocationCardCarousel(BuildContext context) => const Padding(
           icon: _DeFlag(),
           name: 'Germany',
           subtitle: 'High speed',
+          status: LocationCardStatus.connecting,
+        ),
+        LocationCard(
+          icon: _DeFlag(),
+          name: 'Germany',
+          subtitle: 'High speed',
           status: LocationCardStatus.disabled,
         ),
       ],

@@ -165,6 +165,17 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
   bool _hovered = false;
   bool _focused = false;
 
+  // Built once: onInvoke reads the callback lazily, so it stays correct across
+  // rebuilds without re-allocating on every hover or focus tick.
+  late final Map<Type, Action<Intent>> _actions = {
+    ActivateIntent: CallbackAction<ActivateIntent>(
+      onInvoke: (_) {
+        widget.onTap?.call();
+        return null;
+      },
+    ),
+  };
+
   void _setHovered(bool value) {
     if (value == _hovered) {
       return;
@@ -199,14 +210,7 @@ class _BottomNavBarCellState extends State<_BottomNavBarCell> {
         mouseCursor: interactive ? SystemMouseCursors.click : MouseCursor.defer,
         onShowHoverHighlight: _setHovered,
         onShowFocusHighlight: _setFocused,
-        actions: <Type, Action<Intent>>{
-          ActivateIntent: CallbackAction<ActivateIntent>(
-            onInvoke: (_) {
-              widget.onTap?.call();
-              return null;
-            },
-          ),
-        },
+        actions: _actions,
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: widget.onTap,

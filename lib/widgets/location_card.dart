@@ -13,6 +13,9 @@ enum LocationCardStatus {
   /// This location is the active connection.
   selected,
 
+  /// A connection attempt to this location is in progress.
+  connecting,
+
   /// Card is non-interactive.
   disabled,
 }
@@ -117,7 +120,10 @@ class _LocationCardState extends State<LocationCard> {
       child: MouseRegion(
         onEnter: (_) => setState(() => _hovered = true),
         onExit: (_) => setState(() => _hovered = false),
-        child: GestureDetector(onTap: isDisabled ? null : widget.onTap, child: surface),
+        child: GestureDetector(
+          onTap: isDisabled ? null : HapticLevel.selection.wrap(widget.onTap),
+          child: surface,
+        ),
       ),
     );
   }
@@ -133,6 +139,9 @@ class _LeadingIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (status == LocationCardStatus.connecting) {
+      return LoadingIndicator(color: Theme.of(context).palette.iconPrimary);
+    }
     if (status == LocationCardStatus.selected) {
       return Container(
         width: 24,
