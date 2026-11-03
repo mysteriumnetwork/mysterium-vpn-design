@@ -45,6 +45,175 @@ void main() {
       expect(find.text('user@example.com'), findsOneWidget);
     });
 
+    testWidgets('badge takes precedence over badgeText', (tester) async {
+      await pumpWidget(
+        tester,
+        const SettingsCard(
+          title: 'Basic 1-Year',
+          badgeText: 'Cancelled',
+          badge: AppBadge(text: '+3 bonus months', icon: UntitledUI.gift_02),
+        ),
+      );
+
+      expect(find.text('+3 bonus months'), findsOneWidget);
+      expect(find.text('Cancelled'), findsNothing);
+    });
+
+    testWidgets('renders no badge when neither is set', (tester) async {
+      await pumpWidget(tester, const SettingsCard(title: 'Basic 1-Year'));
+      expect(find.byType(AppBadge), findsNothing);
+    });
+
+    testWidgets('a wide badge beside a long title does not overflow', (tester) async {
+      await pumpWidget(
+        tester,
+        const Center(
+          child: SizedBox(
+            width: 300,
+            child: SettingsCard(
+              title: 'An extraordinarily long subscription plan name',
+              badge: AppBadge(text: '+12 bonus months', icon: UntitledUI.gift_02),
+              trailing: Text('Manage'),
+            ),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
+    // An overflow test cannot catch truncation: wrapping is what avoids overflow.
+    testWidgets('a badge keeps its natural width when the row has room', (tester) async {
+      const pill = AppBadge(text: '+3 bonus months', icon: UntitledUI.gift_02);
+
+      await pumpWidget(tester, const Center(child: pill), wrapInScaffold: true);
+      final natural = tester.getSize(find.byType(AppBadge)).width;
+
+      await pumpWidget(
+        tester,
+        const Center(
+          child: SizedBox(
+            width: 600,
+            child: SettingsCard(title: 'Pro', badge: pill, trailing: Text('Manage')),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      expect(tester.getSize(find.byType(AppBadge)).width, natural);
+    });
+
+    // A text column narrower than the badge itself must still lay out.
+    testWidgets('survives a row narrower than the badge', (tester) async {
+      await pumpWidget(
+        tester,
+        const Center(
+          child: SizedBox(
+            width: 120,
+            child: SettingsCard(
+              title: 'Basic 1-Year',
+              badge: AppBadge(text: '+3 bonus months', icon: UntitledUI.gift_02),
+              trailing: SizedBox(width: 72, child: Text('Manage')),
+            ),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('reports intrinsics for a row without a badge', (tester) async {
+      await pumpWidget(
+        tester,
+        const Center(
+          child: SizedBox(
+            width: 400,
+            child: IntrinsicHeight(child: SettingsCard(title: 'Plain row')),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
+    testWidgets('reports intrinsics for a row with a badge', (tester) async {
+      await pumpWidget(
+        tester,
+        const Center(
+          child: SizedBox(
+            width: 400,
+            child: IntrinsicHeight(
+              child: SettingsCard(
+                title: 'Basic 1-Year',
+                badge: AppBadge(text: '+3 bonus months', icon: UntitledUI.gift_02),
+              ),
+            ),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      expect(tester.takeException(), isNull);
+    });
+
+    // Both Figma account frames: inline on desktop, stacked on a narrow mobile
+    // row whose trailing CTA leaves the text column too little width.
+    testWidgets('badge sits beside the title, or under it when space runs out', (tester) async {
+      Future<void> pumpAtWidth(double width) => pumpWidget(
+        tester,
+        Center(
+          child: SizedBox(
+            width: width,
+            child: const SettingsCard(
+              title: 'Basic 1-Year',
+              badge: AppBadge(text: '+3 bonus months', icon: UntitledUI.gift_02),
+              trailing: SizedBox(width: 120, child: Text('Update payment method')),
+            ),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      await pumpAtWidth(700);
+      var title = tester.getRect(find.text('Basic 1-Year'));
+      var pill = tester.getRect(find.byType(AppBadge));
+      expect(pill.left, greaterThan(title.right));
+
+      await pumpAtWidth(300);
+      title = tester.getRect(find.text('Basic 1-Year'));
+      pill = tester.getRect(find.byType(AppBadge));
+      expect(pill.top, greaterThanOrEqualTo(title.bottom));
+      expect(pill.left, title.left);
+    });
+
+    testWidgets('a long title ellipsizes before the badge shrinks', (tester) async {
+      const pill = AppBadge(text: '+3 bonus months', icon: UntitledUI.gift_02);
+
+      await pumpWidget(tester, const Center(child: pill), wrapInScaffold: true);
+      final natural = tester.getSize(find.byType(AppBadge)).width;
+
+      await pumpWidget(
+        tester,
+        const Center(
+          child: SizedBox(
+            width: 600,
+            child: SettingsCard(
+              title: 'An extraordinarily long subscription plan name that will not fit',
+              badge: pill,
+              trailing: Text('Manage'),
+            ),
+          ),
+        ),
+        wrapInScaffold: true,
+      );
+
+      expect(tester.getSize(find.byType(AppBadge)).width, natural);
+      expect(tester.takeException(), isNull);
+    });
+
     testWidgets('renders subtitleWidget instead of subtitle string', (tester) async {
       await pumpWidget(
         tester,

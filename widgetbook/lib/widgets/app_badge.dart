@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 import 'package:widgetbook/widgetbook.dart';
 import 'package:widgetbook_annotation/widgetbook_annotation.dart';
+import 'package:widgetbook_workspace/widgetbook_utils.dart';
 
 @UseCase(name: 'Badge', type: AppBadge)
 Widget buildBadge(BuildContext context) {
@@ -20,5 +21,12 @@ Widget buildBadge(BuildContext context) {
     labelBuilder: (size) => size.name,
   );
 
-  return AppBadge(text: text, type: type, size: size);
+  final icon = context.knobs.objectOrNull.dropdown<IconData>(
+    label: 'Leading icon',
+    options: WidgetbookUtils.icons,
+    labelBuilder: WidgetbookUtils.iconName,
+  );
+  final tooltip = context.knobs.stringOrNull(label: 'Tooltip');
+
+  return AppBadge(text: text, type: type, size: size, icon: icon, tooltip: tooltip);
 }
