@@ -247,7 +247,7 @@ class ExpandableIpCardHeader extends StatelessWidget {
 /// A leaf-level IP address row inside an expanded [ExpandableIpCardHeader].
 ///
 /// Shows a marker-pin circle (idle/hovered) or a green check circle (selected).
-/// Set [lastInList] to true for the final item in a group..
+/// Set [lastInList] to true for the final item in a group.
 class IpCardListItem extends StatelessWidget {
   const IpCardListItem({
     required this.name,
