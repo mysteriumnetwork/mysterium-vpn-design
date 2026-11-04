@@ -16,6 +16,16 @@ void main() {
       expect(find.byIcon(UntitledUI.log_in_02), findsOneWidget);
     });
 
+    testWidgets('renders the message at regular weight, not semibold', (tester) async {
+      await pumpWidget(
+        tester,
+        const StateCard(icon: UntitledUI.log_in_02, message: 'You are not signed in'),
+      );
+
+      final style = tester.widget<Text>(find.text('You are not signed in')).style;
+      expect(style?.fontWeight, FontWeight.w400);
+    });
+
     testWidgets('omits the action when actionLabel is null', (tester) async {
       await pumpWidget(
         tester,

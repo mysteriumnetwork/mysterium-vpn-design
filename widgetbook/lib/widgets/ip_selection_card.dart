@@ -13,7 +13,6 @@ Widget buildExpandableIpCard(BuildContext context) {
     initialOption: IpCardStatus.idle,
     labelBuilder: (s) => s.name,
   );
-  final plusUpgrade = context.knobs.boolean(label: 'Plus upgrade');
   final initiallyExpanded = context.knobs.boolean(label: 'Initially expanded');
   return Padding(
     padding: const EdgeInsets.all(16),
@@ -22,7 +21,6 @@ Widget buildExpandableIpCard(BuildContext context) {
       subtitle: '3 states',
       countryIcon: const _UsFlag(),
       status: status,
-      plusUpgrade: plusUpgrade,
       initiallyExpanded: initiallyExpanded,
       items: const [
         IpCardItem(name: 'Illinois', subtitle: '4 IPs', status: IpCardStatus.connected),
@@ -42,7 +40,6 @@ Widget buildExpandableIpCardControlled(BuildContext context) {
     labelBuilder: (s) => s.name,
   );
   final expanded = context.knobs.boolean(label: 'Expanded');
-  final plusUpgrade = context.knobs.boolean(label: 'Plus upgrade');
   return Padding(
     padding: const EdgeInsets.all(16),
     child: ExpandableIpCard(
@@ -50,7 +47,6 @@ Widget buildExpandableIpCardControlled(BuildContext context) {
       subtitle: '3 states',
       countryIcon: const _UsFlag(),
       status: status,
-      plusUpgrade: plusUpgrade,
       expanded: expanded,
       items: const [
         IpCardItem(name: 'Illinois', subtitle: '4 IPs', status: IpCardStatus.connected),
@@ -87,7 +83,6 @@ Widget buildIpCardListItem(BuildContext context) {
     initialOption: IpCardStatus.idle,
     labelBuilder: (s) => s.name,
   );
-  final plusUpgrade = context.knobs.boolean(label: 'Plus upgrade');
   final lastInList = context.knobs.boolean(label: 'Last in list');
   return Padding(
     padding: const EdgeInsets.all(16),
@@ -95,7 +90,6 @@ Widget buildIpCardListItem(BuildContext context) {
       name: context.knobs.string(label: 'Name', initialValue: 'New York'),
       subtitle: context.knobs.string(label: 'Subtitle', initialValue: '89 IPs'),
       status: status,
-      plusUpgrade: plusUpgrade,
       lastInList: lastInList,
       onTap: () {},
     ),
