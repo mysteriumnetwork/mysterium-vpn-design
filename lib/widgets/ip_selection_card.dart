@@ -1,13 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mysterium_vpn_design/mysterium_vpn_design.dart';
 
-/// Width reserved on the trailing edge of an [IpCardListItem] so its Plus
-/// badge aligns vertically with the Plus badge in its parent
-/// [ExpandableIpCardHeader]. Equals Material's `IconButton` enforced tap-
-/// target column (48 px) plus the gap between content and chevron
-/// (12 px / `spacing.ms`).
-const double _chevronColumnWidth = 60;
-
 // ─── Status ───────────────────────────────────────────────────────────────────
 
 /// Connection-state variants shared across all IP card widgets.
@@ -23,7 +16,7 @@ enum IpCardStatus {
   /// A connection attempt to this location is in progress.
   connecting,
 
-  /// The row is non-interactive (e.g. requires a Plus upgrade).
+  /// The row is non-interactive.
   disabled,
 
   /// Data required to determine availability is still loading.
@@ -42,14 +35,12 @@ class IpCardItem {
     required this.name,
     required this.subtitle,
     this.status = IpCardStatus.idle,
-    this.plusUpgrade = false,
     this.onTap,
   });
 
   final String name;
   final String subtitle;
   final IpCardStatus status;
-  final bool plusUpgrade;
   final VoidCallback? onTap;
 }
 
@@ -74,7 +65,6 @@ class ExpandableIpCard extends StatefulWidget {
     required this.countryIcon,
     required this.items,
     this.status = IpCardStatus.idle,
-    this.plusUpgrade = false,
     this.expanded,
     this.initiallyExpanded = false,
     this.onExpansionChanged,
@@ -88,7 +78,6 @@ class ExpandableIpCard extends StatefulWidget {
   final Widget countryIcon;
   final List<IpCardItem> items;
   final IpCardStatus status;
-  final bool plusUpgrade;
 
   /// When non-empty, every case-insensitive occurrence of this string in [name]
   /// (and in each child item's name) is rendered with a highlighted pill.
@@ -144,7 +133,6 @@ class _ExpandableIpCardState extends State<ExpandableIpCard> {
         countryIcon: widget.countryIcon,
         status: widget.status,
         expanded: _effectiveExpanded,
-        plusUpgrade: widget.plusUpgrade,
         searchHighlight: widget.searchHighlight,
         onChevronTap: widget.items.isEmpty ? null : _handleChevronTap,
         onContentTap: widget.onConnect,
@@ -156,9 +144,7 @@ class _ExpandableIpCardState extends State<ExpandableIpCard> {
             subtitle: widget.items[i].subtitle,
             status: widget.items[i].status,
             lastInList: i == widget.items.length - 1,
-            plusUpgrade: widget.items[i].plusUpgrade,
             searchHighlight: widget.searchHighlight,
-            reservesChevronColumn: true,
             onTap: widget.items[i].onTap,
           ),
     ],
@@ -178,7 +164,6 @@ class ExpandableIpCardHeader extends StatelessWidget {
     required this.countryIcon,
     required this.status,
     this.expanded = false,
-    this.plusUpgrade = false,
     this.searchHighlight,
     this.onChevronTap,
     this.onContentTap,
@@ -190,7 +175,6 @@ class ExpandableIpCardHeader extends StatelessWidget {
   final Widget countryIcon;
   final IpCardStatus status;
   final bool expanded;
-  final bool plusUpgrade;
   final String? searchHighlight;
 
   /// Tapping the chevron icon — toggles expanded/collapsed.
@@ -207,7 +191,6 @@ class ExpandableIpCardHeader extends StatelessWidget {
     final theme = Theme.of(context);
     final hasChevron = onChevronTap != null;
     final isLoading = status == IpCardStatus.loading;
-    final showPlus = plusUpgrade && status != IpCardStatus.selected && !isLoading;
     final contentTap = HapticLevel.selection.wrap(onContentTap);
     return _IpCardShell(
       status: status,
@@ -237,13 +220,6 @@ class ExpandableIpCardHeader extends StatelessWidget {
           if (isLoading) ...[
             SizedBox(width: theme.spacing.ms),
             LoadingIndicator(size: 20, color: theme.palette.iconSecondary),
-          ] else if (showPlus) ...[
-            SizedBox(width: theme.spacing.ms),
-            GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: contentTap,
-              child: _PlusBadge(disabled: status == IpCardStatus.disabled),
-            ),
           ],
           // Chevron is its own tap target per Figma spec.
           // Hidden when there are no child items to expand.
@@ -271,20 +247,14 @@ class ExpandableIpCardHeader extends StatelessWidget {
 /// A leaf-level IP address row inside an expanded [ExpandableIpCardHeader].
 ///
 /// Shows a marker-pin circle (idle/hovered) or a green check circle (selected).
-/// Set [lastInList] to true for the final item in a group. Set
-/// [reservesChevronColumn] to true when this item lives under an
-/// [ExpandableIpCardHeader] with a chevron — the trailing edge is then
-/// padded by [_chevronColumnWidth] so the Plus badge aligns vertically
-/// with the header's Plus badge.
+/// Set [lastInList] to true for the final item in a group..
 class IpCardListItem extends StatelessWidget {
   const IpCardListItem({
     required this.name,
     required this.subtitle,
     required this.status,
     this.lastInList = false,
-    this.plusUpgrade = false,
     this.searchHighlight,
-    this.reservesChevronColumn = false,
     this.onTap,
     super.key,
   });
@@ -293,9 +263,7 @@ class IpCardListItem extends StatelessWidget {
   final String subtitle;
   final IpCardStatus status;
   final bool lastInList;
-  final bool plusUpgrade;
   final String? searchHighlight;
-  final bool reservesChevronColumn;
   final VoidCallback? onTap;
 
   @override
@@ -317,10 +285,7 @@ class IpCardListItem extends StatelessWidget {
             searchHighlight: searchHighlight,
           ),
         ),
-        if (isLoading)
-          LoadingIndicator(size: 20, color: theme.palette.iconSecondary)
-        else if (plusUpgrade)
-          _PlusBadge(disabled: status == IpCardStatus.disabled),
+        if (isLoading) LoadingIndicator(size: 20, color: theme.palette.iconSecondary),
       ],
     );
     return _IpCardShell(
@@ -328,12 +293,7 @@ class IpCardListItem extends StatelessWidget {
       borderRadius: borderRadius,
       borderTop: true,
       onTap: onTap,
-      child: reservesChevronColumn
-          ? Padding(
-              padding: const EdgeInsets.only(right: _chevronColumnWidth),
-              child: row,
-            )
-          : row,
+      child: row,
     );
   }
 }
@@ -563,26 +523,4 @@ class _HighlightPill extends StatelessWidget {
     decoration: BoxDecoration(color: backgroundColor, borderRadius: BorderRadius.circular(6)),
     child: Text(text, style: textStyle),
   );
-}
-
-// ─── Plus upgrade badge ───────────────────────────────────────────────────────
-
-class _PlusBadge extends StatelessWidget {
-  const _PlusBadge({required this.disabled});
-
-  final bool disabled;
-
-  @override
-  Widget build(BuildContext context) {
-    final palette = Theme.of(context).palette;
-    final color = disabled ? palette.textDisabled : palette.textPrimarySelected;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      spacing: Theme.of(context).spacing.xs,
-      children: [
-        Icon(UntitledUI.stars_02, size: 16, color: color),
-        Text('Plus', style: Theme.of(context).textStyles.textXs.medium.copyWith(color: color)),
-      ],
-    );
-  }
 }

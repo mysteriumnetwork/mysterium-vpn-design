@@ -81,7 +81,7 @@ class StateCard extends StatelessWidget {
             Expanded(
               child: Text(
                 message,
-                style: theme.textStyles.textSm.semibold.copyWith(color: palette.textSecondary),
+                style: theme.textStyles.textSm.regular.copyWith(color: palette.textSecondary),
               ),
             ),
             if (actionLabel case final label?) ...[
