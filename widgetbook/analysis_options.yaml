@@ -24,6 +24,11 @@ analyzer:
     - "packages/vpn_api/**"
     - "lib/gen/**"
     - "lib/generated/**"
+    - build/**
+    - android/**
+    - ios/**
+    - web/**
+    - macos/**
 
 linter:
   rules:
