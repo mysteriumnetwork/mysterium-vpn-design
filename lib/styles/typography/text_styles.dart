@@ -156,32 +156,32 @@ class TextStyles extends ThemeExtension<TextStyles> {
     return TextStyles(color: lerped);
   }
 
-  TextTheme get materialTextTheme => GoogleFonts.interTextTheme(
-    TextTheme(
-      // Display / large headings
-      displayLarge: displayXlg.bold,
-      displayMedium: displayXlg.semibold,
-      displaySmall: displayXlg.medium,
+  // Every style below already comes from GoogleFonts.inter via TypeScale, so the
+  // interTextTheme wrapper (which uses material_ui's TextTheme) is not needed.
+  TextTheme get materialTextTheme => TextTheme(
+    // Display / large headings
+    displayLarge: displayXlg.bold,
+    displayMedium: displayXlg.semibold,
+    displaySmall: displayXlg.medium,
 
-      // Headline / section headings
-      headlineLarge: textLg.bold,
-      headlineMedium: textLg.semibold,
-      headlineSmall: textLg.medium,
+    // Headline / section headings
+    headlineLarge: textLg.bold,
+    headlineMedium: textLg.semibold,
+    headlineSmall: textLg.medium,
 
-      // Titles / important labels
-      titleLarge: textMd.bold,
-      titleMedium: textMd.semibold,
-      titleSmall: textMd.medium,
+    // Titles / important labels
+    titleLarge: textMd.bold,
+    titleMedium: textMd.semibold,
+    titleSmall: textMd.medium,
 
-      // Body text
-      bodyLarge: textMd.regular,
-      bodyMedium: textSm.regular,
-      bodySmall: textXs.regular,
+    // Body text
+    bodyLarge: textMd.regular,
+    bodyMedium: textSm.regular,
+    bodySmall: textXs.regular,
 
-      // Labels / buttons
-      labelLarge: textSm.medium,
-      labelMedium: textSm.semibold,
-      labelSmall: textXs.medium,
-    ),
+    // Labels / buttons
+    labelLarge: textSm.medium,
+    labelMedium: textSm.semibold,
+    labelSmall: textXs.medium,
   );
 }
